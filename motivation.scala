@@ -218,3 +218,48 @@ object BinaryTreeIterator {
     assert(convertTreeToList(tree) == List(1, 2, 3))
   }
 }
+
+
+//translation of code from page 14 of revisiting coroutines
+object PatternMatching {
+  import Coroutine._
+
+  type Pattern = (String, Int) => Unit
+  def prim(str: String): Pattern = (s: String, pos: Int) => {
+    val len = str.length
+    if (s.substring(pos, pos+len) == str) {
+      yieldval(pos+len)
+    }
+  }
+
+  def alt(patt1: Pattern, patt2: Pattern): Pattern = (s: String, pos: Int) => {
+    patt1(s, pos)
+    patt2(s, pos)
+  }
+
+  def seq(patt1: Pattern, patt2: Pattern): Pattern = (s: String, pos: Int) => {
+    val btpoint = new Coroutine0[Int, Unit](() => patt1(s, pos)).call
+    while (btpoint.resume) {
+      val npos: Int = btpoint.value
+      patt2(s, npos)
+    }
+  }
+
+  def matchPatt(s: String, patt: Pattern): Boolean = {
+    val len = s.length
+    val m = new Coroutine0[Int, Unit](() => patt(s,1)).call
+    while (m.resume) {
+      val pos: Int = m.value
+      if (pos == len + 1)
+        return true 
+    }
+
+    false 
+  }
+
+
+  def test {
+    //construction of the pattern ("abc" | "de")."x"
+    val patt = seq(alt(prim("abc"), prim("de")), prim("x"))
+  }
+}

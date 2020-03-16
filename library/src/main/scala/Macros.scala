@@ -141,41 +141,34 @@ object Macros {
       new Coroutine[T] { 
         var state: Int = 0 
 
+ 
+        def continue: Option[T] = { 
+          ${  
 
-        //Problem is how to generate a match expression without using the AST low level api too much? 
-        def continueAlternative: Option[T] = state match { ${
-
-          (0 until nbFunDefs).foldLeft[Expr[_ <: Any]]( '{} ) {
-            case (previousExpr, (funDef, index)) => 
-              '{
-                ${previousExpr} 
-                case ${index} => f${index}()
-              }
+            funDefsExprs.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{None} ) { 
+              case ('{None}, (funDefExpr, index)) => 
+                '{  
+                  if (state == ${Expr(index)}) {
+                    (${funDefExpr})()
+                  } else {
+                    sys.error("Impossible")
+                  }
+                } 
+              case (previousIfsExprs, (funDefExpr, index)) => 
+                '{
+                  
+                  if (state == ${Expr(index)}) {
+                    (${funDefExpr})()
+                  } else ${previousIfsExprs}
+                }
             }
-        } }
-        
-        def continue: Option[T] = ${
-          val caseDefs: List[CaseDef] = (0 until nbFunDefs).map[CaseDef] {
-            //index => CaseDef('{index}.unseal, None, '{f${index}()}.unseal)
-            index => '{  case ${index} => f${index}() }.unseal //doesnt seem to work
-          }
-          
-          Match('{state}.unseal, caseDefs).seal.cast[Option[T]] 
-        } 
-          
-        ${
-          funDefsExprs.zipWithIndex.foldLeft[Expr[_ <: Any]]( '{} ) {
-            case (previousExpr, (funDef, index)) => 
-              '{
-                ${previousExpr};
-                def f${index} = ${funDef} //is there a way to add the "private" modifier without having the compiler screaming?
-              }
-          }
-        }
 
+          }
+        }    
+        //End of Coroutine class
       }
-
     }
+
   }
 
 

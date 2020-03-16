@@ -141,6 +141,19 @@ object Macros {
       new Coroutine[T] { 
         var state: Int = 0 
 
+
+        //Problem is how to generate a match expression without using the AST low level api too much? 
+        def continueAlternative: Option[T] = state match { ${
+
+          (0 until nbFunDefs).foldLeft[Expr[_ <: Any]]( '{} ) {
+            case (previousExpr, (funDef, index)) => 
+              '{
+                ${previousExpr} 
+                case ${index} => f${index}()
+              }
+            }
+        } }
+        
         def continue: Option[T] = ${
           val caseDefs: List[CaseDef] = (0 until nbFunDefs).map[CaseDef] {
             //index => CaseDef('{index}.unseal, None, '{f${index}()}.unseal)

@@ -1,11 +1,13 @@
+package coroutines
+
 //def yieldval[T](t: T)(implicit dummyValueFromCoroutine: ..): Unit = ???
-case class YieldVal[T](content: T) 
+
 
 //TODO put this in different package that is for library code and create junit tests.
 
-def yieldval[T](t: T): YieldVal[T] = YieldVal(t)
-def coroutine[T](body: => Unit): Coroutine[T] = ???
 
+ 
+def yieldval[T](t: T): T = t
 
 abstract class Coroutine[+T] {
 
@@ -19,19 +21,19 @@ abstract class Coroutine[+T] {
   def continue: Option[T] 
 }
 
-object Test { 
-  import CoroutineUtils._
+object Test {   
+  import Macros._
     //Suppose we only have block, lit and function
     //what if there is if condition and while condition in the code?
 
 
 
     def test = {
-      val co = coroutine[Int] {
+      val co = coroutine[Int]({
         print("hello world")
         yieldval(1+1)
         yieldval(2*2)
-      }
+      })
 
       //translates at the definition site to
       val objective = new Coroutine[Int] {

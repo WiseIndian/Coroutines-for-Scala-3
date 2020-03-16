@@ -1,74 +1,26 @@
+package coroutines
+
 //TODO create private github repository, create junit tests TDD and then implement. 
 //create notes. Create issues for questions.
 //Create anonymous class
 object Macros {
-  
+   
   import scala.quoted._
   import scala.quoted.matching._ 
-  
-  import CoroutineUtils._
+   
   inline def debug2[T](inline x: T): T = ${ debugImpl('{x}) }
 
   def debugImpl[T: Type](x: Expr[T])(implicit qtx: QuoteContext): Expr[T] = '{
     val a: T = ${x}
     println(${Expr(x.show(qtx))} +" = "+ a)
     a   
-  }
+  } 
    
-  //need qtx for typechecking the expression
-  inline def test()(implicit qtx: QuoteContext) = ${
-      fetchFunctions[Int]('{
-        val x = 1
-        yieldval(x)
-        val y = x + 1
-        yieldval(2*2)
-        y
-      })
-    }
+ 
   
 
     //TODO do something with the context: problem can we cast the context(term) back to T?
-  def fetchFunctionsFromBlock[T: Type](block: Block, context: Term => Term)(implicit qtx: QuoteContext): Seq[Expr[() => Option[T]]] { 
 
-    type FunDefAcc =  Seq[Expr[() => T]]
-    val initialFunDefsAcc = Seq[Expr[() => T]]()
-    val initialStatementsAcc = Seq[Statement]()
-
-    //the algorithm is as follows:
-    /*
-    * Traverse the list of statements from the block.
-    * Accumulate statements until we fall upon a yieldval. When this happens,
-    * we convert the list of statements that we accumulated as an expression.
-    * To convert a statement to an expression we can simply do tree.seal.cast[T]
-    * 
-    */
-    val initialAccumulator = (initialFunDefsAcc, initialStatementsAcc)
-
-    val (funDefsExprs, leftOverStatements) = (block.stats :+ block.expr).foldLeft[(FunDefAcc, Seq[Statement])](initialAccumulator) {
-      case ((funDefs, statements), Apply(TypeApply(Ident("yieldval"), _), List(argument))) => 
-        val argumentAsExpr: Expr[Option[T]] = '{ Some(${argument.unseal}) }
-        val newFunDefExpr: Expr[() => Option[T]] = '{ () =>
-          ${Block(statements, argumentAsExpr.unseal).seal.cast[Option[T]]} 
-        }
-        (funDefs :+ newFunDefExpr, Seq()) 
-      //TODO inside foldleft treat blocks recursions.
-      case ((funDefs, statements), anythingElse) => 
-        (funDefs, statements :+ anythingElse) 
-    }
-
-    /*if there are any leftover statements we create a function which
-    * when invoked run those statements and returns None of type T
-    */
-    leftOverStatements match {
-      case Seq() => None
-      case statements => Some(Block(statements, '{None}.unseal))
-    } map { case block => 
-      funDefsExprs :+ '{ () => ${   block.seal.cast[Option[T]]   } }
-    } getOrElse {
-      funDefsExprs
-    }
- 
-  }
 
 
   /*This takes an expression @param expr like 
@@ -89,12 +41,55 @@ object Macros {
     thus the exemple input is rewritten to 
     (Seq(() => {val x = 1; x}, () => { val y = x+1; 2 * 2}), () => {y})
   */
-  def fetchFunctions[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): (Seq[Expr[() => T]], Option[Expr[() => Any]]) = {
+  def fetchFunctions[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Seq[Expr[() => Option[T]]] = {
     import qtx.tasty.{_, given _}  
- 
-    val ast: Term = expr.unseal
 
-    print(ast.showExtractors) 
+    /*
+    *problem cant define this function if we didnt do "import qtx.tasty.{_, given _}" because Block and Term are part of those packages
+    * thus we are forced to define this function where we are given a QuoteContext.
+    */
+    def fetchFunctionsFromBlock(block: Block, context: Term => Term): Seq[Expr[() => Option[T]]] = { 
+      type FunDefAcc =  Seq[Expr[() => Option[T]]]
+      val initialFunDefsAcc = Seq[Expr[() => Option[T]]]()
+      val initialStatementsAcc = Seq[Statement]()
+
+      //the algorithm is as follows:
+      /*
+      * Traverse the list of statements from the block.
+      * Accumulate statements until we fall upon a yieldval. When this happens,
+      * we convert the list of statements that we accumulated as an expression.
+      * To convert a statement to an expression we can simply do tree.seal.cast[T]
+      * 
+      */
+      val initialAccumulator = (initialFunDefsAcc, initialStatementsAcc)
+      val Block(stats, expr) = block
+      val (funDefsExprs, leftOverStatements) = (stats :+ expr).foldLeft[(FunDefAcc, Seq[Statement])](initialAccumulator) {
+        case ((funDefs, statements), Apply(TypeApply(Ident("yieldval"), _), List(argument))) => 
+          val argumentAsExpr: Expr[Option[T]] = '{ Some(   ${ argument.seal.cast[T] }   ) }
+          val newFunDefExpr: Expr[() => Option[T]] = '{ () =>
+            ${Block(statements.toList, argumentAsExpr.unseal).seal.cast[Option[T]]} 
+          }
+          (funDefs :+ newFunDefExpr, Seq()) 
+        //TODO inside foldleft treat blocks recursions.
+        case ((funDefs, statements), anythingElse) => 
+          (funDefs, statements :+ anythingElse) 
+      }
+
+      /*if there are any leftover statements we create a function which
+      * when invoked run those statements and returns None of type T
+      */
+      leftOverStatements match {
+        case Seq() => None
+        case statements => Some(Block(statements.toList, '{None}.unseal))
+      } map { case block => 
+        funDefsExprs :+ '{ () => ${   block.seal.cast[Option[T]]   } }
+      } getOrElse {
+        funDefsExprs
+      }
+  
+    }
+  
+ 
     /*
     * TODO: how to deal with values that are shared between functions?
     * We could pull variables in the Coroutine class. Maybe we could changes vals to vars? But then we would
@@ -115,54 +110,52 @@ object Macros {
     * would be transformed and be returned as 
     * Seq(`{() => {val x = 3; 2 * 2}}, `{() => {val y = 2; 1+1}})
     **/
-    def helper(ast: Term, context: Term => Term)(implicit qtx: QuoteContext): (Seq[Expr[() => T]], Option[Expr[() => Any]]) = ast match {
+    def helper(ast: Term, context: Term => Term)(implicit qtx: QuoteContext): Seq[Expr[() => Option[T]]] = ast match {
 
       case Inlined(call, bindings, expansion) => 
-        def newContext(term: Term): Term = wrapper(Inlined(call, bindings, term))
-        helper(expansion, newContext, extractedFunctionsASTs)
+        def newContext(term: Term): Term = context(Inlined(call, bindings, term))
+        helper(expansion, newContext)
       case block: Block => 
         fetchFunctionsFromBlock(block, context)
     }
  
 
+    val ast: Term = expr.unseal
+
+    print(ast.showExtractors) 
     //a pair containing (anonymous functions, statements that were not in included in function bodies)
     helper(ast, t => t) 
      
   }
 
-  inline def coroutine[T: Liftable: Type](inline body: Any): Coroutine[T] = ${ coroutineImpl('{body}) }
+  inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl('{body}) }
 
-  //TODO 
+
   def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
-    //split the initial function in multiple parts which are separated by yields
-    //create a function for each part.
-    //map each function to a case.  
+    import qtx.tasty.{_, given _}
+
     val funDefsExprs: Seq[Expr[() => Option[T]]] = fetchFunctions[T](expr)
-    
-    val optionalLastFunAsSeq = optionalLastFun.map{lastFun => Seq(lastFun)}.getOrElse(Seq())
+    val nbFunDefs = funDefsExprs.knownSize
+     
     '{
       new Coroutine[T] { 
         var state: Int = 0 
 
-        def continue: Option[T] = state match { ${
-          val nbFunDefs = funDefsExprs.knownSize
-
-          (0 until nbFunDefs).foldLeft[Expr[_ <: Any]]( '{} ) {
-            case (previousExpr, (funDef, index)) => 
-              '{
-                ${previousExpr} 
-                case ${index} => f${index}()
-              }
+        def continue: Option[T] = ${
+          val caseDefs: List[CaseDef] = (0 until nbFunDefs).map[CaseDef] {
+            //index => CaseDef('{index}.unseal, None, '{f${index}()}.unseal)
+            index => '{  case ${index} => f${index}() }.unseal //doesnt seem to work
           }
-
-        } }
-
+          
+          Match('{state}.unseal, caseDefs).seal.cast[Option[T]] 
+        } 
+          
         ${
           funDefsExprs.zipWithIndex.foldLeft[Expr[_ <: Any]]( '{} ) {
             case (previousExpr, (funDef, index)) => 
               '{
-                ${previousExpr}
-                private def f${index} = ${funDef}
+                ${previousExpr};
+                def f${index} = ${funDef} //is there a way to add the "private" modifier without having the compiler screaming?
               }
           }
         }

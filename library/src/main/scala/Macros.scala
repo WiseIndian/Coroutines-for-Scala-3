@@ -41,16 +41,16 @@ object Macros {
     thus the exemple input is rewritten to 
     (Seq(() => {val x = 1; x}, () => { val y = x+1; 2 * 2}), () => {y})
   */
-  def fetchFunctions[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Seq[Expr[() => Option[T]]] = {
+  def split[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Seq[Expr[Option[T]]] = {
     import qtx.tasty.{_, given _}  
 
     /*
     *problem cant define this function if we didnt do "import qtx.tasty.{_, given _}" because Block and Term are part of those packages
     * thus we are forced to define this function where we are given a QuoteContext.
     */
-    def fetchFunctionsFromBlock(block: Block, context: Term => Term): Seq[Expr[() => Option[T]]] = { 
-      type FunDefAcc =  Seq[Expr[() => Option[T]]]
-      val initialFunDefsAcc = Seq[Expr[() => Option[T]]]()
+    def splitFromBlock(block: Block, context: Term => Term): Seq[Expr[Option[T]]] = { 
+      type FunDefAcc =  Seq[Expr[Option[T]]]
+      val initialFunDefsAcc = Seq[Expr[Option[T]]]()
       val initialStatementsAcc = Seq[Statement]()
 
       //the algorithm is as follows:
@@ -66,9 +66,9 @@ object Macros {
       val (funDefsExprs, leftOverStatements) = (stats :+ expr).foldLeft[(FunDefAcc, Seq[Statement])](initialAccumulator) {
         case ((funDefs, statements), Apply(TypeApply(Ident("yieldval"), _), List(argument))) => 
           val argumentAsExpr: Expr[Option[T]] = '{ Some(   ${ argument.seal.cast[T] }   ) }
-          val newFunDefExpr: Expr[() => Option[T]] = '{ () =>
-            ${Block(statements.toList, argumentAsExpr.unseal).seal.cast[Option[T]]} 
-          }
+
+          val newFunDefExpr: Expr[Option[T]] = Block(statements.toList, argumentAsExpr.unseal).seal.cast[Option[T]]
+          
           (funDefs :+ newFunDefExpr, Seq()) 
         //TODO inside foldleft treat blocks recursions.
         case ((funDefs, statements), anythingElse) => 
@@ -82,7 +82,7 @@ object Macros {
         case Seq() => None
         case statements => Some(Block(statements.toList, '{None}.unseal))
       } map { case block => 
-        funDefsExprs :+ '{ () => ${   block.seal.cast[Option[T]]   } }
+        funDefsExprs :+  block.seal.cast[Option[T]]
       } getOrElse {
         funDefsExprs
       }
@@ -110,13 +110,13 @@ object Macros {
     * would be transformed and be returned as 
     * Seq(`{() => {val x = 3; 2 * 2}}, `{() => {val y = 2; 1+1}})
     **/
-    def helper(ast: Term, context: Term => Term)(implicit qtx: QuoteContext): Seq[Expr[() => Option[T]]] = ast match {
+    def helper(ast: Term, context: Term => Term)(implicit qtx: QuoteContext): Seq[Expr[Option[T]]] = ast match {
 
       case Inlined(call, bindings, expansion) => 
         def newContext(term: Term): Term = context(Inlined(call, bindings, term))
         helper(expansion, newContext)
       case block: Block => 
-        fetchFunctionsFromBlock(block, context)
+        splitFromBlock(block, context)
     }
  
 
@@ -131,11 +131,53 @@ object Macros {
   inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl('{body}) }
 
 
+  abstract class Coroutine[+T] {
+
+    def run(f: T => Unit): Unit = {
+        var res = this.continue
+        while (res.nonEmpty) {
+          f(res.get)
+          res = this.continue
+        }
+    }
+    def continue: Option[T] 
+  }
+
+
+  def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = {
+    val it = splits.zipWithIndex.iterator
+    var result: Expr[Option[T]] = '{sys.error("Impossible")}
+    while (it.hasNext) {
+      val (previousIfsExprs, (caseValue: Expr[Option[T]], index: Int)) = it.next
+      '{
+        if (  ${readState} == ${Expr(index)}  ) {
+          ${writeState(Expr(index + 1))}
+          ${caseValue}
+        } else ${previousIfsExprs}
+      }
+    }
+    result
+  }
+
+  // //Alternative implementation with foldLeft
+  // def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = 
+  //   splits.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{sys.error("Impossible")} ) { 
+  //     case (previousIfsExprs, (caseValue: Expr[Option[T]], index)) => 
+  //       '{
+  //         if (  ${readState} == ${Expr(index)}  ) {
+  //           ${writeState(Expr(index + 1))}
+  //           ${caseValue}
+  //         } else ${previousIfsExprs}
+  //       }
+  //   }
+    
+
+
+
   def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
     import qtx.tasty.{_, given _}
 
-    val funDefsExprs: Seq[Expr[() => Option[T]]] = fetchFunctions[T](expr)
-    val nbFunDefs = funDefsExprs.knownSize
+    val continueCases: Seq[Expr[Option[T]]] = split[T](expr)
      
     '{
       new Coroutine[T] { 
@@ -143,29 +185,8 @@ object Macros {
 
  
         def continue: Option[T] = { 
-          ${  
-
-            funDefsExprs.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{None} ) { 
-              case ('{None}, (funDefExpr, index)) => 
-                '{  
-                  if (state == ${Expr(index)}) {
-                    (${funDefExpr})()
-                  } else {
-                    sys.error("Impossible")
-                  }
-                } 
-              case (previousIfsExprs, (funDefExpr, index)) => 
-                '{
-                  
-                  if (state == ${Expr(index)}) {
-                    (${funDefExpr})()
-                  } else ${previousIfsExprs}
-                }
-            }
-
-          }
-        }    
-        //End of Coroutine class
+          ${  continueBody('state, v => '{state = ${v}})(continueCases)   }
+        }
       }
     }
 

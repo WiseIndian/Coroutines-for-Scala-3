@@ -82,11 +82,12 @@ object Macros {
         case Seq() => None
         case statements => Some(Block(statements.toList, '{None}.unseal))
       } map { case block => 
-        funDefsExprs :+  block.seal.cast[Option[T]]
+        val code = block.seal.cast[Option[T]]
+        funDefsExprs :+  code
       } getOrElse {
         funDefsExprs
       }
-  
+      
     }
   
  
@@ -122,54 +123,26 @@ object Macros {
 
     val ast: Term = expr.unseal
 
-    print(ast.showExtractors) 
     //a pair containing (anonymous functions, statements that were not in included in function bodies)
     helper(ast, t => t) 
      
   }
 
-  inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl('{body}) }
+  inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl[T]('{body}) }
 
 
-  abstract class Coroutine[+T] {
-
-    def run(f: T => Unit): Unit = {
-        var res = this.continue
-        while (res.nonEmpty) {
-          f(res.get)
-          res = this.continue
+ 
+  //Alternative implementation with foldLeft
+  def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = 
+    splits.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{None} ) { 
+      case (previousIfsExprs, (caseValue: Expr[Option[T]], index)) => 
+        '{
+          if (  ${readState} == ${Expr(index)}  ) {
+            ${writeState(Expr(index + 1))}
+            ${caseValue}
+          } else ${previousIfsExprs}
         }
     }
-    def continue: Option[T] 
-  }
-
-
-  def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = {
-    val it = splits.zipWithIndex.iterator
-    var result: Expr[Option[T]] = '{sys.error("Impossible")}
-    while (it.hasNext) {
-      val (previousIfsExprs, (caseValue: Expr[Option[T]], index: Int)) = it.next
-      '{
-        if (  ${readState} == ${Expr(index)}  ) {
-          ${writeState(Expr(index + 1))}
-          ${caseValue}
-        } else ${previousIfsExprs}
-      }
-    }
-    result
-  }
-
-  // //Alternative implementation with foldLeft
-  // def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = 
-  //   splits.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{sys.error("Impossible")} ) { 
-  //     case (previousIfsExprs, (caseValue: Expr[Option[T]], index)) => 
-  //       '{
-  //         if (  ${readState} == ${Expr(index)}  ) {
-  //           ${writeState(Expr(index + 1))}
-  //           ${caseValue}
-  //         } else ${previousIfsExprs}
-  //       }
-  //   }
     
 
 
@@ -179,16 +152,20 @@ object Macros {
 
     val continueCases: Seq[Expr[Option[T]]] = split[T](expr)
      
-    '{
+    val resultingCoroutineClass = '{
       new Coroutine[T] { 
-        var state: Int = 0 
-
- 
         def continue: Option[T] = { 
-          ${  continueBody('state, v => '{state = ${v}})(continueCases)   }
+          val self: Coroutine[T] = this
+          val curState = self.state
+          ${  
+            continueBody('{curState}, v => '{self.state = ${v}})(continueCases)   
+          }
         }
       }
     }
+
+    println("Resulting transformation \n"+resultingCoroutineClass.show)
+    resultingCoroutineClass
 
   }
 

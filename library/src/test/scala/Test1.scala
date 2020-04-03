@@ -42,7 +42,7 @@ class Test1 {
       yieldval(x)
     })
 
-    List(3, None).foreach { v => 
+    List(Some(3), None).foreach { v => 
       assertEquals(co.continue, v)
     }
   }
@@ -50,11 +50,23 @@ class Test1 {
   @Test def withValsTest2(): Unit = {
     val co = coroutine[Int]({
       val x = 3
-      yieldval(x)
       yieldval(x+1)
+      // yieldval(x+1)
     })
 
-    List(3, 4, None).foreach { v => 
+    List(Some(4), None).foreach { v => 
+      assertEquals(co.continue, v)
+    }
+  }
+
+  @Test def withValsTest3(): Unit = {
+    val co = coroutine[Int]({
+      val x = 3
+      yieldval(x+1)
+      yieldval(x+2)
+    })
+    //for this test to pass I have to take value definitions out of the if scope
+    List(Some(4), Some(5), None).foreach { v => 
       assertEquals(co.continue, v)
     }
   }

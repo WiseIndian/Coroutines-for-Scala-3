@@ -73,7 +73,7 @@ class Test1 {
       yieldval bVal
     }
     */
-    val co = new IfCoroutine(new B())
+    val co = new IfCoroutineExample1(new B())
     assertEquals(co.continue, Some(10))
     assertEquals(co.continue, Some(new B().y))
     assertEquals(co.continue, None)
@@ -81,7 +81,7 @@ class Test1 {
 
   @Test def testIfDesign2(): Unit = { 
     val b = new B()
-    val co = new IfCoroutine(b)
+    val co = new IfCoroutineExample1(b)
     assertEquals(co.continue, Some(10))
     b.y = 111
     assertEquals(co.continue, Some(new B().y))
@@ -91,12 +91,62 @@ class Test1 {
   @Test def testIfDesign3(): Unit = { 
     val b = new B()
     b.y = 111
-    val co = new IfCoroutine(b)
+    val co = new IfCoroutineExample1(b)
     assertEquals(co.continue, Some(111))
     assertEquals(co.continue, None)
   }
  
 
+  @Test def testIfDesign4(): Unit = {
+    /*
+    coroutine[Int] {
+      if (x < 10) {
+          yieldval(1)
+      } else {
+          yieldval(2)
+      }
+    }
+    */
+    val co = new IfCoroutineExample2(x = 0)
+    List(Some(1), None) foreach(assertEquals(_, co.continue))
+  }
+
+
+
+
+  @Test def testIfDesign5(): Unit = {
+  /*
+coroutine[Int] {
+    
+    if (x < 10) {
+        if (y < 10) {
+            yieldval(1)
+            yieldval(2)
+        } else {
+            yieldval(3)
+        }
+    } else {
+        yieldval(4)
+    }
+} 
+*/
+    val co = new IfCoroutineExample3(x = 0, y = 0)
+    List(Some(1), Some(2), None, None, None) foreach(assertEquals(_, co.continue))
+  }
+
+
+  @Test def testIfDesign6(): Unit = {
+    val co = new IfCoroutineExample3(x = 0, y = 10)
+    List(Some(3), None, None) foreach(assertEquals(_, co.continue))
+  }
+
+
+  @Test def testIfDesign7(): Unit = {
+    val co = new IfCoroutineExample3(x = 10, y = 10)
+    List(Some(4), None, None) foreach(assertEquals(_, co.continue))
+  }
+
+//TODO recreate if design tests for the case when we'll have automated the creation of coroutine with if in their body.
 
   @Test def withValsTest3(): Unit = {
     val co = coroutine[Int]({

@@ -59,6 +59,45 @@ class Test1 {
     }
   }
 
+
+
+  @Test def testIfDesign(): Unit = {
+    /* `co` is supposed to be the translation of:
+    coroutine[Int] {
+      val bVal = b.y 
+      if (b.y < 10) {
+        val x = 3
+        yieldval 10
+        println(x)
+      }
+      yieldval bVal
+    }
+    */
+    val co = new IfCoroutine(new B())
+    assertEquals(co.continue, Some(10))
+    assertEquals(co.continue, Some(new B().y))
+    assertEquals(co.continue, None)
+  }
+
+  @Test def testIfDesign2(): Unit = { 
+    val b = new B()
+    val co = new IfCoroutine(b)
+    assertEquals(co.continue, Some(10))
+    b.y = 111
+    assertEquals(co.continue, Some(new B().y))
+    assertEquals(co.continue, None)
+  }
+
+  @Test def testIfDesign3(): Unit = { 
+    val b = new B()
+    b.y = 111
+    val co = new IfCoroutine(b)
+    assertEquals(co.continue, Some(111))
+    assertEquals(co.continue, None)
+  }
+ 
+
+
   @Test def withValsTest3(): Unit = {
     val co = coroutine[Int]({
       val x = 3
@@ -70,4 +109,43 @@ class Test1 {
       assertEquals(co.continue, v)
     }
   }
+
+  @Test def testIf1(): Unit = {
+    val b: B = new B()
+
+
+    val co = coroutine[Int] ({
+      val bVal = b.y 
+      if (b.y < 10) {
+        val x = 3
+        yieldval(10)
+        println(x)
+      }
+      yieldval(bVal)
+    })
+
+    assertEquals(co.continue, 10)
+    b.y = 11
+    assertEquals(co.continue, new B().y)
+  }
+
+  @Test def testIf2(): Unit = {
+    val b: B = new B()
+
+
+    val co = coroutine[Int] ({
+      val bVal = b.y 
+      if (b.y < 10) {
+        val x = 3
+        yieldval(10)
+        println(x)
+      }
+      yieldval(bVal)
+    })
+
+    assertEquals(co.continue, 10)
+    assertEquals(co.continue, new B().y)
+  }
+
+
 }

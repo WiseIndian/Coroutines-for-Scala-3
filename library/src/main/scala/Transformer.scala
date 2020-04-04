@@ -33,17 +33,12 @@ object Test {
 
 
 
-    def test = {
-      val co1 = coroutine[Int]({
+    def test = { 
+      val co = coroutine[Int]({
         print("hello world")
-        yieldval[Int](1)
-        yieldval[Int](2)
+        yieldval(1+1)
+        yieldval(2*2)
       })
-      // val co = coroutine[Int]({
-      //   print("hello world")
-      //   yieldval[Int](1+1)
-      //   yieldval[Int](2*2)
-      // })
 
       //should translates at the definition site to
       val objective = new Coroutine[Int] {

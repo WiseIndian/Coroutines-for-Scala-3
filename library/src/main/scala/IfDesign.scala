@@ -11,22 +11,15 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
     * this will contain a variable name to indices of scope within which a variable is defined
     * so if scope number 1 and 3 define the variable foo varNameToScopes will contain the entry "foo" -> List(3, 1)
     * */
-    var varNameToScopes: scala.collection.mutable.Map[String, List[Int]] = 
+    private var varNameToScopes: scala.collection.mutable.Map[String, List[Int]] = 
         scala.collection.mutable.Map[String, List[Int]]()
     
-    var scopesVars: List[List[String]] = List()
-    var currentScope = 1
+    private var scopesVars: List[List[String]] = List()
+    private var currentScope = 1
 
-    protected def getScopesIndices(varName: String): List[Int] =  varNameToScopes.getOrElse(varName, List())
+    private def getScopesIndices(varName: String): List[Int] =  varNameToScopes.getOrElse(varName, List())
 
-    //add the index of the current scope to the variable 
-    protected def addNewDefinition(varName: String, value: Any): Unit = {
-        varNameToScopes +=  (varName -> (getScopesIndices(varName) :+ currentScope))
-        addToScopeVars(varName)
-        map += getLatestDefinitionFor(varName) -> value
-    }
-
-    protected def getLatestDefinitionFor(varName: String): String = {
+    private def getLatestDefinitionFor(varName: String): String = {
         /*
         * TODO: Is it possible to compile the code given in the coroutine body before actually transforming it? This would 
         * avoid the obligation to do checks on definitions..
@@ -35,9 +28,16 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
         varName + lastDefScopeIndex
     }
 
-    protected def addToScopeVars(varName: String): Unit = {
+    private def addToScopeVars(varName: String): Unit = {
         scopesVars = ((varName + currentScope) :: scopesVars.head) :: scopesVars.tail
     }
+    //add the index of the current scope to the variable 
+    protected def addNewDefinition(varName: String, value: Any): Unit = {
+        varNameToScopes +=  (varName -> (getScopesIndices(varName) :+ currentScope))
+        addToScopeVars(varName)
+        map += getLatestDefinitionFor(varName) -> value
+    }
+
 
     protected def getLatestValueFor[T](varName: String): T = {
         map.getOrElse(getLatestDefinitionFor(varName), sys.error("This program shouldnt compile")).asInstanceOf[T]

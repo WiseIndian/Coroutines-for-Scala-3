@@ -61,7 +61,7 @@ class Test1 {
 
 
 
-  @Test def testIfDesign(): Unit = {
+  @Test def testIfDesign1(): Unit = {
     /* `co` is supposed to be the translation of:
     coroutine[Int] {
       val bVal = b.y 
@@ -146,56 +146,73 @@ coroutine[Int] {
     List(Some(4), None, None) foreach(assertEquals(_, co.continue))
   }
 
+
+  @Test def testIfDesignScope(): Unit = {
+  // coroutine[Int] {
+  //   val x = 0
+  //   if (x == 0) {
+  //     val x = 1
+  //     yieldval(x)
+  //   }
+
+  //   yieldval(x)
+  // }
+
+
+    val co = IfCoroutineExample4()
+    List(Some(1), Some(0), None)  foreach(assertEquals(_, co.continue))
+  }
+
 //TODO recreate if design tests for the case when we'll have automated the creation of coroutine with if in their body.
 
-  @Test def withValsTest3(): Unit = {
-    val co = coroutine[Int]({
-      val x = 3
-      yieldval(x+1)
-      yieldval(x+2)
-    })
-    //for this test to pass I have to take value definitions out of the if scope
-    List(Some(4), Some(5), None).foreach { v => 
-      assertEquals(co.continue, v)
-    }
-  }
+  // @Test def withValsTest3(): Unit = {
+  //   val co = coroutine[Int]({
+  //     val x = 3
+  //     yieldval(x+1)
+  //     yieldval(x+2)
+  //   })
+  //   //for this test to pass I have to take value definitions out of the if scope
+  //   List(Some(4), Some(5), None).foreach { v => 
+  //     assertEquals(co.continue, v)
+  //   }
+  // }
 
-  @Test def testIf1(): Unit = {
-    val b: B = new B()
-
-
-    val co = coroutine[Int] ({
-      val bVal = b.y 
-      if (b.y < 10) {
-        val x = 3
-        yieldval(10)
-        println(x)
-      }
-      yieldval(bVal)
-    })
-
-    assertEquals(co.continue, 10)
-    b.y = 11
-    assertEquals(co.continue, new B().y)
-  }
-
-  @Test def testIf2(): Unit = {
-    val b: B = new B()
+  // @Test def testIf1(): Unit = {
+  //   val b: B = new B()
 
 
-    val co = coroutine[Int] ({
-      val bVal = b.y 
-      if (b.y < 10) {
-        val x = 3
-        yieldval(10)
-        println(x)
-      }
-      yieldval(bVal)
-    })
+  //   val co = coroutine[Int] ({
+  //     val bVal = b.y 
+  //     if (b.y < 10) {
+  //       val x = 3
+  //       yieldval(10)
+  //       println(x)
+  //     }
+  //     yieldval(bVal)
+  //   })
 
-    assertEquals(co.continue, 10)
-    assertEquals(co.continue, new B().y)
-  }
+  //   assertEquals(co.continue, 10)
+  //   b.y = 11
+  //   assertEquals(co.continue, new B().y)
+  // }
+
+  // @Test def testIf2(): Unit = {
+  //   val b: B = new B()
+
+
+  //   val co = coroutine[Int] ({
+  //     val bVal = b.y 
+  //     if (b.y < 10) {
+  //       val x = 3
+  //       yieldval(10)
+  //       println(x)
+  //     }
+  //     yieldval(bVal)
+  //   })
+
+  //   assertEquals(co.continue, 10)
+  //   assertEquals(co.continue, new B().y)
+  // }
 
 
 }

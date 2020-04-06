@@ -5,6 +5,9 @@ class B {
 }
 
 abstract class IfCoroutine[T] extends Coroutine[T] {
+    private val INITIAL_SCOPE = 0
+
+
     val map: scala.collection.mutable.Map[String, Any] = scala.collection.mutable.Map[String, Any]()
 
     /*
@@ -15,16 +18,14 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
         scala.collection.mutable.Map[String, List[Int]]()
     
     private var scopesVars: List[List[String]] = List()
-    private var currentScope = 1
+    private var currentScope = INITIAL_SCOPE
 
     private def getScopesIndices(varName: String): List[Int] =  varNameToScopes.getOrElse(varName, List())
 
-    private def getLatestDefinitionFor(varName: String): String = {
-        /*
-        * TODO: Is it possible to compile the code given in the coroutine body before actually transforming it? This would 
-        * avoid the obligation to do checks on definitions..
-        */
-        val lastDefScopeIndex = getScopesIndices(varName).headOption.getOrElse(sys.error("This program should not compile!!"))
+    private def getVarNameForScope(varName: String): String = {
+        val indices = getScopesIndices(varName)
+        val lastDefScopeIndex = 
+            indices.find(index => index <= currentScope).getOrElse(sys.error("This program should not compile!!"))
         varName + lastDefScopeIndex
     }
 
@@ -33,14 +34,18 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
     }
     //add the index of the current scope to the variable 
     protected def addNewDefinition(varName: String, value: Any): Unit = {
-        varNameToScopes +=  (varName -> (getScopesIndices(varName) :+ currentScope))
+        //the list of scopes where a variable with varName is defined is getScopesIndices(varName) it is sorted in decreasing order
+        val (beginning, end) = getScopesIndices(varName).span(scope => scope > currentScope) 
+        val sorted = beginning ++ (currentScope +: end)
+
+        varNameToScopes +=  (varName -> sorted)
         addToScopeVars(varName)
-        map += getLatestDefinitionFor(varName) -> value
+        map += getVarNameForScope(varName) -> value
     }
 
 
-    protected def getLatestValueFor[T](varName: String): T = {
-        map.getOrElse(getLatestDefinitionFor(varName), sys.error("This program shouldnt compile")).asInstanceOf[T]
+    protected def getValueFor[T](varName: String): T = {
+        map.getOrElse(getVarNameForScope(varName), sys.error("This program shouldnt compile")).asInstanceOf[T]
     }
 
     //adding a new list of names of variables of the scope to the list of such list of all the scopes we are within.
@@ -48,20 +53,72 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
     //cleanup later
     protected def enterScope(): Unit = {
         currentScope += 1
-        scopesVars  = List() :: scopesVars
+
+        //the condition shall not be true when we reenter an if previously entered before yielding once.
+        if (scopesVars.size < currentScope) {
+            scopesVars  = List() :: scopesVars
+        }
+    }
+
+    //called before yielding
+    protected def intialize(): Unit = {
+        currentScope = INITIAL_SCOPE
+    }
+
+    protected def beforeYielding(): Unit = {
+        state += 1
     }
 
     protected def exitScope(): Unit = {
-        //remove all elements in map that are within scoperVars.head
+        //All elements that were defined in the current scope are removed from the global map.
         map.subtractAll(scopesVars.head)
 
         scopesVars = scopesVars.tail
-        assert(currentScope > 0)
+        assert(currentScope >= 0)
         currentScope -= 1
     }
 }
 
 
+class IfCoroutineExample4 extends IfCoroutine[Int] {
+  // coroutine[Int] {
+  //   val x = 0
+  //   if (x == 0) {
+  //     val x = 1
+  //     yieldval(x)
+  //     println("WHATEVER")
+  //   }
+  //   yieldval(x)
+  // }
+    def continue: Option[Int] = {
+        intialize()
+        enterScope()
+        if (state == 0) {
+            addNewDefinition("x", 0)
+            if (getValueFor[Int]("x") == 0) {
+                enterScope()
+                addNewDefinition("x", 1)
+                beforeYielding()
+                return Some(getValueFor[Int]("x"))
+            }
+
+            //if there is no else we do that:
+            beforeYielding()
+            this.continue
+        } else if (state == 1) {
+            if (getValueFor[Int]("x") == 0) {
+                enterScope()
+                exitScope()
+            }
+
+            beforeYielding()
+            return Some(getValueFor[Int]("x"))
+        } else {
+            return None
+        }
+    }
+
+}
 
 /*
 coroutine[Int] {
@@ -97,25 +154,29 @@ class IfCoroutineExample2(val x: Int) extends IfCoroutine[Int] {
 
 
     def continue: Option[Int] = {
+        intialize()
         enterScope()
         if (state == 0) {
             addNewDefinition("x", x)
-            if (getLatestValueFor[Int]("x") < 10) {
+            if (getValueFor[Int]("x") < 10) {
                 //entering a new scope
                 enterScope()
 
-                state += 1
+                beforeYielding()
                 return Some(1)
             } else {
                 enterScope()
-                state += 1
+
+                beforeYielding()
                 return Some(2)
             }
         } else {
             //we have to do all if tests once again
-            if (getLatestValueFor[Int]("x") < 10) {
+            if (getValueFor[Int]("x") < 10) {
+                enterScope()
                 exitScope()
             } else {
+                enterScope()
                 exitScope()
             }
             return None
@@ -145,47 +206,55 @@ would get transformed to
 
 class IfCoroutineExample3(val x: Int, val y: Int) extends IfCoroutine[Int] {
     def continue: Option[Int] = {
+        intialize()
         enterScope()
+
         addNewDefinition("x", x) // we add a new definition for values external to continue
         addNewDefinition("y", y) //we have to do it at the beginning of the continue method
-        
+
         if (state == 0) {
-            if (getLatestValueFor[Int]("x") < 10) {
+            if (getValueFor[Int]("x") < 10) {
                 enterScope()
-                if (getLatestValueFor[Int]("y") < 10) {
+                if (getValueFor[Int]("y") < 10) {
                     enterScope()
 
-                    state += 1
+                    beforeYielding()
                     return Some(1)
                 } else {
-                    state += 1
+                    beforeYielding()
                     return Some(3)
                 }
                 exitScope()
             } else {
                 enterScope()
-                state += 1
+                beforeYielding()
                 return Some(4)
             }
 
             return None
         } else if (state == 1) {
-            if (getLatestValueFor[Int]("x") < 10) {
-                if (getLatestValueFor[Int]("y") < 10) {
-                    state += 1
+            if (getValueFor[Int]("x") < 10) {
+                enterScope()
+                if (getValueFor[Int]("y") < 10) {
+                    enterScope()
+                    beforeYielding()
                     return Some(2)
                 } else {
+                    enterScope() //If there is nothing left to do in the current if expression its quite useless..
                     exitScope()
                 }
                 exitScope()
             } else {
+                enterScope()
                 exitScope()
             }
 
             return None
         } else {
-            if (getLatestValueFor[Int]("x") < 10) {
-                if (getLatestValueFor[Int]("y") < 10) { //IDEA: we could merge nested ifs conditions within one if.
+            if (getValueFor[Int]("x") < 10) {
+                enterScope()
+                if (getValueFor[Int]("y") < 10) { //IDEA: we could merge nested ifs conditions within one if.
+                    enterScope()
                     exitScope()
                 }
                 exitScope()
@@ -214,7 +283,9 @@ class IfCoroutineExample1(val b: B) extends IfCoroutine[Int] {
 
 
     def continue: Option[Int] = {
+        intialize()
         enterScope()
+
         if (state == 0) {
 
              
@@ -223,22 +294,20 @@ class IfCoroutineExample1(val b: B) extends IfCoroutine[Int] {
             addNewDefinition("bVal", b.y)
              
             addNewDefinition("b.y", b.y) //this is a snapshot of an object attribute this will be useful when we reenter continue when state == 1
-            if (getLatestValueFor[Int]("b.y") < 10) {
+            if (getValueFor[Int]("b.y") < 10) {
                 //entering a new scope
                 enterScope()
                 addNewDefinition("x", 3)
-
-                state += 1
-
+                beforeYielding()
                 return Some(10)
             }
-
-            state += 1
+            beforeYielding()
             this.continue //the solution could be to call this' continue again if nothing was returned yet
         } else if (state == 1) {
             //we have to do all if tests once again
-            if (getLatestValueFor[Int]("b.y") < 10) {
-                println(      getLatestValueFor[Int]("x")         )
+            if (getValueFor[Int]("b.y") < 10) {
+                enterScope()
+                println(      getValueFor[Int]("x")         )
                 //we have to create a mapping from the original variable name of variable to the current variable name
                 //and we have to create one such mapping per scope.
                 //this will be the way to know which is the renamed variable we have to use.
@@ -248,8 +317,8 @@ class IfCoroutineExample1(val b: B) extends IfCoroutine[Int] {
                 exitScope()
             }
 
-            state += 1
-            return Some(getLatestValueFor[Int]("bVal"))
+            beforeYielding()
+            return Some(getValueFor[Int]("bVal"))
         } else {
             //final cleanup
             exitScope()

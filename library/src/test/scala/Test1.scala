@@ -147,7 +147,7 @@ coroutine[Int] {
   }
 
 
-  @Test def testIfDesignScope(): Unit = {
+  @Test def testIfDesignScope1(): Unit = {
   // coroutine[Int] {
   //   val x = 0
   //   if (x == 0) {
@@ -161,6 +161,18 @@ coroutine[Int] {
 
     val co = IfCoroutineExample4()
     List(Some(1), Some(0), None)  foreach(assertEquals(_, co.continue))
+  }
+
+  @Test def testIfDesignScope2(): Unit = {
+    val co = IfCoroutineExample5(0)
+    List(Some(1), Some(2), Some(1), Some(0), None)
+    .foreach(assertEquals(_, co.continue))
+  }
+
+  @Test def testIfDesignScope3(): Unit = {
+    val co = IfCoroutineExample5(5)
+    List(Some(5), None)
+    .foreach(assertEquals(_, co.continue))
   }
 
 //TODO recreate if design tests for the case when we'll have automated the creation of coroutine with if in their body.

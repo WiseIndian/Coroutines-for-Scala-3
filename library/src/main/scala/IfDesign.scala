@@ -61,7 +61,7 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
     }
 
     //called before yielding
-    protected def intialize(): Unit = {
+    protected def initialize(): Unit = {
         currentScope = INITIAL_SCOPE
     }
 
@@ -80,18 +80,78 @@ abstract class IfCoroutine[T] extends Coroutine[T] {
 }
 
 
+class IfCoroutineExample5(val initial: Int) extends IfCoroutine[Int] {
+    // coroutine[Int] {
+    //     val x = initial
+    //     if (x == 0) {
+    //         val x = 1
+    //         yieldval(x)
+    //         if (x == 1) {
+    //             val x = 2
+    //             yieldval(x)
+    //         }
+    //         yieldval(x)
+    //     }
+    //     yieldval(x)
+    // }
+
+    def continue: Option[Int] = {
+        initialize()
+        enterScope()
+        if (state == 0) {
+            addNewDefinition("x", initial)
+            if (getValueFor[Int]("x") == 0) {
+                enterScope()
+                addNewDefinition("x", 1)
+                beforeYielding()
+                return Some(getValueFor[Int]("x"))
+            }
+            beforeYielding()
+            this.continue
+        } else if (state == 1) {
+            if (getValueFor[Int]("x") == 0) {
+                enterScope()
+                if (getValueFor[Int]("x") == 1) {
+                    enterScope()
+                    addNewDefinition("x", 2)
+                    beforeYielding()
+                    return Some(getValueFor[Int]("x"))
+                }
+                beforeYielding()
+                this.continue
+            }
+            beforeYielding()
+            this.continue
+        } else if (state == 2) {
+            if (getValueFor[Int]("x") == 0) {
+                enterScope() 
+                //we're done with the inner most if
+                beforeYielding()
+                return Some(getValueFor[Int]("x"))
+            }
+            beforeYielding()
+            this.continue
+        } else if (state == 3)  {
+            //we're done with the ifs
+            beforeYielding()
+            return Some(getValueFor[Int]("x"))
+        } else {
+            return None
+        }
+    }
+}
+
 class IfCoroutineExample4 extends IfCoroutine[Int] {
   // coroutine[Int] {
   //   val x = 0
   //   if (x == 0) {
   //     val x = 1
   //     yieldval(x)
-  //     println("WHATEVER")
   //   }
   //   yieldval(x)
   // }
     def continue: Option[Int] = {
-        intialize()
+        initialize() 
         enterScope()
         if (state == 0) {
             addNewDefinition("x", 0)
@@ -154,7 +214,7 @@ class IfCoroutineExample2(val x: Int) extends IfCoroutine[Int] {
 
 
     def continue: Option[Int] = {
-        intialize()
+        initialize()
         enterScope()
         if (state == 0) {
             addNewDefinition("x", x)
@@ -206,7 +266,7 @@ would get transformed to
 
 class IfCoroutineExample3(val x: Int, val y: Int) extends IfCoroutine[Int] {
     def continue: Option[Int] = {
-        intialize()
+        initialize()
         enterScope()
 
         addNewDefinition("x", x) // we add a new definition for values external to continue
@@ -283,7 +343,7 @@ class IfCoroutineExample1(val b: B) extends IfCoroutine[Int] {
 
 
     def continue: Option[Int] = {
-        intialize()
+        initialize()
         enterScope()
 
         if (state == 0) {

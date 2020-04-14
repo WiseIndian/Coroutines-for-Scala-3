@@ -17,156 +17,86 @@ object Macros {
   } 
    
  
-  
-
-    //TODO do something with the context: problem can we cast the context(term) back to T?
-
-
-
-  /*This takes an expression @param expr like 
-    `'{
-          val x = 1
-          yieldval(x)
-          val y = x + 1
-          yieldval(2*2)
-      }`
-    as parameter and returns a pair containing a sequence of blocks together with a block.
-    The Sequence of blocks contains the anonymous functions (with no parameters) to which
-    the blocks of codes like  
-    `val x = 1
-    ...
-    yieldval(x)`
-    were transformed. Such a sequence of code is transformed to () => { val x = 1; ...; x}
-
-    thus the exemple input is rewritten to 
-    (Seq(() => {val x = 1; x}, () => { val y = x+1; 2 * 2}), () => {y})
-  */
-  def split[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Seq[Expr[Option[T]]] = {
-    import qtx.tasty.{_, given _}  
-
-    /*
-    *problem cant define this function if we didnt do "import qtx.tasty.{_, given _}" because Block and Term are part of those packages
-    * thus we are forced to define this function where we are given a QuoteContext.
-    */
-    def splitFromBlock(block: Block, context: Term => Term): Seq[Expr[Option[T]]] = { 
-      type FunDefAcc =  Seq[Expr[Option[T]]]
-      val initialFunDefsAcc = Seq[Expr[Option[T]]]()
-      val initialStatementsAcc = Seq[Statement]()
-
-      //the algorithm is as follows:
-      /*
-      * Traverse the list of statements from the block.
-      * Accumulate statements until we fall upon a yieldval. When this happens,
-      * we convert the list of statements that we accumulated as an expression.
-      * To convert a statement to an expression we can simply do tree.seal.cast[T]
-      * 
-      */
-      val initialAccumulator = (initialFunDefsAcc, initialStatementsAcc)
-      val Block(stats, expr) = block
-      val (funDefsExprs, leftOverStatements) = (stats :+ expr).foldLeft[(FunDefAcc, Seq[Statement])](initialAccumulator) {
-        case ((funDefs, statements), Apply(TypeApply(Ident("yieldval"), _), List(argument))) => 
-          val argumentAsExpr: Expr[Option[T]] = '{ Some(   ${ argument.seal.cast[T] }   ) }
-
-          val newFunDefExpr: Expr[Option[T]] = Block(statements.toList, argumentAsExpr.unseal).seal.cast[Option[T]]
-          
-          (funDefs :+ newFunDefExpr, Seq()) 
-        //TODO inside foldleft treat blocks recursions.
-        case ((funDefs, statements), anythingElse) => 
-          (funDefs, statements :+ anythingElse) 
-      }
-
-      /*if there are any leftover statements we create a function which
-      * when invoked run those statements and returns None of type T
-      */
-      leftOverStatements match {
-        case Seq() => None
-        case statements => Some(Block(statements.toList, '{None}.unseal))
-      } map { case block => 
-        val code = block.seal.cast[Option[T]]
-        funDefsExprs :+  code
-      } getOrElse {
-        funDefsExprs
-      }
-      
-    }
-  
- 
-    /*
-    * TODO: how to deal with values that are shared between functions?
-    * We could pull variables in the Coroutine class. Maybe we could changes vals to vars? But then we would
-    * need to track variables to see if they have been assigned twice. We could change functions within
-    * the coroutine body and pass them arguments containing values of vals within the same block..
-    * 
-    * 
-    *this function takes an @param abstract syntax tree ast as input.
-    * It then traverses this ast and returns a pair of a seqeuence of expression of functions that return T.
-    * and optionally an expression of a function which can return anything.
-    * The sequence of expression of functions that return T are transformations of statements that end with a yieldval:
-    * 
-    * val x = 3
-    * yieldval 2 * 2
-    * val y = 2
-    * yieldval 1+1
-    * 
-    * would be transformed and be returned as 
-    * Seq(`{() => {val x = 3; 2 * 2}}, `{() => {val y = 2; 1+1}})
-    **/
-    def helper(ast: Term, context: Term => Term)(implicit qtx: QuoteContext): Seq[Expr[Option[T]]] = ast match {
-
-      case Inlined(call, bindings, expansion) => 
-        def newContext(term: Term): Term = context(Inlined(call, bindings, term))
-        helper(expansion, newContext)
-      case block: Block => 
-        splitFromBlock(block, context)
-    }
- 
-
-    val ast: Term = expr.unseal
-
-    //a pair containing (anonymous functions, statements that were not in included in function bodies)
-    helper(ast, t => t) 
-     
-  }
+   
 
   inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl[T]('{body}) }
 
 
- 
-  //Alternative implementation with foldLeft
-  def continueBody[T: Type](readState: Expr[Int], writeState: Expr[Int] => Expr[Unit])(splits: Seq[Expr[Option[T]]])(implicit qtx: QuoteContext): Expr[Option[T]] = 
-    splits.zipWithIndex.foldLeft[Expr[Option[T]]] ( '{None} ) { 
-      case (previousIfsExprs, (caseValue: Expr[Option[T]], index)) => 
-        '{
-          if (  ${readState} == ${Expr(index)}  ) {
-            ${writeState(Expr(index + 1))}
-            ${caseValue}
-          } else ${previousIfsExprs}
-        }
-    }
-    
-
-
-
-  def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
+  //We return a function from coroutine to expression because it is a way to pass the `this` coroutine
+  //instance as a parameter called self (`this` doesnt work in place where we use self here)
+  def transformBody[T: Type](expr: Expr[_ <: Any], nextContext: () => Expr[Option[T]])(self: Expr[Coroutine[T]])(implicit qtx: QuoteContext): Expr[Option[T]] = {
     import qtx.tasty.{_, given _}
 
-    val continueCases: Seq[Expr[Option[T]]] = split[T](expr)
-     
-    val resultingCoroutineClass = '{
-      new Coroutine[T] { 
-        def continue: Option[T] = { 
-          val self: Coroutine[T] = this
-          val curState = self.state
-          ${  
-            continueBody('{curState}, v => '{self.state = ${v}})(continueCases)   
+    def transformTree(tree: Statement, nextContext: () => Expr[Option[T]])(implicit qtx: QuoteContext): Expr[Option[T]] = tree match {
+      case i @ Inlined(call, bindings, expansion) => 
+        transformTree(expansion, nextContext)
+      case Block(Nil, blockRet) => 
+        transformTree(blockRet, nextContext)
+
+
+      // applying this rule〚Z₀ Z*〛(c) = 〚Z₀〛{ () => 〚Z*〛(c) } if there are 2 or more elements in the block
+      case Block(firstStat :: tailStats, blockRet) => 
+        val newNextContext = () => transformTree(Block(tailStats, blockRet), nextContext)
+
+        transformTree(firstStat, newNextContext)
+
+
+      /*〚if (e₁) Z₁* else Z₂*〛(c)  = '{
+          val next = () => ${c()}
+          if (e₁) ${〚Z₁*〛{ () => '{next()} } } else ${〚Z₂*〛〛{ () => '{next()} } }
+        }
+      */
+      case If(cond, thenp, elsep) => 
+        '{
+          val next = () => ${nextContext()}
+          if (${cond.seal.cast[Boolean]}) {
+            ${transformTree(thenp, () => '{next()})}
+          } else {
+            ${transformTree(elsep, () => '{next()})}
           }
         }
-      }
+      
+      // 〚yield e〛(c) = '{ this.next = () => ${c()}; Some(e) }
+      case Apply(TypeApply(Ident("yieldval"), _), List(argument)) => 
+        '{
+          ${self}.next = () => ${nextContext()}
+          Some(${argument.seal.cast[T]})
+        }
+
+      //〚Z〛(c) = '{ Z; ${c()} }, otherwise
+      case _ => 
+        Block(tree::Nil, nextContext().unseal).seal.cast[Option[T]]
+        
     }
 
-    println("Resulting transformation \n"+resultingCoroutineClass.show)
-    resultingCoroutineClass
+    transformTree(expr.unseal, nextContext)
+  }
 
+  def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
+
+
+    def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
+      val lastNext = () => '{${self}.next = null; None}
+      transformBody[T](expr, lastNext)(self)
+    }
+
+    
+    val resultingCoroutineClass = '{
+      new Coroutine[T] {
+        val body: Option[T] = {
+          val self: Coroutine[T] = this
+          ${
+            val transformation = fetchBody('self)
+            println("Resulting transformation \n"+transformation.show)
+            transformation
+          }
+        }
+
+        
+      } 
+    }
+
+    resultingCoroutineClass
   }
 
 

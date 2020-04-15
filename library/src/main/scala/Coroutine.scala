@@ -3,7 +3,7 @@ package coroutines
 def yieldval[T](t: T): T = t
 
 abstract class Coroutine[T] {
-  protected val body: Option[T]
+  protected lazy val body: Option[T]
   //TODO find a way to make next protected and still make it accessible within the transformBody method of Macros
   var next: () => Option[T] = () => body
   

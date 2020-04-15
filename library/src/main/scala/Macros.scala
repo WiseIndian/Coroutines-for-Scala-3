@@ -76,18 +76,18 @@ object Macros {
 
 
     def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
-      val lastNext = () => '{${self}.next = null; None}
+      val lastNext = () => '{${self}.next = () => None; None}
       transformBody[T](expr, lastNext)(self)
     }
 
     
     val resultingCoroutineClass = '{
       new Coroutine[T] {
-        val body: Option[T] = {
+        lazy val body: Option[T] = {
           val self: Coroutine[T] = this
           ${
             val transformation = fetchBody('self)
-            println("Resulting transformation \n"+transformation.show)
+            println("Resulting transformation  \n"+transformation.show)
             transformation
           }
         }

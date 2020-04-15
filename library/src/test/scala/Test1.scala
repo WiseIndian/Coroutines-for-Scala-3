@@ -209,6 +209,7 @@ class Test1 {
   @Test def testIfDesignScope3(): Unit = {
     val co = getCoroutine2(initialX = 5)
     List(Some(5), None).foreach(assertEquals(_, co.continue()))
+    assert(co.isDone())
   }
 
 
@@ -234,6 +235,7 @@ class Test1 {
       assertEquals(Some(i), co.continue())
     }
     assertEquals(None, co.continue())
+    assert(co.isDone())
   }
 
   @Test def testWhilePair(): Unit = {
@@ -249,5 +251,60 @@ class Test1 {
 
     (0 until 5).foreach(i => assertEquals(Some(2*i), co.continue()))
     assertEquals(None, co.continue())
+    assert(co.isDone())
   }
+ 
+  @Test def traverseList(): Unit =  {
+    def getIterator(ls: List[String]) = coroutine[String] {
+      def foreach(f: String => Unit): Unit = {
+        var cur = ls
+        while (!cur.isEmpty) {
+          f(cur.head)
+          cur = cur.tail
+        }
+      }
+
+      foreach(e => yieldval(e))
+    }
+
+    val ls = List("one","two","three","four")
+    val iterator = getIterator(ls)
+
+    ls.foreach { s => 
+      val opt = iterator.continue()
+      assert(opt.isDefined)
+      opt.map(yielded => assertEquals(s, yielded))
+    }
+
+    assertEquals(None, iterator.continue())
+    assert(iterator.isDone())
+  }
+
+  // @Test def traverseCollectionTest(): Unit = {
+    
+  //   def getIterator[T](ls: List[T]) = coroutine[T] {
+  //     def foreach(f: T => Unit): Unit = {
+  //       var cur = ls
+  //       while (!cur.isEmpty) {
+  //         f(cur.head)
+  //         cur = cur.tail
+  //       }
+  //     }
+
+  //     foreach(element => yieldval(element))
+  //   }
+
+  //   val iterator1 = getIterator(List(1,2,3,4))
+  //   val iterator2 = getIterator(List("one", "two", "three"))
+
+  //   val expected = Seq("1 one", "2 two", "3 three")
+  //   var output = Seq()
+  //   while(!iterator1.isDone() && !iterator2.isDone()) {
+  //     output :+ (iterator1.continue().get + " " + iterator2.continue().get)
+  //   }
+    
+  //   expected.zip(output).foreach { case (e, o) => 
+  //     assertEquals(e, o)
+  //   }
+  // }
 }

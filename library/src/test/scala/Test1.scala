@@ -212,17 +212,42 @@ class Test1 {
   }
 
 
+  def getWhileCoroutine1(initialX: Int) = {
+    coroutine[Int] {
+      var x = initialX
+      while (x < 10) {
+        yieldval(x)
+        x += 1
+      }
+    }
+  }
 
+ 
+  @Test def testWhile1(): Unit = {
+    val co = getWhileCoroutine1(11)
+    (0 until 3).foreach(_ => assertEquals(None, co.continue()))
+  }
 
+  @Test def testWhile2(): Unit = {
+    val co = getWhileCoroutine1(initialX = 0) 
+    (0 until 10).foreach { i => 
+      assertEquals(Some(i), co.continue())
+    }
+    assertEquals(None, co.continue())
+  }
 
+  @Test def testWhilePair(): Unit = {
+    val co = coroutine[Int] {
+      var x = initialX
+      while (x < 10) {
+        if (x % 2 == 0) {
+          yieldval(x)
+        }
+        x += 1
+      }
+    }
 
-
-
-
-
-
-
-
-//TODO recreate if design tests for the case when we'll have automated the creation of coroutine with if in their body.
-
+    (0 until 5).foreach(i => assertEquals(Some(2*i, co.continue())))
+    assertEquals(None, co.continue())
+  }
 }

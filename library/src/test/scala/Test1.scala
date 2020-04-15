@@ -238,7 +238,7 @@ class Test1 {
 
   @Test def testWhilePair(): Unit = {
     val co = coroutine[Int] {
-      var x = initialX
+      var x = 0
       while (x < 10) {
         if (x % 2 == 0) {
           yieldval(x)
@@ -247,7 +247,7 @@ class Test1 {
       }
     }
 
-    (0 until 5).foreach(i => assertEquals(Some(2*i, co.continue())))
+    (0 until 5).foreach(i => assertEquals(Some(2*i), co.continue()))
     assertEquals(None, co.continue())
   }
 }

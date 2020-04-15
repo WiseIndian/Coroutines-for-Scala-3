@@ -63,6 +63,18 @@ object Macros {
           Some(${argument.seal.cast[T]})
         }
 
+      case While(condTerm, bodyTerm) => 
+        // inline def body = 
+        val cond = condTerm.seal.cast[Boolean]
+        '{
+          def f(): Option[T] = if (${cond}) ${
+            transformTree(bodyTerm, () => '{ f() })
+          } else ${ 
+            nextContext() 
+          }
+           
+          f()
+        }
       //〚Z〛(c) = '{ Z; ${c()} }, otherwise
       case _ => 
         Block(tree::Nil, nextContext().unseal).seal.cast[Option[T]]

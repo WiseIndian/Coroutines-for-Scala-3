@@ -8,13 +8,13 @@ object Macros {
   import scala.quoted._
   import scala.quoted.matching._ 
    
-  inline def debug2[T](inline x: T): T = ${ debugImpl('{x}) }
+  // inline def printTree[T](inline x: T): T = ${ printTreeImpl('{x}) }
 
-  def debugImpl[T: Type](x: Expr[T])(implicit qtx: QuoteContext): Expr[T] = '{
-    val a: T = ${x}
-    println(${Expr(x.show(qtx))} +" = "+ a)
-    a   
-  } 
+  // def printTreeImpl[T: Type](x: Expr[T])(implicit qtx: QuoteContext): Expr[T] = {
+  //   println(x.unseal)
+    
+  //   x
+  // }
    
  
    
@@ -40,11 +40,40 @@ object Macros {
 
         transformTree(firstStat, newNextContext)
 
+      /*
+      very similar to if transformation's the match/case transformation:
 
-      /*〚if (e₁) Z₁* else Z₂*〛(c)  = '{
-          val next = () => ${c()}
-          if (e₁) ${〚Z₁*〛{ () => '{next()} } } else ${〚Z₂*〛〛{ () => '{next()} } }
+      [[ x match {  case e1 => Z₁*; case e2 => Z₂*; ...  case en => Zn* } 〛(c)  becomes 
+      '{
+         val next = () => ${c()}
+         x match {
+           case e1 =>  ${〚Z₁*〛{ () => '{ next()} } }
+           case e2 => ${〚Z₂*〛〛{ () => '{next()} } }
+           ...
+           case en => ${〚Zn*〛〛{ () => '{next()} } }
+         }
+       }
+       */
+       case Match(selector, cases) => 
+        '{
+          val next = () => ${nextContext()}
+          ${ 
+            val newCaseDefs = 
+              cases.map { case CaseDef(pattern, guard, rhs) => 
+                val newRhs = transformTree(rhs, () => '{next()}).unseal
+                CaseDef(pattern, guard, newRhs)
+              }
+
+            Match(selector, newCaseDefs).seal.cast[Option[T]]
+          }
         }
+
+
+      /*〚if (e₁) Z₁* else Z₂*〛(c)  becomes 
+        '{
+            val next = () => ${c()}
+            if (e₁) ${〚Z₁*〛{ () => '{next()} } } else ${〚Z₂*〛〛{ () => '{next()} } }
+          } 
       */
       case If(cond, thenp, elsep) => 
         '{

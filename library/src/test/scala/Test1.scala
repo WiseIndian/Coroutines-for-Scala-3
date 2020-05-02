@@ -280,6 +280,55 @@ class Test1 {
     assert(iterator.isDone())
   }
 
+  def getCaseCoroutine(ls: List[Any]): Coroutine[Int] = coroutine[Int] {
+    ls match {
+      case "Hello" :: Nil => yieldval(0)
+      case "Hello" :: tail => 
+        yieldval(1)
+        tail match {
+          case 1 :: true :: Nil =>  yieldval(2) 
+          case 1 :: Nil =>  yieldval(3)
+          case _ => yieldval(4)
+        }
+        yieldval(5)
+
+      case _ => yieldval(6)
+    }
+  }
+  
+
+  @Test def caseTest0(): Unit =  {
+    val co = getCaseCoroutine(List("Hello"))
+    List(Some(0), None).foreach(assertEquals(_, co.continue()))
+  }
+
+  @Test def caseTest1(): Unit = {
+    val co = getCaseCoroutine(List("Hello", 1, true))
+    List(Some(1), Some(2), Some(5), None).foreach(assertEquals(_, co.continue()))
+  }
+
+  @Test def caseTest2(): Unit =  {
+    val co = getCaseCoroutine(List("Hello", 1))
+    List(Some(1), Some(3), Some(5), None).foreach(assertEquals(_, co.continue()))
+  }
+
+
+  @Test def caseTest3(): Unit =  {
+    val co = getCaseCoroutine(List("Hello", "Whatever"))
+    List(Some(1), Some(4), Some(5), None).foreach(assertEquals(_, co.continue()))
+  }
+
+
+  @Test def caseTest4(): Unit =  {
+    val lists: List[List[Any]] = List() :: List("hello", "world") :: Nil
+    lists.foreach { ls => 
+      val co = getCaseCoroutine(ls)
+      List(Some(6), None).foreach(assertEquals(_, co.continue()))
+    }
+  }
+
+
+
   // @Test def traverseCollectionTest(): Unit = {
     
   //   def getIterator[T](ls: List[T]) = coroutine[T] {

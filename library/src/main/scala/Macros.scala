@@ -113,8 +113,107 @@ object Macros {
     transformTree(expr.unseal, nextContext)
   }
 
+  /*
+  * this method enforces that no yieldval is contained within the @param parentTree
+  */
+
+
+
+
+  /*
+  Let us first consider a language where yield may appear in if-statements and blocks. Formally, the language can be defined as follows:
+
+  C ::= coroutine { Z* }
+  L ::= n | true | false | null | ...
+  S ::= e | x = e | e.f = e | while(e) S* | if(e) S* else S* | val x: T = e | MethodDef | ClassDef | TypeDef
+  e ::= L | x | e.f | e.f[T](e, .., e) | if(e) e else e | { S*; e } | new p.C(e, .., e)  | (x: T) => e | Patmat | TryCatch
+  Z ::= yield e | if(e) Z* else Z* | e | { Z* } | e | x = e | e.f = e | while(e) S*
+
+  In the above, we restrict that the language that may appear in the coroutine body must be of the form Z*. We can implement a checker easily to enforce the syntax.
+
+  The checker enforces the following properties:
+
+      An expression e never contains yield.
+      Yield e never refers to a local definition defined in the coroutine body.
+      The expression e within a yield has the same type as wrapping coroutine.
+
+  @param type T is the expected type of yieldval.
+  */
+  def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Boolean = {
+    import qtx.tasty.{_, given _}
+
+    def baseCheck[T](tree: Tree)(implicit ctx: Context): Boolean = {
+
+      val acc = new TreeAccumulator[Boolean] {
+        def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
+          case parent @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
+            //TODO check the type of argument is the same type as T
+            checkNoYielval(errorFound, argument, parent)
+          
+          
+          case parent @ If(cond, thenp, elsep) => 
+            val errFound1: Boolean = checkNoYielval(errorFound, cond, parent)
+            val errFound2: Boolean = foldTree(errFound1, thenp)
+            foldTree(errFound2, elsep)
+          
+          case parent @ Assign(lhs, rhs) =>
+            checkNoYielval(errorFound, rhs, parent)
+          
+          case Block(stats, blockRet) => 
+            val errFound1 = foldTrees(errorFound, stats)
+            
+            foldTree(errFound1, blockRet)
+            
+          //TODO case e.f = e =>
+
+          //TODO case where we have a function or class definition 
+
+          //TODO pattern matching
+            
+          case parent @ While(condTerm, bodyTerm) => 
+            val errFound1 = foldTree(errorFound, bodyTerm) 
+            checkNoYielval(errFound1, condTerm, parent)
+            
+          case _ => 
+            foldOverTree(errorFound, tree)
+        }
+      }
+      
+      acc.foldTree(false, tree)
+    }
+
+
+    def checkNoYielval(errorFound: Boolean, tree: Tree, parentTree: Tree)(implicit ctx: Context): Boolean = {
+
+      val acc = new qtx.tasty.TreeAccumulator[Boolean] {
+        def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
+          case app @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
+            System.err.println(
+              s"""A yield contained within this context is not allowed:
+              yield in question: ${app.show} 
+              context: ${parentTree.show} 
+              """.stripMargin
+              ) //TODO take only 10 characters or so of parentTree.show and app.show
+              
+            foldTree(true, argument)
+              
+          case _ => foldOverTree(errorFound, tree)
+        }
+      }
+
+      acc.foldTree(errorFound, tree)
+    }
+        
+    
+    return baseCheck[T](expr.unseal)
+  }
+
   def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
 
+    val errorFound: Boolean = invokeChecker[T](expr)
+    if (errorFound) {
+      throw YieldvalAtWrongLocationException("Error(s) found in the coroutine body")
+    }
 
     def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
       val lastNext = () => '{
@@ -122,6 +221,8 @@ object Macros {
         ${self}._isDone = true
         None
       }
+
+
 
       transformBody[T](expr, lastNext)(self)
     }

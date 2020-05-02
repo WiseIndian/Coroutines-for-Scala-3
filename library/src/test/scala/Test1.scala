@@ -254,6 +254,17 @@ class Test1 {
     assert(co.isDone())
   }
  
+  //TODO hum how can i can an exception occuring during compilation..
+  // @Test(expected = classOf[YieldvalAtWrongLocationException])
+  // def shouldThrowIfYieldvalWithinWhileCond(): Unit = {
+  //     val co = coroutine[Int] {
+  //       while (yieldval(1) == 2){
+  //         //whatever
+  //       }
+  //     }
+  // }
+
+  //this will work if we transform the meaning of yieldval within functions.
   @Test def traverseList(): Unit =  {
     def getIterator(ls: List[String]) = coroutine[String] {
       def foreach(f: String => Unit): Unit = {

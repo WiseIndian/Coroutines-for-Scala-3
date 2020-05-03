@@ -217,8 +217,10 @@ object Macros {
 
     def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
       val lastNext = () => '{
-        ${self}.next = () => None
         ${self}._isDone = true
+        
+        ${self}.next = () => None
+        
         None
       }
 

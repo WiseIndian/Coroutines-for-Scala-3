@@ -139,7 +139,7 @@ object Macros {
 
   @param type T is the expected type of yieldval.
   */
-  private def invokeCheckerImpl[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
+  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
     import qtx.tasty.{_, given _} 
 
     val expectedYieldType = t
@@ -210,33 +210,21 @@ object Macros {
       acc.foldTree(false, tree)
     }
 
-    //add red to the message
-    def processErrorMsg(s: String): Unit = {
-      val ANSI_RED = "\u001B[31m"
-      val ANSI_RESET = "\u001B[0m"
-      val modified =
-        s
-        .stripMargin
-        .split("\n")
-        .map(line => ANSI_RED+"[error]"+ANSI_RESET+"\t"+line)
-        .mkString("\n") +"\n\n"
-
-      System.err.println(modified)
-    }
     def checkNoYieldval(errorFound: Boolean, tree: Tree, parentTree: Tree)(implicit ctx: Context): Boolean = {
 
       val acc = new qtx.tasty.TreeAccumulator[Boolean] {
         def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
           case app @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
-            processErrorMsg(
+
+            throw new Error(
               s"""A yield contained within this context is not allowed:
-              yield in question:
+              The problematic yield is the following:
               ${app.show}
 
               context:
               ${parentTree.show} 
-              """
-              ) //TODO take only 10 characters or so of parentTree.show and app.show
+              """.stripMargin
+              )
               
             foldTree(true, argument)
               
@@ -252,14 +240,10 @@ object Macros {
   }
  
 
-  inline def invokeChecker[T](inline body: Any): Boolean = ${ Expr(invokeCheckerImpl[T]('{body})) }
 
   private def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
 
-    val errorFound: Boolean = invokeCheckerImpl[T](expr)
-    if (errorFound) {
-      throw YieldvalAtWrongLocationException("Error(s) found in the coroutine body")
-    }
+    invokeChecker[T](expr)
 
     def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
       val lastNext = () => '{

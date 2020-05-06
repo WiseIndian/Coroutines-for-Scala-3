@@ -126,8 +126,8 @@ object Macros {
   C ::= coroutine { Z* }
   L ::= n | true | false | null | ...
   S ::= e | x = e | e.f = e | while(e) S* | if(e) S* else S* | val x: T = e | MethodDef | ClassDef | TypeDef
-  e ::= L | x | e.f | e.f[T](e, .., e) | if(e) e else e | { S*; e } | new p.C(e, .., e)  | (x: T) => e | Patmat | TryCatch
-  Z ::= yield e | if(e) Z* else Z* | e | { Z* } | e | x = e | e.f = e | while(e) S*
+  e ::= L | x | e.f | e.f[T](e, .., e) | if(e) e else e | { S*; e } | new p.C(e, .., e)  | (x: T) => e | TryCatch
+  Z ::= yield e | if(e) Z* else Z* | e | { Z* } | e | x = e | e.f = e | while(e) S* | e match { case e1 => Z*; ... case en => Z*}
 
   In the above, we restrict that the language that may appear in the coroutine body must be of the form Z*. We can implement a checker easily to enforce the syntax.
 
@@ -139,60 +139,103 @@ object Macros {
 
   @param type T is the expected type of yieldval.
   */
-  def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Boolean = {
-    import qtx.tasty.{_, given _}
+  def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
+    import qtx.tasty.{_, given _} 
 
-    def baseCheck[T](tree: Tree)(implicit ctx: Context): Boolean = {
+    val expectedYieldType = t
+
+    def casuallyTraverse(tree: Tree)(implicit ctx: Context): Boolean = {
 
       val acc = new TreeAccumulator[Boolean] {
         def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
-          case parent @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
-            //TODO check the type of argument is the same type as T
-            checkNoYielval(errorFound, argument, parent)
+          case Inlined(call, bindings, expansion) => 
+            foldTree(errorFound, expansion) 
+
+          case Block(statements, blockRet) => 
+            (statements :+ blockRet).foldLeft(errorFound) { case (foundAcc, tree) =>
+              foldTree(foundAcc, tree)
+            }
+
+
+          case Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
+
+            // typeComparer is protected
+            // val typeCorrect: Boolean = ctx.typeComparer.isSubType(argument.getType, t)
+            // val typeCorrect: Boolean = ${argument.seal}.isInstanceOf[${t}]
+            //TODO check the type of argument is a subtype of T: check out dotty.core.TypeComparer.scala 
+            // val typeCorrect: Boolean = argument.tpe == expectedYieldType
+            val typeCorrect = true //TODO remove me
+            // if (!typeCorrect) {
+            //   System.err.println(
+            //     s"""yield argument has the wrong type:
+            //     ${tree.show} was found with an argument of type ${ argument.tpe }
+            //     We expected a subtype of ${ expectedYieldType }.
+            //     """.stripMargin
+            //   ) //TODO take only 10 characters or so of parentTree.show and app.show
+            // }
+            
+            checkNoYieldval(errorFound || !typeCorrect, argument, tree)
           
           
-          case parent @ If(cond, thenp, elsep) => 
-            val errFound1: Boolean = checkNoYielval(errorFound, cond, parent)
+          case If(cond, thenp, elsep) => 
+            val errFound1: Boolean = checkNoYieldval(errorFound, cond, tree)
             val errFound2: Boolean = foldTree(errFound1, thenp)
             foldTree(errFound2, elsep)
-          
-          case parent @ Assign(lhs, rhs) =>
-            checkNoYielval(errorFound, rhs, parent)
           
           case Block(stats, blockRet) => 
             val errFound1 = foldTrees(errorFound, stats)
             
             foldTree(errFound1, blockRet)
-            
-          //TODO case e.f = e =>
+ 
+          case Match(selector, cases) => {
+            val errSelector = checkNoYieldval(errorFound, selector, tree)
 
-          //TODO case where we have a function or class definition 
+            cases.foldLeft(errSelector) { case (errFound, cdef @ CaseDef(pattern, optGuard, rhs)) => 
+              val errPattern = checkNoYieldval(errFound, pattern, cdef)
+              val errGuard = optGuard.map { guard => checkNoYieldval(errPattern, guard, cdef) }.getOrElse(false)
+              foldTree(errPattern || errGuard, rhs)
+            }
 
-          //TODO pattern matching
+          }
             
-          case parent @ While(condTerm, bodyTerm) => 
+          case While(condTerm, bodyTerm) => 
             val errFound1 = foldTree(errorFound, bodyTerm) 
-            checkNoYielval(errFound1, condTerm, parent)
+            checkNoYieldval(errFound1, condTerm, tree)
             
           case _ => 
-            foldOverTree(errorFound, tree)
+            checkNoYieldval(errorFound, tree, tree)
         }
       }
       
       acc.foldTree(false, tree)
     }
 
+    //add red to the message
+    def processErrorMsg(s: String): Unit = {
+      val ANSI_RED = "\u001B[31m"
+      val ANSI_RESET = "\u001B[0m"
+      val modified =
+        s
+        .stripMargin
+        .split("\n")
+        .map(line => ANSI_RED+"[error]"+ANSI_RESET+"\t"+line)
+        .mkString("\n") +"\n\n"
 
-    def checkNoYielval(errorFound: Boolean, tree: Tree, parentTree: Tree)(implicit ctx: Context): Boolean = {
+      System.err.println(modified)
+    }
+    def checkNoYieldval(errorFound: Boolean, tree: Tree, parentTree: Tree)(implicit ctx: Context): Boolean = {
 
       val acc = new qtx.tasty.TreeAccumulator[Boolean] {
         def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
           case app @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
-            System.err.println(
+            processErrorMsg(
               s"""A yield contained within this context is not allowed:
-              yield in question: ${app.show} 
-              context: ${parentTree.show} 
-              """.stripMargin
+              yield in question:
+              ${app.show}
+
+              context:
+              ${parentTree.show} 
+              """
               ) //TODO take only 10 characters or so of parentTree.show and app.show
               
             foldTree(true, argument)
@@ -205,7 +248,7 @@ object Macros {
     }
         
     
-    return baseCheck[T](expr.unseal)
+    return casuallyTraverse(expr.unseal)
   }
 
   def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {

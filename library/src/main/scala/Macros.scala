@@ -24,7 +24,7 @@ object Macros {
 
   //We return a function from coroutine to expression because it is a way to pass the `this` coroutine
   //instance as a parameter called self (`this` doesnt work in place where we use self here)
-  def transformBody[T: Type](expr: Expr[_ <: Any], nextContext: () => Expr[Option[T]])(self: Expr[Coroutine[T]])(implicit qtx: QuoteContext): Expr[Option[T]] = {
+  private def transformBody[T: Type](expr: Expr[_ <: Any], nextContext: () => Expr[Option[T]])(self: Expr[Coroutine[T]])(implicit qtx: QuoteContext): Expr[Option[T]] = {
     import qtx.tasty.{_, given _}
 
     def transformTree(tree: Statement, nextContext: () => Expr[Option[T]])(implicit qtx: QuoteContext): Expr[Option[T]] = tree match {
@@ -139,7 +139,7 @@ object Macros {
 
   @param type T is the expected type of yieldval.
   */
-  def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
+  private def invokeCheckerImpl[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
     import qtx.tasty.{_, given _} 
 
     val expectedYieldType = t
@@ -250,10 +250,13 @@ object Macros {
     
     return casuallyTraverse(expr.unseal)
   }
+ 
 
-  def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
+  inline def invokeChecker[T](inline body: Any): Boolean = ${ Expr(invokeCheckerImpl[T]('{body})) }
 
-    val errorFound: Boolean = invokeChecker[T](expr)
+  private def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
+
+    val errorFound: Boolean = invokeCheckerImpl[T](expr)
     if (errorFound) {
       throw YieldvalAtWrongLocationException("Error(s) found in the coroutine body")
     }

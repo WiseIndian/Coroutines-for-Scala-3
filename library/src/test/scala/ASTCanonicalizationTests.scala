@@ -3,18 +3,11 @@ import org.junit.Assert._
 import coroutines._
 import coroutines.Macros._
 
+
+
 class ASTCanonicalizationTest {
 
-  def assertYieldvals[T](expectedVals: List[T], co: Coroutine[T]): Unit = {
-    expectedVals.foreach { expected => 
-      assert(!co.isDone())
-      assertEquals(Some(expected), co.continue())
-    }
 
-    assert(!co.isDone())
-    assertEquals(None, co.continue())
-    assert(co.isDone())
-  }
   @Test def testIfApp(): Unit = {
     val co = coroutine[Int] {
       yieldval{

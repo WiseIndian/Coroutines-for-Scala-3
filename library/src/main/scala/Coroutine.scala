@@ -2,6 +2,8 @@ package coroutines
 
 def yieldval[T](t: T): T = t
 
+def join[T](subCoroutine: Coroutine[T]): Unit = {}
+
 final case class YieldvalAtWrongLocationException(private val message: String = "", 
   private val cause: Throwable = None.orNull) extends Exception(message, cause) 
 

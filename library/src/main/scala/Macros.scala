@@ -1,23 +1,10 @@
 package coroutines
 
-//TODO create private github repository, create junit tests TDD and then implement. 
-//create notes. Create issues for questions.
-//Create anonymous class
+
 object Macros {
    
   import scala.quoted._
   import scala.quoted.matching._ 
-   
-  // inline def printTree[T](inline x: T): T = ${ printTreeImpl('{x}) }
-
-  // def printTreeImpl[T: Type](x: Expr[T])(implicit qtx: QuoteContext): Expr[T] = {
-  //   println(x.unseal)
-    
-  //   x
-  // }
-   
- 
-   
 
   inline def coroutine[T](inline body: Any): Coroutine[T] = ${ coroutineImpl[T]('{body}) }
 
@@ -91,6 +78,32 @@ object Macros {
           ${self}.next = () => ${nextContext()}
           Some(${argument.seal.cast[T]})
         }
+
+      /*
+      〚join(co) 〛(c) =
+        this.next = () => {
+          val subresult = co.next()
+          if (subResult.isDefined)
+            return subResult
+
+          this.next = () => ${c()}
+          this.next()
+        }
+      */
+      case Apply(TypeApply(Ident("join"), _), List(subcoroutine)) => 
+        '{
+          ${self}.next = () => {
+            val subResult: Option[T] = ${subcoroutine.seal.cast[Coroutine[_ <: T]]}.next()
+            if (subResult.isDefined) {
+              subResult
+            } else {
+              ${self}.next = () => ${nextContext()}
+              ${self}.next()
+            }
+          }
+          ${self}.next()
+        }
+      
 
       case While(condTerm, bodyTerm) => 
         // inline def body = 
@@ -182,11 +195,7 @@ object Macros {
             val errFound2: Boolean = foldTree(errFound1, thenp)
             foldTree(errFound2, elsep)
           
-          case Block(stats, blockRet) => 
-            val errFound1 = foldTrees(errorFound, stats)
-            
-            foldTree(errFound1, blockRet)
- 
+
           case Match(selector, cases) => {
             val errSelector = checkNoYieldval(errorFound, selector, tree)
 

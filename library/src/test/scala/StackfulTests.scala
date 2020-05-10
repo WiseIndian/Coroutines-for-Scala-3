@@ -1,0 +1,88 @@
+import org.junit.Test
+import org.junit.Assert._
+import coroutines._
+import coroutines.Macros._
+
+class StackfulTests {
+
+  @Test def simpleTest: Unit = {
+    val sub = coroutine[Int] {
+      yieldval(1)
+    }
+
+    val co = coroutine[Int] {
+      yieldval(0)
+      join(sub)
+      yieldval(2)
+
+    }
+
+    assertYieldvals(List(0, 1, 2), co)
+
+  }
+
+  class A(val x: Int)
+  class B(x: Int) extends A(x)
+  class C(x: Int) extends B(x)
+  @Test def subTypingNesting: Unit = {
+    val sub2 = coroutine[C] {
+      yieldval(new C(1))
+      yieldval(new C(2))
+    }
+
+    val sub3 = coroutine[C] {
+      yieldval(new C(4))
+    }
+
+    val sub1 = coroutine[B] {
+      join(sub2)
+      yieldval(new B(3))
+      join(sub3)
+      yieldval(new C(5))
+
+    }
+
+    val co = coroutine[A] {
+      yieldval(new A(0))
+      join(sub1)
+      yieldval(new C(6))
+    }
+
+    assertStackful(0 to 6, co)
+  }
+
+  def assertStackful(expected: Seq[Int], co: Coroutine[A]): Unit = {
+    expected.foreach { i =>
+      assert(!co.isDone())
+      val opt = co.continue()
+      assert(opt.isDefined)
+      opt.foreach { a => assertEquals(i, a.x) }
+    }
+    assertEquals(None, co.continue())
+    assert(co.isDone())
+  }
+
+  @Test def withIf(): Unit = {
+      def sub(b: Boolean) = coroutine[B] {
+          yieldval(new B(1))
+          if (b) {
+            yieldval(new B(20))
+          } else {
+            yieldval(new B(10))
+          }
+          yieldval(new B(30))
+      }
+
+      def co(b: Boolean) = coroutine[A] {
+          yieldval(new A(0))
+          join(sub(b)) 
+          "hey"
+          yieldval(new B(40))
+      }
+ 
+      assertStackful(List(0, 1, 10, 30, 40), co(false))
+      assertStackful(List(0, 1, 20, 30, 40), co(true))
+  }
+  //test mixing other features of the language with stackfulness
+
+}

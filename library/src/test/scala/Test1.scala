@@ -4,6 +4,22 @@ import coroutines._
 import coroutines.Macros._
 
 class Test1 {
+
+  @Test def ifElse(): Unit = {
+    def co(b: Boolean) = coroutine[Int] {
+      yieldval(1)
+      if (b) {
+        yieldval(2)
+      } else {
+        yieldval(3)
+      }
+      yieldval(4)
+    }
+
+    assertYieldvals(List(1,2,4), co(true))
+    assertYieldvals(List(1,3,4), co(false))
+  }
+
   @Test def test1(): Unit = {
     val co = coroutine[Int]({
       print("hello world")

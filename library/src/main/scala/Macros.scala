@@ -90,10 +90,12 @@ object Macros {
           this.next()
         }
       */
-      case Apply(TypeApply(Ident("join"), _), List(subcoroutine)) => 
+      case Apply(TypeApply(Ident("join"), _), List(sub)) => 
         '{
+          //the purpose of the following is to initialize the subcoroutine once and for all
+          lazy val subcoroutine = ${sub.seal.cast[Coroutine[_ <: T]]}
           ${self}.next = () => {
-            val subResult: Option[T] = ${subcoroutine.seal.cast[Coroutine[_ <: T]]}.next()
+            val subResult: Option[T] = subcoroutine.next()
             if (subResult.isDefined) {
               subResult
             } else {

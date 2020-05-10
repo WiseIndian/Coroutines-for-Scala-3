@@ -83,6 +83,28 @@ class StackfulTests {
       assertStackful(List(0, 1, 10, 30, 40), co(false))
       assertStackful(List(0, 1, 20, 30, 40), co(true))
   }
+
+  @Test def withWhile(): Unit = {
+      def sub(limit: Int) = coroutine[Int] {
+        yieldval(-2)
+
+        var i = 0
+        while (i < limit) {
+            yieldval(2 * i)
+            i += 1
+        }
+
+        yieldval(-3)
+      }
+
+      def co(limit: Int) = coroutine[Int] {
+        yieldval(-1)
+        join(sub(limit))
+        yieldval(-4)
+      }
+
+      assertYieldvals(List(-1, -2) ++ (0 until 10).map(_*2) ++ List(-3,-4), co(10))
+  }
   //test mixing other features of the language with stackfulness
 
 }

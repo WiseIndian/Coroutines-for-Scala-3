@@ -154,21 +154,19 @@ object Macros {
 
   @param type T is the expected type of yieldval.
   */
-  //TODO If I throw errors I dont have to return any boolean in invoke checker and its submethods.. remove those returned value
-  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: Type[T]): Boolean = {
+  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: Type[T]): Unit = {
     import qtx.tasty.{_, given _} 
 
-    def casuallyTraverse(tree: Tree)(implicit ctx: Context): Boolean = {
+    def casuallyTraverse(tree: Tree)(implicit ctx: Context): Unit = {
 
-      val acc = new TreeAccumulator[Boolean] {
-        def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
+      val treeTraverser = new TreeTraverser {
+        override def traverseTree(tree: Tree)(implicit ctx: Context): Unit = tree match {
           case Inlined(call, bindings, expansion) => 
-            foldTree(errorFound, expansion) 
+            traverseTree(expansion) 
 
           case Block(statements, blockRet) => 
-            (statements :+ blockRet).foldLeft(errorFound) { case (foundAcc, tree) =>
-              foldTree(foundAcc, tree)
-            }
+            (statements :+ blockRet).foreach {traverseTree}
+            
  
 
           case Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
@@ -188,42 +186,42 @@ object Macros {
               )
             }
             
-            checkNoYieldval(errorFound || !correctArgumentType, argument, tree)
+            checkNoYieldval(argument, tree)
           
           
           case If(cond, thenp, elsep) => 
-            val errFound1: Boolean = checkNoYieldval(errorFound, cond, tree)
-            val errFound2: Boolean = foldTree(errFound1, thenp)
-            foldTree(errFound2, elsep)
+            checkNoYieldval(cond, tree)
+            traverseTree(thenp)
+            traverseTree(elsep)
           
 
           case Match(selector, cases) => {
-            val errSelector = checkNoYieldval(errorFound, selector, tree)
+            val errSelector = checkNoYieldval(selector, tree)
 
-            cases.foldLeft(errSelector) { case (errFound, cdef @ CaseDef(pattern, optGuard, rhs)) => 
-              val errPattern = checkNoYieldval(errFound, pattern, cdef)
-              val errGuard = optGuard.map { guard => checkNoYieldval(errPattern, guard, cdef) }.getOrElse(false)
-              foldTree(errPattern || errGuard, rhs)
+            cases.foreach{ case cdef @ CaseDef(pattern, optGuard, rhs) => 
+              checkNoYieldval(pattern, cdef)
+              optGuard.foreach { guard => checkNoYieldval(guard, cdef) }
+              traverseTree(rhs)
             }
 
           }
             
           case While(condTerm, bodyTerm) => 
-            val errFound1 = foldTree(errorFound, bodyTerm) 
-            checkNoYieldval(errFound1, condTerm, tree)
+            traverseTree(bodyTerm) 
+            checkNoYieldval(condTerm, tree)
             
           case _ => 
-            checkNoYieldval(errorFound, tree, tree)
+            checkNoYieldval(tree, tree)
         }
       }
       
-      acc.foldTree(false, tree)
+      treeTraverser.traverseTree(tree)
     }
 
-    def checkNoYieldval(errorFound: Boolean, tree: Tree, parentTree: Tree)(implicit ctx: Context): Boolean = {
+    def checkNoYieldval(tree: Tree, parentTree: Tree)(implicit ctx: Context): Unit = {
 
-      val acc = new qtx.tasty.TreeAccumulator[Boolean] {
-        def foldTree(errorFound: Boolean, tree: Tree)(implicit ctx: Context): Boolean = tree match {
+      val traverser = new qtx.tasty.TreeTraverser {
+        override def traverseTree(tree: Tree)(implicit ctx: Context): Unit = tree match {
           case app @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
 
             throw new Error(
@@ -236,13 +234,13 @@ object Macros {
               """.stripMargin
               )
               
-            foldTree(true, argument)
+            traverseTree(argument)
               
-          case _ => foldOverTree(errorFound, tree)
+          case _ => super.traverseTree(tree)
         }
       }
 
-      acc.foldTree(errorFound, tree)
+      traverser.traverseTree(tree)
     }
         
     

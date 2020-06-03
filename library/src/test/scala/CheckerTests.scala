@@ -188,5 +188,162 @@ class CheckerTests {
 
     assert(error)
   }
-  
+
+
+  @Test def yieldvalTypeTestShouldBreak(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[Int] {
+          yieldval("Will this break stuff? :o")
+        }"""
+      }
+    
+    }
+  }
+
+  class A1
+  class A2 extends A1
+  class A3 extends A2
+
+
+  @Test def yieldvalTypeTestShouldBreak2(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[Int] {
+          yieldval(1)
+          print("hey")
+          yieldval("This should break stuff")
+        }"""
+      }
+    }
+  }
+
+  @Test def yieldvalTypeTestShouldBreak3(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A2())
+          print("hey")
+          yieldval("This should break stuff")
+        }"""
+      }
+    }
+  }
+
+
+  @Test def thisShouldTypeCheck(): Unit = {
+    assert { 
+      typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+          yieldval(new A3())
+        }"""
+      }
+    }
+  }
+
+
+
+  @Test def yieldvalTypeTest3(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A2())
+          print("hey")
+          yieldval("This should break stuff")
+        }"""
+      }
+    }
+  }
+
+
+
+  @Test def yieldvalTypeTest4(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval("This should break stuff")
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+        }"""
+      }
+    }
+  }
+
+
+  @Test def yieldvalArgTypeWithWhileTest(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A3())
+          while (true) {
+            yieldval("This should break stuff")
+          }
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+        }"""
+      }
+    }
+  }
+
+  @Test def yieldvalArgTypeWithIfTest(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A3())
+          if (true) {
+            yieldval("This should break stuff")
+          }  
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+        }"""
+      }
+    }
+  }
+
+
+  @Test def yieldvalArgTypeWithIfTest2(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A3())
+          if (true) {
+            yieldval(new A1())
+            yieldval("This should break stuff")
+          }  
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+        }"""
+      }
+    }
+  }
+
+
+  @Test def yieldvalArgTypeWithIfWhileTest2(): Unit = {
+    assert { 
+      !typeChecks{"""
+        coroutine[A1] {
+          yieldval(new A3())
+          if (true) {
+            yieldval(new A3())
+            while(true) {
+              yieldval("This should break stuff")
+            }
+            yieldval(new A1())
+          }  
+          yieldval(new A1())
+          yieldval(new A2())
+          print("hey")
+        }"""
+      }
+    }
+  }
+
+
 }

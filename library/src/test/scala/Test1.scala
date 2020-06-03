@@ -354,8 +354,6 @@ class Test1 {
     }
   }
 
-
-
   // @Test def traverseCollectionTest(): Unit = {
     
   //   def getIterator[T](ls: List[T]) = coroutine[T] {

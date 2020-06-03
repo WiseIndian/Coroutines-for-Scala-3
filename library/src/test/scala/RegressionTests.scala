@@ -158,6 +158,7 @@ class RegressionTest {
     }
   }
 
+  //this doesnt work yet
   @Test def testMustCatchExceptionPassedFromADirectCall = {
     def buggy = coroutine[String] { 
       throw new Exception

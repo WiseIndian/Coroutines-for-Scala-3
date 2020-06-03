@@ -76,7 +76,7 @@ class StackfulTests {
       def co(b: Boolean) = coroutine[A] {
           yieldval(new A(0))
           join(sub(b)) 
-          "hey"
+          print("hey")
           yieldval(new B(40))
       }
  

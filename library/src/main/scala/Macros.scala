@@ -154,10 +154,9 @@ object Macros {
 
   @param type T is the expected type of yieldval.
   */
-  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, t: Type[T]): Boolean = {
+  //TODO If I throw errors I dont have to return any boolean in invoke checker and its submethods.. remove those returned value
+  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: Type[T]): Boolean = {
     import qtx.tasty.{_, given _} 
-
-    val expectedYieldType = t
 
     def casuallyTraverse(tree: Tree)(implicit ctx: Context): Boolean = {
 
@@ -170,26 +169,26 @@ object Macros {
             (statements :+ blockRet).foldLeft(errorFound) { case (foundAcc, tree) =>
               foldTree(foundAcc, tree)
             }
-
+ 
 
           case Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
 
             // typeComparer is protected
             // val typeCorrect: Boolean = ctx.typeComparer.isSubType(argument.getType, t)
             // val typeCorrect: Boolean = ${argument.seal}.isInstanceOf[${t}]
-            //TODO check the type of argument is a subtype of T: check out dotty.core.TypeComparer.scala 
-            // val typeCorrect: Boolean = argument.tpe == expectedYieldType
-            val typeCorrect = true //TODO remove me
-            // if (!typeCorrect) {
-            //   System.err.println(
-            //     s"""yield argument has the wrong type:
-            //     ${tree.show} was found with an argument of type ${ argument.tpe }
-            //     We expected a subtype of ${ expectedYieldType }.
-            //     """.stripMargin
-            //   ) //TODO take only 10 characters or so of parentTree.show and app.show
-            // }
+
+            //is arguments type a subtype of the expected yield type?
+            val correctArgumentType = (argument.tpe  <:< expectedYieldType.unseal.tpe)
+            if (!correctArgumentType) {
+              throw new Error(
+                s"""yield argument has the wrong type:
+                ${tree.show} was found with an argument of type ${ argument.tpe }
+                We expected a subtype of ${ expectedYieldType }.
+                """.stripMargin
+              )
+            }
             
-            checkNoYieldval(errorFound || !typeCorrect, argument, tree)
+            checkNoYieldval(errorFound || !correctArgumentType, argument, tree)
           
           
           case If(cond, thenp, elsep) => 
@@ -278,6 +277,7 @@ object Macros {
           ${
             val transformation = fetchBody('self)
             println("Resulting transformation  \n"+transformation.show)
+            
             transformation
           }
         }

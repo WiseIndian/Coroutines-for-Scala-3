@@ -135,26 +135,25 @@ object Macros {
 
 
 
-  /*
-  Let us first consider a language where yield may appear in if-statements and blocks. Formally, the language can be defined as follows:
+  /* 
+  Formally, the language can be defined as follows:
 
   C ::= coroutine { Z* }
   L ::= n | true | false | null | ...
   S ::= e | x = e | e.f = e | while(e) S* | if(e) S* else S* | val x: T = e | MethodDef | ClassDef | TypeDef
   e ::= L | x | e.f | e.f[T](e, .., e) | if(e) e else e | { S*; e } | new p.C(e, .., e)  | (x: T) => e | TryCatch
-  Z ::= yield e | if(e) Z* else Z* | e | { Z* } | e | x = e | e.f = e | while(e) S* | e match { case e1 => Z*; ... case en => Z*}
-
-  In the above, we restrict that the language that may appear in the coroutine body must be of the form Z*. We can implement a checker easily to enforce the syntax.
-
+  Z ::= yield e | if(e) Z* else Z* | e | { Z* } | e | x = e | e.f = e | while(e) S* | e match { case e1 => Z*; ... case en => Z*} | join(co: Coroutine[_])
+ 
   The checker enforces the following properties:
 
-      An expression e never contains yield.
+      An expression e never contains yield or a join.
       Yield e never refers to a local definition defined in the coroutine body.
-      The expression e within a yield has the same type as wrapping coroutine.
+      The expression e within a yield has the same type as the wrapping coroutine.
+      The argument co (of type Coroutine) of the join yields values that are subtypes of the current coroutine yielded values (the type T).
 
-  @param type T is the expected type of yieldval.
+  @param type T is the expected return type of yieldval.
   */
-  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: Type[T]): Unit = {
+  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: quoted.Type[T], thisCoroutineType: quoted.Type[Coroutine[T]]): Unit = {
     import qtx.tasty.{_, given _} 
 
     def casuallyTraverse(tree: Tree)(implicit ctx: Context): Unit = {
@@ -168,6 +167,30 @@ object Macros {
             (statements :+ blockRet).foreach {traverseTree}
             
  
+          case Apply(TypeApply(Ident("join"), List(joinTypeTree)), List(co)) /*join(co)*/ => 
+            // get a typetree from co and thisCoroutineType
+            val thisTypeTree: qtx.tasty.Type= thisCoroutineType.unseal.tpe
+
+            /*
+            * We get the information on the type of co by looking up the type parameter of the join method.
+            * Indeed the type parameter of the join method is the same as the type parameter for the Coroutine class. 
+            * See the definition of join. 
+            */  
+            val joinedIsSubtypeOfThisCoroutine: Boolean = thisTypeTree match {
+              case AppliedType(coroutineTypeRef, List(parameterTypeRef: Type)) => 
+               //Here we do a comparison between the join[T](.) parameter type T (that is the same co's type tree) AND parameterTypeRef that is the type of the current coroutine
+                joinTypeTree.tpe <:< parameterTypeRef
+              case _ => false
+            }
+ 
+            if (!joinedIsSubtypeOfThisCoroutine) {
+              throw new Error(
+                s"""The joined coroutine is not a subtype of the current coroutine
+                ${tree.show} was found with this argument ${co.show} which is not a subtype of 
+                the coroutine in which body this join occurs. You can join Coroutine[T2] in the body of Coroutine[T1] only if T2 <: T1.
+                """.stripMargin
+              )
+            }
 
           case Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ => 
 
@@ -222,19 +245,29 @@ object Macros {
 
       val traverser = new qtx.tasty.TreeTraverser {
         override def traverseTree(tree: Tree)(implicit ctx: Context): Unit = tree match {
-          case app @ Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
+          case Apply(TypeApply(Ident("yieldval"), _), List(argument)) /*yieldval(argument)*/ =>
 
+            //TODO figure out how to print position of the code. Maybe with http://dotty.epfl.ch/docs/reference/metaprogramming/tasty-reflect.html#positions
             throw new Error(
               s"""A yield contained within this context is not allowed:
               The problematic yield is the following:
-              ${app.show}
+              ${tree.show}
 
               context:
               ${parentTree.show} 
               """.stripMargin
               )
-              
-            traverseTree(argument)
+            
+          case Apply(TypeApply(Ident("join"), _), List(co)) /*join(coroutine)*/ =>
+            throw new Error(
+              s"""A join on another coroutine should not happen within this context:" +
+              The problematic join call is the following:
+              ${tree.show}
+
+              context:
+              ${parentTree.show}
+              """.stripMargin
+            )
               
           case _ => super.traverseTree(tree)
         }

@@ -346,4 +346,105 @@ class CheckerTests {
   }
 
 
+  @Test def joinInt(): Unit = {
+    assert { 
+      typeChecks{"""
+        val co1 = coroutine[Int] {}
+        coroutine[Int]{join(co1)}
+      """
+      }
+    }
+  }
+
+
+  // class A1
+  // class A2 extends A1
+  // class A3 extends A2
+
+
+  @Test def joinSubclass(): Unit = {
+    assert { 
+      typeChecks{"""
+        val co1 = coroutine[A2] {}
+        coroutine[A1]{join(co1)}
+      """
+      }
+    }
+  }
+
+
+  @Test def joinSubclass2(): Unit = {
+    assert { 
+      typeChecks{"""
+        val co1 = coroutine[A3] {}
+        coroutine[A1]{join(co1)}
+      """
+      }
+    }
+  }
+
+    @Test def joinSuperclass(): Unit = {
+      assert { 
+        !typeChecks{"""
+          val co1 = coroutine[A1] {}
+          coroutine[A3]{join(co1)}
+        """
+        }
+      }
+    }
+
+    @Test def joinSuperclass2(): Unit = {
+      assert { 
+        !typeChecks{"""
+          val co1 = coroutine[A2] {}
+          coroutine[A3]{join(co1)}
+        """
+        }
+      }
+    }
+
+    @Test def joinSuperclassIf(): Unit = {
+      assert { 
+        !typeChecks{"""
+          val co1 = coroutine[A2] {}
+          coroutine[A3]{
+            val b = true
+            if (b) 
+              join(co1)
+          }
+        """
+        }
+      }      
+    }
+
+    @Test def joinSuperclassNested(): Unit = {
+      assert { 
+        typeChecks{"""
+          val co1 = coroutine[A3] {}
+          val co2 = coroutine[A3] {join(co1)}
+
+          coroutine[A2]{
+            val b = true
+            if (b) join(co2)
+          }
+        """
+        }
+      }      
+    }
+
+    @Test def joinSuperclassNested2(): Unit = {
+      assert { 
+        !typeChecks{"""
+          val co1 = coroutine[A1] {}
+          val co2 = coroutine[A3] {join(co1)}
+
+          coroutine[A2]{
+            val b = true
+            if (b) join(co2)
+          }
+        """
+        }
+      }      
+    }    
+
 }

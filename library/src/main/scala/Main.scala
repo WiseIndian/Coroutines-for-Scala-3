@@ -2,11 +2,15 @@ import coroutines.Macros._
 import coroutines._
 
 
+class A 
+class B extends A
 object Main { 
   def main(args: Array[String]): Unit = { 
+    val co2 = coroutine[B] {}
 
-    // coroutine[Int] {
-    //   if ({yieldval(0); true}) 1
-    // }
+    val co1 = coroutine[B] {
+      join(co2)
+    }
+
   }
 }

@@ -1,32 +1,37 @@
 import coroutines._ 
 import coroutines.Macros._
 
-
+//for benchmarking
 import org.openjdk.jmh.annotations._
+import org.openjdk.jmh.infra.Blackhole
+
 import scala.collection._
 import scala.language.implicitConversions
 
 
 
 
-@State(Scope.Thread)
+@State(Scope.Benchmark) //All threads running the benchmark share the same state object.
 @Warmup(iterations = 50)    // translation of "exec.minWarmupRuns", 50 ; "exec.maxWarmupRuns", 100 
 @BenchmarkMode(Array(Mode.All))
 @Measurement(iterations = 36) //"exec.benchRuns", 36 
 @Fork(value = 4) //"exec.independentSamples", 4 ?
 class StreamBenchJMH  {
 
-  val fibSizes = 5000 to 25000 by 5000; 
+  @Param(Array("5000", "10000", "15000", "20000", "25000"))
+  var fibSize: Int = _
 
-  val taylorSizes = 50000 to 250000 by 50000
+  @Param(Array("50000", "100000", "150000", "200000", "250000"))
+  var taylorSize: Int = _
   
   //TODO to avoid dead code use blackholes and return values in benchmarks check out also how to handle loops
   // @gen("fibSizes")
   // @benchmark("coroutines.stream.fibonacci.to-buffer")
   // @curve("stream")
   @Benchmark
-  def streamFibonacciToBuffer(sz: Int) = {
-    val buffer = mutable.Buffer[BigInt]()
+  def streamFibonacciToBuffer(bh: Blackhole) = {
+    val sz = fibSize
+    val buffer = mutable.Seq[BigInt]()
     object Fibs {
       lazy val values: Stream[BigInt] =
         BigInt(0) #:: BigInt(1) #:: values.zip(values.tail).map(t => t._1 + t._2)
@@ -34,19 +39,20 @@ class StreamBenchJMH  {
     var i = 0
     var s = Fibs.values
     while (i < sz) {
-      buffer += s.head
+      buffer :+ s.head
       s = s.tail
       i += 1
     }
-    buffer
+    bh.consume(buffer)
   }
 
   // @gen("fibSizes")
   // @benchmark("coroutines.stream.fibonacci.to-buffer")
   // @curve("coroutine")
   @Benchmark
-  def coroutineFibonacciToBuffer(sz: Int) = {
-    val buffer = mutable.Buffer[BigInt]()
+  def coroutineFibonacciToBuffer(bh: Blackhole) = {
+    val sz = fibSize
+    val buffer = mutable.Seq[BigInt]()
     val fibs = coroutine[BigInt] { 
       var prev = BigInt(0)
       var curr = BigInt(1)
@@ -61,17 +67,18 @@ class StreamBenchJMH  {
     }
     var i = 0
     while (i < sz) {
-      fibs.continue().foreach { buffer += _ }
+      fibs.continue().foreach { buffer :+ _ }
       i += 1
     }
-    buffer
+    bh.consume(buffer)
   }
 
   // @gen("taylorSizes")
   // @benchmark("coroutines.stream.taylor.sum")
   // @curve("stream")
   @Benchmark
-  def streamTaylorSum(sz: Int) = {
+  def streamTaylorSum = {
+    val sz = taylorSize
     var sum = 0.0
     class TaylorInvX(x: Double) {
       lazy val values: Stream[Double] =
@@ -91,7 +98,8 @@ class StreamBenchJMH  {
   // @benchmark("coroutines.stream.taylor.sum")
   // @curve("coroutine")
   @Benchmark
-  def coroutineTaylorSum(sz: Int) = {
+  def coroutineTaylorSum = {
+    val sz = taylorSize
     var sum = 0.0
     def taylor(x: Double) = coroutine[Double] { 
       var last = 1.0

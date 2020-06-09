@@ -4,7 +4,7 @@ import coroutines._
 import coroutines.Macros._
 
 class RegressionTest {
-    @Test def testIfElse: Unit = {
+  @Test def testIfElse: Unit = {
     def xOrY(x: Int, y: Int) = coroutine[Int] { 
       if (x > 0) {
         yieldval(x)

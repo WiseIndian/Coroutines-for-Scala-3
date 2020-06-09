@@ -21,6 +21,12 @@ class PatternMatchTest {
     assert(c.isDone())
   }
 
+  
+  @Test def runTest1: Unit = {
+    def getCoroutine = () => rube1("ok")
+    testOnRun(getCoroutine)
+  }
+
   @Test def test2: Unit = {
     val c = rube1(1 :: 2 :: 3 :: Nil)
     assert(!c.isDone())
@@ -28,6 +34,12 @@ class PatternMatchTest {
     assert(!c.isDone())
     assertEquals(c.continue(), None)
     assert(c.isDone())
+  }
+
+
+  @Test def runTest2: Unit = {
+    def getCoroutine = () => rube1(1 :: 2 :: 3 :: Nil)
+    testOnRun(getCoroutine)
   }
 
   def rube2(x: AnyRef) = coroutine[Int] {
@@ -48,6 +60,14 @@ class PatternMatchTest {
     assert(c.isDone())
   }
 
+
+
+  @Test def runTest3: Unit = {
+    def getCoroutine = () => rube2("ok")
+    testOnRun(getCoroutine)
+  }
+
+
   @Test def test4: Unit = {
     val c = rube2(1 :: 2 :: 3 :: Nil)
     assert(!c.isDone())
@@ -57,5 +77,12 @@ class PatternMatchTest {
     assert(!c.isDone())
     assertEquals(c.continue(), None)
     assert(c.isDone())
+  }
+
+
+
+  @Test def runTest4: Unit = {
+    def getCoroutine = () => rube2(1 :: 2 :: 3 :: Nil)
+    testOnRun(getCoroutine)
   }
 }

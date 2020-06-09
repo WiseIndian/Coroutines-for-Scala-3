@@ -21,9 +21,45 @@ class StackfulTests {
 
   }
 
-  class A(val x: Int)
-  class B(x: Int) extends A(x)
-  class C(x: Int) extends B(x)
+  @Test def simpleTestOnRunMethod: Unit = {
+    def getCo() = {
+      val sub = coroutine[Int] {
+        yieldval(1)
+      }
+  
+      coroutine[Int] {
+        yieldval(0)
+        join(sub)
+        yieldval(2)
+  
+      }
+    }
+
+    testOnRun(getCo)
+  }
+
+  class A(val x: Int) {
+    override def toString(): String = s"""A($x)"""
+
+    override def equals(o: Any): Boolean = {
+      o.isInstanceOf[A] && o.asInstanceOf[A].x == x
+    }
+  }
+  class B(x: Int) extends A(x) {
+    override def toString(): String = s"""B($x)"""
+
+    override def equals(o: Any): Boolean = {
+      o.isInstanceOf[B] && o.asInstanceOf[B].x == x
+    }
+  }
+  class C(x: Int) extends B(x) {
+    override def toString(): String = s"""C($x)"""
+
+    override def equals(o: Any): Boolean = {
+      o.isInstanceOf[C] && o.asInstanceOf[C].x == x
+    }
+  }
+
   @Test def subTypingNesting: Unit = {
     val sub2 = coroutine[C] {
       yieldval(new C(1))
@@ -49,6 +85,35 @@ class StackfulTests {
     }
 
     assertStackful(0 to 6, co)
+  }
+
+  @Test def testSubtypeNestingOnRun: Unit = {
+    def getCo() = {
+      val sub2 = coroutine[C] {
+        yieldval(new C(1))
+        yieldval(new C(2))
+      }
+  
+      val sub3 = coroutine[C] {
+        yieldval(new C(4))
+      }
+  
+      val sub1 = coroutine[B] {
+        join(sub2)
+        yieldval(new B(3))
+        join(sub3)
+        yieldval(new C(5))
+  
+      }
+  
+      coroutine[A] {
+        yieldval(new A(0))
+        join(sub1)
+        yieldval(new C(6))
+      }
+    }
+
+    testOnRun(getCo)
   }
 
   def assertStackful(expected: Seq[Int], co: Coroutine[A]): Unit = {

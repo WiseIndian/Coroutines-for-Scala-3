@@ -135,7 +135,7 @@ object Macros {
 
 
 
-  /* 
+  /**
   Formally, the language can be defined as follows:
 
   C ::= coroutine { Z* }

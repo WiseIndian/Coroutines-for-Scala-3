@@ -1,3 +1,5 @@
+package coroutines.bench
+
 import coroutines._ 
 import coroutines.Macros._
 
@@ -24,54 +26,52 @@ class StreamBenchJMH  {
   @Param(Array("50000", "100000", "150000", "200000", "250000"))
   var taylorSize: Int = _
   
-  //TODO to avoid dead code use blackholes and return values in benchmarks check out also how to handle loops
-  // @gen("fibSizes")
-  // @benchmark("coroutines.stream.fibonacci.to-buffer")
-  // @curve("stream")
-  @Benchmark
-  def streamFibonacciToBuffer(bh: Blackhole) = {
-    val sz = fibSize
-    val buffer = mutable.Seq[BigInt]()
-    object Fibs {
-      lazy val values: Stream[BigInt] =
-        BigInt(0) #:: BigInt(1) #:: values.zip(values.tail).map(t => t._1 + t._2)
-    }
-    var i = 0
-    var s = Fibs.values
-    while (i < sz) {
-      buffer :+ s.head
-      s = s.tail
-      i += 1
-    }
-    bh.consume(buffer)
-  }
+ 
+  //For now this doesnt work due to this issue https://github.com/ktoso/sbt-jmh/pull/178
+  // @Benchmark
+  // def streamFibonacciToBuffer(bh: Blackhole) = {
+  //   val sz = fibSize
+  //   val buffer = mutable.Seq[BigInt]() //TODO come back to  a mutable buffer
+  //   object Fibs {
+  //     lazy val values: Stream[BigInt] =
+  //       BigInt(0) #:: BigInt(1) #:: values.zip(values.tail).map(t => t._1 + t._2)
+  //   }
+  //   var i = 0
+  //   var s = Fibs.values
+  //   while (i < sz) {
+  //     buffer :+ s.head
+  //     s = s.tail
+  //     i += 1
+  //   }
+  //   bh.consume(buffer)
+  // }
 
-  // @gen("fibSizes")
-  // @benchmark("coroutines.stream.fibonacci.to-buffer")
-  // @curve("coroutine")
-  @Benchmark
-  def coroutineFibonacciToBuffer(bh: Blackhole) = {
-    val sz = fibSize
-    val buffer = mutable.Seq[BigInt]()
-    val fibs = coroutine[BigInt] { 
-      var prev = BigInt(0)
-      var curr = BigInt(1)
-      yieldval(prev)
-      yieldval(curr)
-      while (true) {
-        val x = curr + prev
-        yieldval(x)
-        prev = curr
-        curr = x
-      }
-    }
-    var i = 0
-    while (i < sz) {
-      fibs.continue().foreach { buffer :+ _ }
-      i += 1
-    }
-    bh.consume(buffer)
-  }
+
+
+  //For now this doesnt work due to this issue https://github.com/ktoso/sbt-jmh/pull/178
+  // @Benchmark
+  // def coroutineFibonacciToBuffer(bh: Blackhole) = {
+  //   val sz = fibSize
+  //   var buffer: Seq[BigInt] = Seq() //TODO come back to a mutable buffer
+  //   val fibs = coroutine[BigInt] { 
+  //     var prev = BigInt(0)
+  //     var curr = BigInt(1)
+  //     yieldval(prev)
+  //     yieldval(curr)
+  //     while (true) {
+  //       val x = curr + prev
+  //       yieldval(x)
+  //       prev = curr
+  //       curr = x
+  //     }
+  //   }
+  //   var i = 0
+  //   while (i < sz) {
+  //     fibs.continue().foreach { x => buffer = buffer :+ x }
+  //     i += 1
+  //   }
+  //   bh.consume(buffer)
+  // }
 
   // @gen("taylorSizes")
   // @benchmark("coroutines.stream.taylor.sum")

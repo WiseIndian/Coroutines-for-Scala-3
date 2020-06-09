@@ -153,7 +153,7 @@ object Macros {
 
   @param type T is the expected return type of yieldval.
   */
-  private def invokeChecker[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: quoted.Type[T], thisCoroutineType: quoted.Type[Coroutine[T]]): Unit = {
+  private def check[T](expr: Expr[_ <: Any])(implicit qtx: QuoteContext, expectedYieldType: quoted.Type[T], thisCoroutineType: quoted.Type[Coroutine[T]]): Unit = {
     import qtx.tasty.{_, given _} 
 
     def casuallyTraverse(tree: Tree)(implicit ctx: Context): Unit = {
@@ -284,7 +284,7 @@ object Macros {
 
   private def coroutineImpl[T: Type](expr: Expr[_ <: Any])(implicit qtx: QuoteContext): Expr[Coroutine[T]] = {
 
-    invokeChecker[T](expr)
+    check[T](expr)
 
     def fetchBody(self: Expr[Coroutine[T]]): Expr[Option[T]] = {
       val lastNext = () => '{

@@ -1,6 +1,6 @@
 # Stackful Coroutines for Dotty
 
-An implementation of coroutines for Scala 3 based on CPS transformation.
+An implementation of coroutines for Scala 3 based on CPS transformation. This library was implemented using the Dotty macro system.
 
 The library directory contains the source code, unit tests and benchmarks.
 The archives directory contains outdated code. As well as designs we thought about for the coroutine library initially.

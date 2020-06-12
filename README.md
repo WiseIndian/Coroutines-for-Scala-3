@@ -1,4 +1,4 @@
-# coroutines
+# Stackful Coroutines for Dotty
 
 An implementation of coroutines for Scala 3 based on CPS transformation.
 

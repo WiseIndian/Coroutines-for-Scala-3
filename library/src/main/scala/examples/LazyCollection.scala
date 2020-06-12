@@ -10,7 +10,7 @@ class CoroutineLazyCollection[A](co: Coroutine[A]) extends LazyCollection[A] {
 
     def next(): A = {
         if (_next.isEmpty) {
-            throw new IllegalAccessError("You should check if this hasNext first. It was not the cause now.")
+            throw new IllegalStateException("You should check if this hasNext first. It was not the case now.")
         }
         val ret = _next.get
         _next = co.continue()

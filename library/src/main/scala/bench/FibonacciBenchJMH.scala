@@ -22,9 +22,7 @@ class FibonacciBenchJMH  {
 
   @Param(Array("5000", "10000", "15000", "20000", "25000"))
   var fibSize: Int = _
-
  
- // For now this doesnt work due to this issue https://github.com/ktoso/sbt-jmh/pull/178
   @Benchmark
   def streamFibonacciToBuffer(bh: Blackhole) = {
     val sz = fibSize
@@ -43,7 +41,6 @@ class FibonacciBenchJMH  {
 
 
 
-  // For now this doesnt work due to this issue https://github.com/ktoso/sbt-jmh/pull/178
   @Benchmark
   def coroutineFibonacciToBuffer(bh: Blackhole) = {
     val sz = fibSize

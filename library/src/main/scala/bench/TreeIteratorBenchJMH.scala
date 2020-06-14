@@ -10,6 +10,53 @@ import org.openjdk.jmh.infra.Blackhole
 
 import scala.collection._
 
+
+sealed trait Tree
+case class Node(x: Int, left: Tree, right: Tree) extends Tree
+case object Empty extends Tree
+
+class TreeIterator(val tree: Tree) {
+  var stack = new Array[Tree](30)
+  var stackpos = -1
+  var current: Int = _
+
+  def goLeft(tree: Tree): Unit = {
+    stackpos += 1
+    stack(stackpos) = tree
+    tree match {
+      case Empty =>
+      case Node(_, left, _) => goLeft(left)
+    }
+  }
+
+  goLeft(tree)
+  moveToNext()
+
+  def moveToNext(): Unit = {
+    if (stackpos != -1) stack(stackpos) match {
+      case Empty =>
+        stack(stackpos) = null
+        stackpos -= 1
+        if (stackpos > -1) assert(stack(stackpos) != Empty)
+        moveToNext()
+      case Node(x, _, right) =>
+        stack(stackpos) = null
+        stackpos -= 1
+        current = x
+        goLeft(right)
+    }
+  }
+
+  def hasNext: Boolean = {
+    stackpos != -1
+  }
+  def next(): Int = {
+    if (!hasNext) throw new NoSuchElementException
+    val x = current
+    moveToNext()
+    x
+  }
+}
  
 @State(Scope.Benchmark) //All threads running the benchmark share the same state object.
 @Warmup(iterations = 5)    // translation of     exec.minWarmupRuns -> 40, exec.maxWarmupRuns -> 80,
@@ -17,53 +64,6 @@ import scala.collection._
 @Measurement(iterations = 10) //"exec.benchRuns 
 @Fork(value = 2) //"exec.independentSamples"
 class TreeIteratorBench {
-
-  sealed trait Tree
-  case class Node(x: Int, left: Tree, right: Tree) extends Tree
-  case object Empty extends Tree
-
-  class TreeIterator(val tree: Tree) {
-    var stack = new Array[Tree](30)
-    var stackpos = -1
-    var current: Int = _
-
-    def goLeft(tree: Tree): Unit = {
-      stackpos += 1
-      stack(stackpos) = tree
-      tree match {
-        case Empty =>
-        case Node(_, left, _) => goLeft(left)
-      }
-    }
-
-    goLeft(tree)
-    moveToNext()
-
-    def moveToNext(): Unit = {
-      if (stackpos != -1) stack(stackpos) match {
-        case Empty =>
-          stack(stackpos) = null
-          stackpos -= 1
-          if (stackpos > -1) assert(stack(stackpos) != Empty)
-          moveToNext()
-        case Node(x, _, right) =>
-          stack(stackpos) = null
-          stackpos -= 1
-          current = x
-          goLeft(right)
-      }
-    }
-
-    def hasNext: Boolean = {
-      stackpos != -1
-    }
-    def next(): Int = {
-      if (!hasNext) throw new NoSuchElementException
-      val x = current
-      moveToNext()
-      x
-    }
-  }
 
   @Param(Array("50000", "100000", "150000", "200000", "250000"))
   var size: Int = _
@@ -170,25 +170,8 @@ class TreeIteratorBench {
     }.takeWhile(_.isDefined).force
   }
 
-  // @Benchmark
-  // def recursiveToArray = {
-  //   val tree: Tree = getTree
-  //   val a = mutable.Buffer[Int]()
-  //   def recurse(t: Tree): Seq = {
-  //     t match {
-  //       case Node(x, left, right) =>
-  //         recurse(left)
-  //         a.addOne(x)
-  //         recurse(right)
-  //       case Empty =>
-  //     }
-  //   }
-  //   recurse(tree)
-  //   a
-  // }
-
     @Benchmark
-    def recursiveToSeq = {
+    def recursiveToList = {
       val tree: Tree = getTree
       def recurse(t: Tree): List[Int] = {
         t match {
@@ -222,11 +205,12 @@ class TreeIteratorBench {
     val c2 = treeEnumerator(t2)
     var same = true
     while (!c1.isDone() && !c2.isDone()) {
-      same = 
-        (for {
-          x <- c1.continue()
-          y <- c2.continue()
-        } yield x != y).getOrElse(sys.error("unexpected none"))
+      for {
+        x <- c1.continue()
+        y <- c2.continue()
+      } yield {
+        same = x == y
+      }
     }
     isSame = same
     same
@@ -277,28 +261,28 @@ class TreeIteratorBench {
 
   /* tests */
 
-  // assert({
-  //   def leaf(x: Int) = Node(x, Empty, Empty)
-  //   val tree = Node(1,
-  //     Node(19, leaf(21), leaf(23)),
-  //     Node(3,
-  //       leaf(11),
-  //       Node(9,
-  //         leaf(5),
-  //         leaf(17))))
-  //   def rec(tree: Tree): Seq[Int] = tree match {
-  //     case Empty => Seq()
-  //     case Node(x, l, r) =>
-  //       rec(l) ++ Seq(x) ++ rec(r)
-  //   }
+  assert({
+    def leaf(x: Int) = Node(x, Empty, Empty)
+    val tree = Node(1,
+      Node(19, leaf(21), leaf(23)),
+      Node(3,
+        leaf(11),
+        Node(9,
+          leaf(5),
+          leaf(17))))
+    def rec(tree: Tree): List[Int] = tree match {
+      case Empty => List()
+      case Node(x, l, r) =>
+        rec(l) ++ List(x) ++ rec(r)
+    }
 
-  //   val it = new TreeIterator(tree)
-  //   def treeRec(result: Seq[Int]): Seq[Int] = {
-  //     if (it.hasNext) treeRec(result :+ it.next())
-  //     else result
-  //   }
+    val it = new TreeIterator(tree)
+    def treeRec(result: List[Int]): List[Int] = {
+      if (it.hasNext) treeRec(result :+ it.next())
+      else result
+    }
 
-  //   rec(tree) == treeRec(Seq())
-  // })
+    rec(tree) == treeRec(List())
+  })
 
 }

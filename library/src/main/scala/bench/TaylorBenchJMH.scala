@@ -20,13 +20,9 @@ class TaylorBenchJMH  {
 
   @Param(Array("50000", "100000", "150000", "200000", "250000"))
   var taylorSize: Int = _
-  
+   
   
 
-  //TODO separate taylor and fibonnaci in two different files.
-  // @gen("taylorSizes")
-  // @benchmark("coroutines.stream.taylor.sum")
-  // @curve("stream")
   @Benchmark
   def streamTaylorSum = {
     val sz = taylorSize
@@ -45,9 +41,6 @@ class TaylorBenchJMH  {
     sum
   }
 
-  // @gen("taylorSizes")
-  // @benchmark("coroutines.stream.taylor.sum")
-  // @curve("coroutine")
   @Benchmark
   def coroutineTaylorSum = {
     val sz = taylorSize

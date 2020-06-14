@@ -1,0 +1,2460 @@
+[info] Loading global plugins from /home/snif/.sbt/1.0/plugins
+[info] Loading settings for project library-build from plugins.sbt ...
+[info] Loading project definition from /home/snif/hackerspace/semester/library/project
+[info] Loading settings for project root from build.sbt ...
+[info] Set current project to dotty-coroutines (in build file:/home/snif/hackerspace/semester/library/)
+[info] running (fork) org.openjdk.jmh.Main 
+[error] WARNING: An illegal reflective access operation has occurred
+[error] WARNING: Illegal reflective access by org.openjdk.jmh.util.Utils (file:/tmp/sbt_f6b66132/target/7f7691f4/c82dacdf/jmh-core-1.21.jar) to field java.io.PrintStream.charOut
+[error] WARNING: Please consider reporting this to the maintainers of org.openjdk.jmh.util.Utils
+[error] WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+[error] WARNING: All illegal access operations will be denied in a future release
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer
+[info] # Parameters: (fibSize = 5000)
+[info] # Run progress: 0.00% complete, ETA 16:15:01
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 1235.818 ops/s
+[info] # Warmup Iteration   2: 1270.513 ops/s
+[info] # Warmup Iteration   3: 1426.943 ops/s
+[info] # Warmup Iteration   4: 1292.626 ops/s
+[info] # Warmup Iteration   5: 1252.972 ops/s
+[info] Iteration   1: 995.311 ops/s
+[info] Iteration   2: 1238.891 ops/s
+[info] Iteration   3: 1335.440 ops/s
+[info] Iteration   4: 1227.756 ops/s
+[info] Iteration   5: 1314.369 ops/s
+[info] Iteration   6: 1181.119 ops/s
+[info] Iteration   7: 1331.022 ops/s
+[info] Iteration   8: 1347.546 ops/s
+[info] Iteration   9: 1318.451 ops/s
+[info] Iteration  10: 1366.644 ops/s
+[info] # Run progress: 0.26% complete, ETA 16:15:47
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 1213.640 ops/s
+[info] # Warmup Iteration   2: 1297.360 ops/s
+[info] # Warmup Iteration   3: 1076.761 ops/s
+[info] # Warmup Iteration   4: 866.355 ops/s
+[info] # Warmup Iteration   5: 1102.320 ops/s
+[info] Iteration   1: 1217.506 ops/s
+[info] Iteration   2: 941.474 ops/s
+[info] Iteration   3: 1288.299 ops/s
+[info] Iteration   4: 1298.511 ops/s
+[info] Iteration   5: 1351.581 ops/s
+[info] Iteration   6: 1226.016 ops/s
+[info] Iteration   7: 1190.567 ops/s
+[info] Iteration   8: 1207.200 ops/s
+[info] Iteration   9: 1184.496 ops/s
+[info] Iteration  10: 1218.743 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer":
+[info]   1239.047 ±(99.9%) 96.621 ops/s [Average]
+[info]   (min, avg, max) = (941.474, 1239.047, 1366.644), stdev = 111.269
+[info]   CI (99.9%): [1142.426, 1335.668] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer
+[info] # Parameters: (fibSize = 10000)
+[info] # Run progress: 0.51% complete, ETA 16:13:10
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 396.998 ops/s
+[info] # Warmup Iteration   2: 344.949 ops/s
+[info] # Warmup Iteration   3: 363.785 ops/s
+[info] # Warmup Iteration   4: 394.044 ops/s
+[info] # Warmup Iteration   5: 338.461 ops/s
+[info] Iteration   1: 390.638 ops/s
+[info] Iteration   2: 416.060 ops/s
+[info] Iteration   3: 416.289 ops/s
+[info] Iteration   4: 396.688 ops/s
+[info] Iteration   5: 416.907 ops/s
+[info] Iteration   6: 397.742 ops/s
+[info] Iteration   7: 431.011 ops/s
+[info] Iteration   8: 415.321 ops/s
+[info] Iteration   9: 363.692 ops/s
+[info] Iteration  10: 376.013 ops/s
+[info] # Run progress: 0.77% complete, ETA 16:10:33
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 334.451 ops/s
+[info] # Warmup Iteration   2: 448.532 ops/s
+[info] # Warmup Iteration   3: 447.379 ops/s
+[info] # Warmup Iteration   4: 446.102 ops/s
+[info] # Warmup Iteration   5: 437.798 ops/s
+[info] Iteration   1: 387.114 ops/s
+[info] Iteration   2: 340.290 ops/s
+[info] Iteration   3: 381.111 ops/s
+[info] Iteration   4: 405.404 ops/s
+[info] Iteration   5: 431.566 ops/s
+[info] Iteration   6: 433.951 ops/s
+[info] Iteration   7: 435.144 ops/s
+[info] Iteration   8: 400.106 ops/s
+[info] Iteration   9: 367.180 ops/s
+[info] Iteration  10: 401.410 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer":
+[info]   400.182 ±(99.9%) 22.347 ops/s [Average]
+[info]   (min, avg, max) = (340.290, 400.182, 435.144), stdev = 25.734
+[info]   CI (99.9%): [377.835, 422.528] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer
+[info] # Parameters: (fibSize = 15000)
+[info] # Run progress: 1.03% complete, ETA 16:07:55
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 188.007 ops/s
+[info] # Warmup Iteration   2: 180.865 ops/s
+[info] # Warmup Iteration   3: 204.411 ops/s
+[info] # Warmup Iteration   4: 204.486 ops/s
+[info] # Warmup Iteration   5: 198.540 ops/s
+[info] Iteration   1: 162.797 ops/s
+[info] Iteration   2: 204.096 ops/s
+[info] Iteration   3: 196.393 ops/s
+[info] Iteration   4: 206.490 ops/s
+[info] Iteration   5: 205.840 ops/s
+[info] Iteration   6: 187.033 ops/s
+[info] Iteration   7: 154.393 ops/s
+[info] Iteration   8: 178.137 ops/s
+[info] Iteration   9: 192.924 ops/s
+[info] Iteration  10: 195.255 ops/s
+[info] # Run progress: 1.28% complete, ETA 16:05:22
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 189.576 ops/s
+[info] # Warmup Iteration   2: 180.012 ops/s
+[info] # Warmup Iteration   3: 187.330 ops/s
+[info] # Warmup Iteration   4: 193.952 ops/s
+[info] # Warmup Iteration   5: 186.972 ops/s
+[info] Iteration   1: 207.000 ops/s
+[info] Iteration   2: 201.955 ops/s
+[info] Iteration   3: 194.412 ops/s
+[info] Iteration   4: 189.115 ops/s
+[info] Iteration   5: 186.833 ops/s
+[info] Iteration   6: 172.914 ops/s
+[info] Iteration   7: 191.418 ops/s
+[info] Iteration   8: 206.190 ops/s
+[info] Iteration   9: 206.908 ops/s
+[info] Iteration  10: 192.776 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer":
+[info]   191.644 ±(99.9%) 12.932 ops/s [Average]
+[info]   (min, avg, max) = (154.393, 191.644, 207.000), stdev = 14.892
+[info]   CI (99.9%): [178.712, 204.576] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer
+[info] # Parameters: (fibSize = 20000)
+[info] # Run progress: 1.54% complete, ETA 16:02:50
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 105.567 ops/s
+[info] # Warmup Iteration   2: 127.747 ops/s
+[info] # Warmup Iteration   3: 125.160 ops/s
+[info] # Warmup Iteration   4: 123.762 ops/s
+[info] # Warmup Iteration   5: 102.780 ops/s
+[info] Iteration   1: 106.354 ops/s
+[info] Iteration   2: 114.228 ops/s
+[info] Iteration   3: 106.704 ops/s
+[info] Iteration   4: 119.608 ops/s
+[info] Iteration   5: 105.792 ops/s
+[info] Iteration   6: 117.890 ops/s
+[info] Iteration   7: 115.340 ops/s
+[info] Iteration   8: 122.895 ops/s
+[info] Iteration   9: 120.796 ops/s
+[info] Iteration  10: 109.054 ops/s
+[info] # Run progress: 1.79% complete, ETA 16:00:21
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 108.761 ops/s
+[info] # Warmup Iteration   2: 110.541 ops/s
+[info] # Warmup Iteration   3: 103.464 ops/s
+[info] # Warmup Iteration   4: 106.938 ops/s
+[info] # Warmup Iteration   5: 112.041 ops/s
+[info] Iteration   1: 116.770 ops/s
+[info] Iteration   2: 106.227 ops/s
+[info] Iteration   3: 117.555 ops/s
+[info] Iteration   4: 129.995 ops/s
+[info] Iteration   5: 127.454 ops/s
+[info] Iteration   6: 123.120 ops/s
+[info] Iteration   7: 129.033 ops/s
+[info] Iteration   8: 113.265 ops/s
+[info] Iteration   9: 103.734 ops/s
+[info] Iteration  10: 115.789 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer":
+[info]   116.080 ±(99.9%) 6.977 ops/s [Average]
+[info]   (min, avg, max) = (103.734, 116.080, 129.995), stdev = 8.035
+[info]   CI (99.9%): [109.103, 123.057] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer
+[info] # Parameters: (fibSize = 25000)
+[info] # Run progress: 2.05% complete, ETA 15:57:58
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 64.435 ops/s
+[info] # Warmup Iteration   2: 68.462 ops/s
+[info] # Warmup Iteration   3: 67.023 ops/s
+[info] # Warmup Iteration   4: 61.145 ops/s
+[info] # Warmup Iteration   5: 71.584 ops/s
+[info] Iteration   1: 68.036 ops/s
+[info] Iteration   2: 72.815 ops/s
+[info] Iteration   3: 72.993 ops/s
+[info] Iteration   4: 71.981 ops/s
+[info] Iteration   5: 71.263 ops/s
+[info] Iteration   6: 70.820 ops/s
+[info] Iteration   7: 76.814 ops/s
+[info] Iteration   8: 78.831 ops/s
+[info] Iteration   9: 77.792 ops/s
+[info] Iteration  10: 71.389 ops/s
+[info] # Run progress: 2.31% complete, ETA 15:55:30
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 73.385 ops/s
+[info] # Warmup Iteration   2: 79.903 ops/s
+[info] # Warmup Iteration   3: 81.046 ops/s
+[info] # Warmup Iteration   4: 70.843 ops/s
+[info] # Warmup Iteration   5: 78.853 ops/s
+[info] Iteration   1: 83.054 ops/s
+[info] Iteration   2: 82.748 ops/s
+[info] Iteration   3: 82.312 ops/s
+[info] Iteration   4: 83.364 ops/s
+[info] Iteration   5: 81.297 ops/s
+[info] Iteration   6: 82.427 ops/s
+[info] Iteration   7: 69.819 ops/s
+[info] Iteration   8: 82.042 ops/s
+[info] Iteration   9: 78.797 ops/s
+[info] Iteration  10: 81.730 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.coroutineFibonacciToBuffer":
+[info]   77.016 ±(99.9%) 4.606 ops/s [Average]
+[info]   (min, avg, max) = (68.036, 77.016, 83.364), stdev = 5.305
+[info]   CI (99.9%): [72.410, 81.622] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer
+[info] # Parameters: (fibSize = 5000)
+[info] # Run progress: 2.56% complete, ETA 15:53:03
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 849.800 ops/s
+[info] # Warmup Iteration   2: 810.411 ops/s
+[info] # Warmup Iteration   3: 935.976 ops/s
+[info] # Warmup Iteration   4: 992.453 ops/s
+[info] # Warmup Iteration   5: 906.931 ops/s
+[info] Iteration   1: 958.560 ops/s
+[info] Iteration   2: 954.030 ops/s
+[info] Iteration   3: 1041.772 ops/s
+[info] Iteration   4: 1067.894 ops/s
+[info] Iteration   5: 1061.639 ops/s
+[info] Iteration   6: 1055.485 ops/s
+[info] Iteration   7: 981.997 ops/s
+[info] Iteration   8: 1072.721 ops/s
+[info] Iteration   9: 1064.703 ops/s
+[info] Iteration  10: 1050.602 ops/s
+[info] # Run progress: 2.82% complete, ETA 15:50:29
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 989.258 ops/s
+[info] # Warmup Iteration   2: 921.937 ops/s
+[info] # Warmup Iteration   3: 952.462 ops/s
+[info] # Warmup Iteration   4: 985.733 ops/s
+[info] # Warmup Iteration   5: 982.515 ops/s
+[info] Iteration   1: 980.299 ops/s
+[info] Iteration   2: 993.191 ops/s
+[info] Iteration   3: 1063.534 ops/s
+[info] Iteration   4: 1002.918 ops/s
+[info] Iteration   5: 988.827 ops/s
+[info] Iteration   6: 923.372 ops/s
+[info] Iteration   7: 1011.351 ops/s
+[info] Iteration   8: 1052.885 ops/s
+[info] Iteration   9: 914.951 ops/s
+[info] Iteration  10: 888.658 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer":
+[info]   1006.469 ±(99.9%) 49.451 ops/s [Average]
+[info]   (min, avg, max) = (888.658, 1006.469, 1072.721), stdev = 56.948
+[info]   CI (99.9%): [957.019, 1055.920] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer
+[info] # Parameters: (fibSize = 10000)
+[info] # Run progress: 3.08% complete, ETA 15:47:56
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 368.628 ops/s
+[info] # Warmup Iteration   2: 361.692 ops/s
+[info] # Warmup Iteration   3: 344.870 ops/s
+[info] # Warmup Iteration   4: 359.803 ops/s
+[info] # Warmup Iteration   5: 380.603 ops/s
+[info] Iteration   1: 382.077 ops/s
+[info] Iteration   2: 366.134 ops/s
+[info] Iteration   3: 377.971 ops/s
+[info] Iteration   4: 388.718 ops/s
+[info] Iteration   5: 388.747 ops/s
+[info] Iteration   6: 356.767 ops/s
+[info] Iteration   7: 338.710 ops/s
+[info] Iteration   8: 353.209 ops/s
+[info] Iteration   9: 368.588 ops/s
+[info] Iteration  10: 341.580 ops/s
+[info] # Run progress: 3.33% complete, ETA 15:45:23
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 271.150 ops/s
+[info] # Warmup Iteration   2: 350.114 ops/s
+[info] # Warmup Iteration   3: 368.145 ops/s
+[info] # Warmup Iteration   4: 368.228 ops/s
+[info] # Warmup Iteration   5: 337.616 ops/s
+[info] Iteration   1: 352.921 ops/s
+[info] Iteration   2: 342.824 ops/s
+[info] Iteration   3: 332.162 ops/s
+[info] Iteration   4: 366.961 ops/s
+[info] Iteration   5: 357.349 ops/s
+[info] Iteration   6: 322.006 ops/s
+[info] Iteration   7: 293.462 ops/s
+[info] Iteration   8: 332.660 ops/s
+[info] Iteration   9: 321.277 ops/s
+[info] Iteration  10: 348.702 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer":
+[info]   351.641 ±(99.9%) 21.313 ops/s [Average]
+[info]   (min, avg, max) = (293.462, 351.641, 388.747), stdev = 24.544
+[info]   CI (99.9%): [330.328, 372.954] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer
+[info] # Parameters: (fibSize = 15000)
+[info] # Run progress: 3.59% complete, ETA 15:42:57
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 157.385 ops/s
+[info] # Warmup Iteration   2: 170.788 ops/s
+[info] # Warmup Iteration   3: 164.408 ops/s
+[info] # Warmup Iteration   4: 176.783 ops/s
+[info] # Warmup Iteration   5: 168.778 ops/s
+[info] Iteration   1: 177.764 ops/s
+[info] Iteration   2: 181.168 ops/s
+[info] Iteration   3: 177.324 ops/s
+[info] Iteration   4: 175.116 ops/s
+[info] Iteration   5: 174.775 ops/s
+[info] Iteration   6: 187.021 ops/s
+[info] Iteration   7: 191.051 ops/s
+[info] Iteration   8: 191.225 ops/s
+[info] Iteration   9: 186.754 ops/s
+[info] Iteration  10: 190.292 ops/s
+[info] # Run progress: 3.85% complete, ETA 15:40:25
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 175.171 ops/s
+[info] # Warmup Iteration   2: 188.702 ops/s
+[info] # Warmup Iteration   3: 187.890 ops/s
+[info] # Warmup Iteration   4: 188.238 ops/s
+[info] # Warmup Iteration   5: 189.816 ops/s
+[info] Iteration   1: 188.747 ops/s
+[info] Iteration   2: 189.517 ops/s
+[info] Iteration   3: 189.812 ops/s
+[info] Iteration   4: 189.586 ops/s
+[info] Iteration   5: 189.564 ops/s
+[info] Iteration   6: 190.024 ops/s
+[info] Iteration   7: 189.103 ops/s
+[info] Iteration   8: 186.947 ops/s
+[info] Iteration   9: 190.024 ops/s
+[info] Iteration  10: 189.682 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer":
+[info]   186.275 ±(99.9%) 4.875 ops/s [Average]
+[info]   (min, avg, max) = (174.775, 186.275, 191.225), stdev = 5.614
+[info]   CI (99.9%): [181.400, 191.149] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer
+[info] # Parameters: (fibSize = 20000)
+[info] # Run progress: 4.10% complete, ETA 15:37:52
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 109.339 ops/s
+[info] # Warmup Iteration   2: 116.103 ops/s
+[info] # Warmup Iteration   3: 116.331 ops/s
+[info] # Warmup Iteration   4: 115.663 ops/s
+[info] # Warmup Iteration   5: 116.152 ops/s
+[info] Iteration   1: 116.122 ops/s
+[info] Iteration   2: 116.237 ops/s
+[info] Iteration   3: 116.453 ops/s
+[info] Iteration   4: 116.204 ops/s
+[info] Iteration   5: 114.443 ops/s
+[info] Iteration   6: 115.955 ops/s
+[info] Iteration   7: 116.328 ops/s
+[info] Iteration   8: 116.541 ops/s
+[info] Iteration   9: 116.937 ops/s
+[info] Iteration  10: 116.629 ops/s
+[info] # Run progress: 4.36% complete, ETA 15:35:21
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 107.630 ops/s
+[info] # Warmup Iteration   2: 115.919 ops/s
+[info] # Warmup Iteration   3: 115.281 ops/s
+[info] # Warmup Iteration   4: 115.732 ops/s
+[info] # Warmup Iteration   5: 115.044 ops/s
+[info] Iteration   1: 115.063 ops/s
+[info] Iteration   2: 115.015 ops/s
+[info] Iteration   3: 115.317 ops/s
+[info] Iteration   4: 115.295 ops/s
+[info] Iteration   5: 115.152 ops/s
+[info] Iteration   6: 115.025 ops/s
+[info] Iteration   7: 115.303 ops/s
+[info] Iteration   8: 115.270 ops/s
+[info] Iteration   9: 115.509 ops/s
+[info] Iteration  10: 115.194 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer":
+[info]   115.700 ±(99.9%) 0.598 ops/s [Average]
+[info]   (min, avg, max) = (114.443, 115.700, 116.937), stdev = 0.688
+[info]   CI (99.9%): [115.102, 116.298] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer
+[info] # Parameters: (fibSize = 25000)
+[info] # Run progress: 4.62% complete, ETA 15:32:50
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 71.778 ops/s
+[info] # Warmup Iteration   2: 77.383 ops/s
+[info] # Warmup Iteration   3: 77.337 ops/s
+[info] # Warmup Iteration   4: 76.986 ops/s
+[info] # Warmup Iteration   5: 77.540 ops/s
+[info] Iteration   1: 77.600 ops/s
+[info] Iteration   2: 77.405 ops/s
+[info] Iteration   3: 77.539 ops/s
+[info] Iteration   4: 77.477 ops/s
+[info] Iteration   5: 77.262 ops/s
+[info] Iteration   6: 77.578 ops/s
+[info] Iteration   7: 77.488 ops/s
+[info] Iteration   8: 77.756 ops/s
+[info] Iteration   9: 77.188 ops/s
+[info] Iteration  10: 77.359 ops/s
+[info] # Run progress: 4.87% complete, ETA 15:30:19
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 71.786 ops/s
+[info] # Warmup Iteration   2: 77.079 ops/s
+[info] # Warmup Iteration   3: 76.777 ops/s
+[info] # Warmup Iteration   4: 77.248 ops/s
+[info] # Warmup Iteration   5: 76.971 ops/s
+[info] Iteration   1: 76.746 ops/s
+[info] Iteration   2: 76.979 ops/s
+[info] Iteration   3: 76.776 ops/s
+[info] Iteration   4: 77.232 ops/s
+[info] Iteration   5: 77.312 ops/s
+[info] Iteration   6: 77.336 ops/s
+[info] Iteration   7: 77.285 ops/s
+[info] Iteration   8: 77.336 ops/s
+[info] Iteration   9: 76.845 ops/s
+[info] Iteration  10: 76.968 ops/s
+[info] Result "coroutines.bench.FibonacciBenchJMH.streamFibonacciToBuffer":
+[info]   77.273 ±(99.9%) 0.246 ops/s [Average]
+[info]   (min, avg, max) = (76.746, 77.273, 77.756), stdev = 0.283
+[info]   CI (99.9%): [77.027, 77.519] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.coroutineTaylorSum
+[info] # Parameters: (taylorSize = 50000)
+[info] # Run progress: 5.13% complete, ETA 15:27:48
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 1665.517 ops/s
+[info] # Warmup Iteration   2: 1702.719 ops/s
+[info] # Warmup Iteration   3: 1709.499 ops/s
+[info] # Warmup Iteration   4: 1702.293 ops/s
+[info] # Warmup Iteration   5: 1716.330 ops/s
+[info] Iteration   1: 1699.513 ops/s
+[info] Iteration   2: 1660.463 ops/s
+[info] Iteration   3: 1439.872 ops/s
+[info] Iteration   4: 1446.112 ops/s
+[info] Iteration   5: 1441.517 ops/s
+[info] Iteration   6: 1230.755 ops/s
+[info] Iteration   7: 1422.238 ops/s
+[info] Iteration   8: 1478.823 ops/s
+[info] Iteration   9: 1472.411 ops/s
+[info] Iteration  10: 1466.755 ops/s
+[info] # Run progress: 5.38% complete, ETA 15:25:16
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 1657.523 ops/s
+[info] # Warmup Iteration   2: 1748.878 ops/s
+[info] # Warmup Iteration   3: 1743.205 ops/s
+[info] # Warmup Iteration   4: 1745.093 ops/s
+[info] # Warmup Iteration   5: 1754.424 ops/s
+[info] Iteration   1: 1742.562 ops/s
+[info] Iteration   2: 1698.319 ops/s
+[info] Iteration   3: 1469.670 ops/s
+[info] Iteration   4: 1474.216 ops/s
+[info] Iteration   5: 1480.286 ops/s
+[info] Iteration   6: 1473.572 ops/s
+[info] Iteration   7: 1479.869 ops/s
+[info] Iteration   8: 1473.062 ops/s
+[info] Iteration   9: 1477.947 ops/s
+[info] Iteration  10: 1470.189 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.coroutineTaylorSum":
+[info]   1499.908 ±(99.9%) 101.520 ops/s [Average]
+[info]   (min, avg, max) = (1230.755, 1499.908, 1742.562), stdev = 116.910
+[info]   CI (99.9%): [1398.388, 1601.427] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.coroutineTaylorSum
+[info] # Parameters: (taylorSize = 100000)
+[info] # Run progress: 5.64% complete, ETA 15:22:44
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 835.873 ops/s
+[info] # Warmup Iteration   2: 875.706 ops/s
+[info] # Warmup Iteration   3: 880.350 ops/s
+[info] # Warmup Iteration   4: 873.050 ops/s
+[info] # Warmup Iteration   5: 878.231 ops/s
+[info] Iteration   1: 879.916 ops/s
+[info] Iteration   2: 871.267 ops/s
+[info] Iteration   3: 877.064 ops/s
+[info] Iteration   4: 881.101 ops/s
+[info] Iteration   5: 878.372 ops/s
+[info] Iteration   6: 882.243 ops/s
+[info] Iteration   7: 882.590 ops/s
+[info] Iteration   8: 864.141 ops/s
+[info] Iteration   9: 737.294 ops/s
+[info] Iteration  10: 736.615 ops/s
+[info] # Run progress: 5.90% complete, ETA 15:20:12
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 833.571 ops/s
+[info] # Warmup Iteration   2: 884.543 ops/s
+[info] # Warmup Iteration   3: 869.566 ops/s
+[info] # Warmup Iteration   4: 872.034 ops/s
+[info] # Warmup Iteration   5: 876.414 ops/s
+[info] Iteration   1: 873.290 ops/s
+[info] Iteration   2: 873.578 ops/s
+[info] Iteration   3: 878.628 ops/s
+[info] Iteration   4: 881.147 ops/s
+[info] Iteration   5: 880.851 ops/s
+[info] Iteration   6: 879.441 ops/s
+[info] Iteration   7: 881.505 ops/s
+[info] Iteration   8: 862.388 ops/s
+[info] Iteration   9: 740.645 ops/s
+[info] Iteration  10: 738.944 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.coroutineTaylorSum":
+[info]   849.051 ±(99.9%) 49.540 ops/s [Average]
+[info]   (min, avg, max) = (736.615, 849.051, 882.590), stdev = 57.050
+[info]   CI (99.9%): [799.511, 898.591] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.coroutineTaylorSum
+[info] # Parameters: (taylorSize = 150000)
+[info] # Run progress: 6.15% complete, ETA 15:17:40
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 556.935 ops/s
+[info] # Warmup Iteration   2: 584.566 ops/s
+[info] # Warmup Iteration   3: 586.712 ops/s
+[info] # Warmup Iteration   4: 585.670 ops/s
+[info] # Warmup Iteration   5: 591.273 ops/s
+[info] Iteration   1: 587.321 ops/s
+[info] Iteration   2: 583.272 ops/s
+[info] Iteration   3: 587.034 ops/s
+[info] Iteration   4: 586.689 ops/s
+[info] Iteration   5: 561.213 ops/s
+[info] Iteration   6: 585.322 ops/s
+[info] Iteration   7: 587.018 ops/s
+[info] Iteration   8: 581.990 ops/s
+[info] Iteration   9: 586.396 ops/s
+[info] Iteration  10: 585.476 ops/s
+[info] # Run progress: 6.41% complete, ETA 15:15:08
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 559.033 ops/s
+[info] # Warmup Iteration   2: 583.188 ops/s
+[info] # Warmup Iteration   3: 583.936 ops/s
+[info] # Warmup Iteration   4: 584.251 ops/s
+[info] # Warmup Iteration   5: 586.750 ops/s
+[info] Iteration   1: 581.523 ops/s
+[info] Iteration   2: 586.640 ops/s
+[info] Iteration   3: 586.157 ops/s
+[info] Iteration   4: 590.025 ops/s
+[info] Iteration   5: 587.714 ops/s
+[info] Iteration   6: 583.718 ops/s
+[info] Iteration   7: 587.039 ops/s
+[info] Iteration   8: 584.617 ops/s
+[info] Iteration   9: 585.071 ops/s
+[info] Iteration  10: 588.464 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.coroutineTaylorSum":
+[info]   584.635 ±(99.9%) 5.120 ops/s [Average]
+[info]   (min, avg, max) = (561.213, 584.635, 590.025), stdev = 5.897
+[info]   CI (99.9%): [579.515, 589.755] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.coroutineTaylorSum
+[info] # Parameters: (taylorSize = 200000)
+[info] # Run progress: 6.67% complete, ETA 15:12:37
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 421.105 ops/s
+[info] # Warmup Iteration   2: 440.439 ops/s
+[info] # Warmup Iteration   3: 443.828 ops/s
+[info] # Warmup Iteration   4: 442.071 ops/s
+[info] # Warmup Iteration   5: 437.787 ops/s
+[info] Iteration   1: 440.648 ops/s
+[info] Iteration   2: 435.156 ops/s
+[info] Iteration   3: 439.165 ops/s
+[info] Iteration   4: 437.674 ops/s
+[info] Iteration   5: 441.820 ops/s
+[info] Iteration   6: 444.065 ops/s
+[info] Iteration   7: 437.731 ops/s
+[info] Iteration   8: 431.999 ops/s
+[info] Iteration   9: 439.027 ops/s
+[info] Iteration  10: 439.803 ops/s
+[info] # Run progress: 6.92% complete, ETA 15:10:05
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 413.929 ops/s
+[info] # Warmup Iteration   2: 442.013 ops/s
+[info] # Warmup Iteration   3: 440.442 ops/s
+[info] # Warmup Iteration   4: 438.921 ops/s
+[info] # Warmup Iteration   5: 439.738 ops/s
+[info] Iteration   1: 436.273 ops/s
+[info] Iteration   2: 439.757 ops/s
+[info] Iteration   3: 437.860 ops/s
+[info] Iteration   4: 435.288 ops/s
+[info] Iteration   5: 438.642 ops/s
+[info] Iteration   6: 438.656 ops/s
+[info] Iteration   7: 442.969 ops/s
+[info] Iteration   8: 435.065 ops/s
+[info] Iteration   9: 441.514 ops/s
+[info] Iteration  10: 439.382 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.coroutineTaylorSum":
+[info]   438.625 ±(99.9%) 2.538 ops/s [Average]
+[info]   (min, avg, max) = (431.999, 438.625, 444.065), stdev = 2.923
+[info]   CI (99.9%): [436.086, 441.163] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.coroutineTaylorSum
+[info] # Parameters: (taylorSize = 250000)
+[info] # Run progress: 7.18% complete, ETA 15:07:34
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 336.306 ops/s
+[info] # Warmup Iteration   2: 353.526 ops/s
+[info] # Warmup Iteration   3: 350.583 ops/s
+[info] # Warmup Iteration   4: 349.847 ops/s
+[info] # Warmup Iteration   5: 352.706 ops/s
+[info] Iteration   1: 353.259 ops/s
+[info] Iteration   2: 350.385 ops/s
+[info] Iteration   3: 354.436 ops/s
+[info] Iteration   4: 351.335 ops/s
+[info] Iteration   5: 353.338 ops/s
+[info] Iteration   6: 351.418 ops/s
+[info] Iteration   7: 351.760 ops/s
+[info] Iteration   8: 349.975 ops/s
+[info] Iteration   9: 353.805 ops/s
+[info] Iteration  10: 350.987 ops/s
+[info] # Run progress: 7.44% complete, ETA 15:05:03
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 336.639 ops/s
+[info] # Warmup Iteration   2: 351.094 ops/s
+[info] # Warmup Iteration   3: 347.168 ops/s
+[info] # Warmup Iteration   4: 350.945 ops/s
+[info] # Warmup Iteration   5: 354.777 ops/s
+[info] Iteration   1: 348.978 ops/s
+[info] Iteration   2: 349.868 ops/s
+[info] Iteration   3: 354.058 ops/s
+[info] Iteration   4: 345.910 ops/s
+[info] Iteration   5: 351.439 ops/s
+[info] Iteration   6: 352.101 ops/s
+[info] Iteration   7: 353.686 ops/s
+[info] Iteration   8: 351.029 ops/s
+[info] Iteration   9: 355.164 ops/s
+[info] Iteration  10: 350.162 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.coroutineTaylorSum":
+[info]   351.655 ±(99.9%) 1.903 ops/s [Average]
+[info]   (min, avg, max) = (345.910, 351.655, 355.164), stdev = 2.192
+[info]   CI (99.9%): [349.752, 353.558] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.streamTaylorSum
+[info] # Parameters: (taylorSize = 50000)
+[info] # Run progress: 7.69% complete, ETA 15:02:32
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 470.596 ops/s
+[info] # Warmup Iteration   2: 497.539 ops/s
+[info] # Warmup Iteration   3: 497.778 ops/s
+[info] # Warmup Iteration   4: 496.185 ops/s
+[info] # Warmup Iteration   5: 497.430 ops/s
+[info] Iteration   1: 497.623 ops/s
+[info] Iteration   2: 495.514 ops/s
+[info] Iteration   3: 496.035 ops/s
+[info] Iteration   4: 496.600 ops/s
+[info] Iteration   5: 495.509 ops/s
+[info] Iteration   6: 497.245 ops/s
+[info] Iteration   7: 496.083 ops/s
+[info] Iteration   8: 497.935 ops/s
+[info] Iteration   9: 498.145 ops/s
+[info] Iteration  10: 497.009 ops/s
+[info] # Run progress: 7.95% complete, ETA 15:00:01
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 473.061 ops/s
+[info] # Warmup Iteration   2: 496.571 ops/s
+[info] # Warmup Iteration   3: 497.127 ops/s
+[info] # Warmup Iteration   4: 495.281 ops/s
+[info] # Warmup Iteration   5: 496.664 ops/s
+[info] Iteration   1: 499.430 ops/s
+[info] Iteration   2: 496.236 ops/s
+[info] Iteration   3: 498.378 ops/s
+[info] Iteration   4: 495.772 ops/s
+[info] Iteration   5: 497.538 ops/s
+[info] Iteration   6: 496.759 ops/s
+[info] Iteration   7: 497.459 ops/s
+[info] Iteration   8: 496.908 ops/s
+[info] Iteration   9: 497.464 ops/s
+[info] Iteration  10: 496.480 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.streamTaylorSum":
+[info]   497.006 ±(99.9%) 0.890 ops/s [Average]
+[info]   (min, avg, max) = (495.509, 497.006, 499.430), stdev = 1.025
+[info]   CI (99.9%): [496.116, 497.896] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.streamTaylorSum
+[info] # Parameters: (taylorSize = 100000)
+[info] # Run progress: 8.20% complete, ETA 14:57:29
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 234.205 ops/s
+[info] # Warmup Iteration   2: 248.949 ops/s
+[info] # Warmup Iteration   3: 248.737 ops/s
+[info] # Warmup Iteration   4: 249.439 ops/s
+[info] # Warmup Iteration   5: 248.804 ops/s
+[info] Iteration   1: 249.100 ops/s
+[info] Iteration   2: 248.375 ops/s
+[info] Iteration   3: 248.586 ops/s
+[info] Iteration   4: 247.884 ops/s
+[info] Iteration   5: 247.902 ops/s
+[info] Iteration   6: 249.009 ops/s
+[info] Iteration   7: 247.954 ops/s
+[info] Iteration   8: 247.314 ops/s
+[info] Iteration   9: 248.109 ops/s
+[info] Iteration  10: 247.168 ops/s
+[info] # Run progress: 8.46% complete, ETA 14:54:58
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 247.066 ops/s
+[info] # Warmup Iteration   2: 259.706 ops/s
+[info] # Warmup Iteration   3: 260.120 ops/s
+[info] # Warmup Iteration   4: 260.222 ops/s
+[info] # Warmup Iteration   5: 259.718 ops/s
+[info] Iteration   1: 259.741 ops/s
+[info] Iteration   2: 260.568 ops/s
+[info] Iteration   3: 260.667 ops/s
+[info] Iteration   4: 260.439 ops/s
+[info] Iteration   5: 259.414 ops/s
+[info] Iteration   6: 259.221 ops/s
+[info] Iteration   7: 259.879 ops/s
+[info] Iteration   8: 259.965 ops/s
+[info] Iteration   9: 259.585 ops/s
+[info] Iteration  10: 260.732 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.streamTaylorSum":
+[info]   254.081 ±(99.9%) 5.317 ops/s [Average]
+[info]   (min, avg, max) = (247.168, 254.081, 260.732), stdev = 6.123
+[info]   CI (99.9%): [248.764, 259.397] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.streamTaylorSum
+[info] # Parameters: (taylorSize = 150000)
+[info] # Run progress: 8.72% complete, ETA 14:52:27
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 152.427 ops/s
+[info] # Warmup Iteration   2: 158.180 ops/s
+[info] # Warmup Iteration   3: 158.711 ops/s
+[info] # Warmup Iteration   4: 158.455 ops/s
+[info] # Warmup Iteration   5: 158.054 ops/s
+[info] Iteration   1: 157.721 ops/s
+[info] Iteration   2: 158.227 ops/s
+[info] Iteration   3: 158.270 ops/s
+[info] Iteration   4: 158.732 ops/s
+[info] Iteration   5: 158.865 ops/s
+[info] Iteration   6: 158.332 ops/s
+[info] Iteration   7: 158.367 ops/s
+[info] Iteration   8: 158.344 ops/s
+[info] Iteration   9: 158.259 ops/s
+[info] Iteration  10: 157.771 ops/s
+[info] # Run progress: 8.97% complete, ETA 14:49:57
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 151.654 ops/s
+[info] # Warmup Iteration   2: 158.751 ops/s
+[info] # Warmup Iteration   3: 158.717 ops/s
+[info] # Warmup Iteration   4: 158.776 ops/s
+[info] # Warmup Iteration   5: 158.470 ops/s
+[info] Iteration   1: 158.143 ops/s
+[info] Iteration   2: 157.727 ops/s
+[info] Iteration   3: 158.289 ops/s
+[info] Iteration   4: 158.295 ops/s
+[info] Iteration   5: 158.343 ops/s
+[info] Iteration   6: 158.420 ops/s
+[info] Iteration   7: 158.270 ops/s
+[info] Iteration   8: 157.446 ops/s
+[info] Iteration   9: 158.614 ops/s
+[info] Iteration  10: 158.599 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.streamTaylorSum":
+[info]   158.252 ±(99.9%) 0.307 ops/s [Average]
+[info]   (min, avg, max) = (157.446, 158.252, 158.865), stdev = 0.354
+[info]   CI (99.9%): [157.945, 158.559] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.streamTaylorSum
+[info] # Parameters: (taylorSize = 200000)
+[info] # Run progress: 9.23% complete, ETA 14:47:26
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 109.685 ops/s
+[info] # Warmup Iteration   2: 113.982 ops/s
+[info] # Warmup Iteration   3: 114.100 ops/s
+[info] # Warmup Iteration   4: 114.471 ops/s
+[info] # Warmup Iteration   5: 114.188 ops/s
+[info] Iteration   1: 114.012 ops/s
+[info] Iteration   2: 113.942 ops/s
+[info] Iteration   3: 114.357 ops/s
+[info] Iteration   4: 114.244 ops/s
+[info] Iteration   5: 114.304 ops/s
+[info] Iteration   6: 114.202 ops/s
+[info] Iteration   7: 114.176 ops/s
+[info] Iteration   8: 114.194 ops/s
+[info] Iteration   9: 113.724 ops/s
+[info] Iteration  10: 114.487 ops/s
+[info] # Run progress: 9.49% complete, ETA 14:44:57
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 109.303 ops/s
+[info] # Warmup Iteration   2: 114.222 ops/s
+[info] # Warmup Iteration   3: 114.381 ops/s
+[info] # Warmup Iteration   4: 114.404 ops/s
+[info] # Warmup Iteration   5: 114.227 ops/s
+[info] Iteration   1: 114.086 ops/s
+[info] Iteration   2: 114.314 ops/s
+[info] Iteration   3: 114.210 ops/s
+[info] Iteration   4: 114.262 ops/s
+[info] Iteration   5: 114.092 ops/s
+[info] Iteration   6: 114.539 ops/s
+[info] Iteration   7: 114.609 ops/s
+[info] Iteration   8: 114.213 ops/s
+[info] Iteration   9: 114.369 ops/s
+[info] Iteration  10: 114.409 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.streamTaylorSum":
+[info]   114.237 ±(99.9%) 0.180 ops/s [Average]
+[info]   (min, avg, max) = (113.724, 114.237, 114.609), stdev = 0.207
+[info]   CI (99.9%): [114.057, 114.417] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: coroutines.bench.TaylorBenchJMH.streamTaylorSum
+[info] # Parameters: (taylorSize = 250000)
+[info] # Run progress: 9.74% complete, ETA 14:42:27
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 86.135 ops/s
+[info] # Warmup Iteration   2: 88.080 ops/s
+[info] # Warmup Iteration   3: 89.476 ops/s
+[info] # Warmup Iteration   4: 89.773 ops/s
+[info] # Warmup Iteration   5: 88.652 ops/s
+[info] Iteration   1: 88.192 ops/s
+[info] Iteration   2: 87.527 ops/s
+[info] Iteration   3: 88.443 ops/s
+[info] Iteration   4: 89.197 ops/s
+[info] Iteration   5: 89.664 ops/s
+[info] Iteration   6: 90.391 ops/s
+[info] Iteration   7: 89.046 ops/s
+[info] Iteration   8: 88.539 ops/s
+[info] Iteration   9: 89.557 ops/s
+[info] Iteration  10: 87.891 ops/s
+[info] # Run progress: 10.00% complete, ETA 14:39:57
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 86.128 ops/s
+[info] # Warmup Iteration   2: 88.451 ops/s
+[info] # Warmup Iteration   3: 88.557 ops/s
+[info] # Warmup Iteration   4: 88.767 ops/s
+[info] # Warmup Iteration   5: 88.735 ops/s
+[info] Iteration   1: 89.340 ops/s
+[info] Iteration   2: 88.031 ops/s
+[info] Iteration   3: 89.056 ops/s
+[info] Iteration   4: 88.133 ops/s
+[info] Iteration   5: 87.934 ops/s
+[info] Iteration   6: 88.041 ops/s
+[info] Iteration   7: 90.019 ops/s
+[info] Iteration   8: 88.355 ops/s
+[info] Iteration   9: 88.447 ops/s
+[info] Iteration  10: 88.227 ops/s
+[info] Result "coroutines.bench.TaylorBenchJMH.streamTaylorSum":
+[info]   88.702 ±(99.9%) 0.683 ops/s [Average]
+[info]   (min, avg, max) = (87.527, 88.702, 90.391), stdev = 0.786
+[info]   CI (99.9%): [88.019, 89.384] (assumes normal distribution)
+
+
+
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineMax
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 0.00% complete, ETA 11:15:01
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 30381790.671 ops/s
+[info] # Warmup Iteration   2: 32509560.739 ops/s
+[info] # Warmup Iteration   3: 33028534.592 ops/s
+[info] # Warmup Iteration   4: 32914761.032 ops/s
+[info] # Warmup Iteration   5: 32816016.840 ops/s
+[info] Iteration   1: 32842496.360 ops/s
+[info] Iteration   2: 32855402.425 ops/s
+[info] Iteration   3: 32917989.485 ops/s
+[info] Iteration   4: 32719869.463 ops/s
+[info] Iteration   5: 32542745.123 ops/s
+[info] Iteration   6: 32520267.043 ops/s
+[info] Iteration   7: 32456344.370 ops/s
+[info] Iteration   8: 32628628.838 ops/s
+[info] Iteration   9: 32603388.088 ops/s
+[info] Iteration  10: 32742634.706 ops/s
+[info] # Run progress: 0.37% complete, ETA 11:15:02
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 31582470.335 ops/s
+[info] # Warmup Iteration   2: 32640997.966 ops/s
+[info] # Warmup Iteration   3: 30400502.671 ops/s
+[info] # Warmup Iteration   4: 32095789.494 ops/s
+[info] # Warmup Iteration   5: 32550972.269 ops/s
+[info] Iteration   1: 32448610.208 ops/s
+[info] Iteration   2: 32578749.565 ops/s
+[info] Iteration   3: 32505727.708 ops/s
+[info] Iteration   4: 32647566.057 ops/s
+[info] Iteration   5: 32478333.074 ops/s
+[info] Iteration   6: 32610976.154 ops/s
+[info] Iteration   7: 32199390.131 ops/s
+[info] Iteration   8: 32547297.731 ops/s
+[info] Iteration   9: 32537706.462 ops/s
+[info] Iteration  10: 32571468.706 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineMax":
+[info]   32597779.585 ±(99.9%) 142026.722 ops/s [Average]
+[info]   (min, avg, max) = (32199390.131, 32597779.585, 32917989.485), stdev = 163558.184
+[info]   CI (99.9%): [32455752.863, 32739806.307] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineMax
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 0.74% complete, ETA 11:12:31
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 31447242.457 ops/s
+[info] # Warmup Iteration   2: 32398724.906 ops/s
+[info] # Warmup Iteration   3: 32261136.163 ops/s
+[info] # Warmup Iteration   4: 32211062.245 ops/s
+[info] # Warmup Iteration   5: 32228405.683 ops/s
+[info] Iteration   1: 32429200.829 ops/s
+[info] Iteration   2: 31250926.672 ops/s
+[info] Iteration   3: 32313412.816 ops/s
+[info] Iteration   4: 32310072.340 ops/s
+[info] Iteration   5: 32224438.095 ops/s
+[info] Iteration   6: 32258319.199 ops/s
+[info] Iteration   7: 32306786.409 ops/s
+[info] Iteration   8: 32319375.145 ops/s
+[info] Iteration   9: 32318670.517 ops/s
+[info] Iteration  10: 32276564.645 ops/s
+[info] # Run progress: 1.11% complete, ETA 11:09:59
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 31401917.052 ops/s
+[info] # Warmup Iteration   2: 32505344.597 ops/s
+[info] # Warmup Iteration   3: 32523380.499 ops/s
+[info] # Warmup Iteration   4: 32544961.980 ops/s
+[info] # Warmup Iteration   5: 32522203.160 ops/s
+[info] Iteration   1: 32485010.188 ops/s
+[info] Iteration   2: 32409442.447 ops/s
+[info] Iteration   3: 32396156.773 ops/s
+[info] Iteration   4: 32591929.415 ops/s
+[info] Iteration   5: 32049544.754 ops/s
+[info] Iteration   6: 32564326.376 ops/s
+[info] Iteration   7: 32551938.936 ops/s
+[info] Iteration   8: 32437990.395 ops/s
+[info] Iteration   9: 32524271.601 ops/s
+[info] Iteration  10: 32572274.084 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineMax":
+[info]   32329532.582 ±(99.9%) 251126.380 ops/s [Average]
+[info]   (min, avg, max) = (31250926.672, 32329532.582, 32591929.415), stdev = 289197.513
+[info]   CI (99.9%): [32078406.201, 32580658.962] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineMax
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 1.48% complete, ETA 11:07:25
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 31477325.246 ops/s
+[info] # Warmup Iteration   2: 32274127.401 ops/s
+[info] # Warmup Iteration   3: 32539420.471 ops/s
+[info] # Warmup Iteration   4: 32532728.812 ops/s
+[info] # Warmup Iteration   5: 32441797.087 ops/s
+[info] Iteration   1: 32563047.335 ops/s
+[info] Iteration   2: 32424075.376 ops/s
+[info] Iteration   3: 32424712.587 ops/s
+[info] Iteration   4: 32518339.513 ops/s
+[info] Iteration   5: 32452653.473 ops/s
+[info] Iteration   6: 32489060.444 ops/s
+[info] Iteration   7: 32641980.658 ops/s
+[info] Iteration   8: 32612501.685 ops/s
+[info] Iteration   9: 32523840.076 ops/s
+[info] Iteration  10: 32538312.610 ops/s
+[info] # Run progress: 1.85% complete, ETA 11:04:52
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 31432946.762 ops/s
+[info] # Warmup Iteration   2: 32391082.122 ops/s
+[info] # Warmup Iteration   3: 32530842.629 ops/s
+[info] # Warmup Iteration   4: 32529916.626 ops/s
+[info] # Warmup Iteration   5: 32379887.834 ops/s
+[info] Iteration   1: 29209666.195 ops/s
+[info] Iteration   2: 27031985.331 ops/s
+[info] Iteration   3: 28911028.730 ops/s
+[info] Iteration   4: 25861860.520 ops/s
+[info] Iteration   5: 30061287.045 ops/s
+[info] Iteration   6: 28906808.596 ops/s
+[info] Iteration   7: 26435398.849 ops/s
+[info] Iteration   8: 26371967.490 ops/s
+[info] Iteration   9: 26708573.840 ops/s
+[info] Iteration  10: 29101447.048 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineMax":
+[info]   30189427.370 ±(99.9%) 2264661.872 ops/s [Average]
+[info]   (min, avg, max) = (25861860.520, 30189427.370, 32641980.658), stdev = 2607987.979
+[info]   CI (99.9%): [27924765.498, 32454089.242] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineMax
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 2.22% complete, ETA 11:02:21
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 29387847.330 ops/s
+[info] # Warmup Iteration   2: 30071851.269 ops/s
+[info] # Warmup Iteration   3: 28935726.650 ops/s
+[info] # Warmup Iteration   4: 26763932.887 ops/s
+[info] # Warmup Iteration   5: 26688663.800 ops/s
+[info] Iteration   1: 26930893.684 ops/s
+[info] Iteration   2: 27853084.406 ops/s
+[info] Iteration   3: 28849680.517 ops/s
+[info] Iteration   4: 26454400.212 ops/s
+[info] Iteration   5: 27855305.670 ops/s
+[info] Iteration   6: 29172031.587 ops/s
+[info] Iteration   7: 28223427.445 ops/s
+[info] Iteration   8: 27054912.817 ops/s
+[info] Iteration   9: 28981700.795 ops/s
+[info] Iteration  10: 28951384.231 ops/s
+[info] # Run progress: 2.59% complete, ETA 10:59:52
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 28703684.272 ops/s
+[info] # Warmup Iteration   2: 28090572.628 ops/s
+[info] # Warmup Iteration   3: 28545991.393 ops/s
+[info] # Warmup Iteration   4: 29635547.683 ops/s
+[info] # Warmup Iteration   5: 30822457.129 ops/s
+[info] Iteration   1: 28978772.404 ops/s
+[info] Iteration   2: 29381952.069 ops/s
+[info] Iteration   3: 28301589.555 ops/s
+[info] Iteration   4: 26171744.866 ops/s
+[info] Iteration   5: 25878897.622 ops/s
+[info] Iteration   6: 26989470.222 ops/s
+[info] Iteration   7: 30470013.163 ops/s
+[info] Iteration   8: 29468158.533 ops/s
+[info] Iteration   9: 29460541.115 ops/s
+[info] Iteration  10: 30755866.876 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineMax":
+[info]   28309191.389 ±(99.9%) 1201511.905 ops/s [Average]
+[info]   (min, avg, max) = (25878897.622, 28309191.389, 30755866.876), stdev = 1383662.897
+[info]   CI (99.9%): [27107679.484, 29510703.295] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineMax
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 2.96% complete, ETA 10:57:22
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 28222486.815 ops/s
+[info] # Warmup Iteration   2: 29851697.201 ops/s
+[info] # Warmup Iteration   3: 29816165.192 ops/s
+[info] # Warmup Iteration   4: 30111065.880 ops/s
+[info] # Warmup Iteration   5: 29668128.778 ops/s
+[info] Iteration   1: 30505032.241 ops/s
+[info] Iteration   2: 28900927.340 ops/s
+[info] Iteration   3: 30857335.856 ops/s
+[info] Iteration   4: 29624223.686 ops/s
+[info] Iteration   5: 30317106.399 ops/s
+[info] Iteration   6: 28898430.629 ops/s
+[info] Iteration   7: 30629844.573 ops/s
+[info] Iteration   8: 29710664.913 ops/s
+[info] Iteration   9: 28497929.516 ops/s
+[info] Iteration  10: 28286332.313 ops/s
+[info] # Run progress: 3.33% complete, ETA 10:54:58
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 27288342.170 ops/s
+[info] # Warmup Iteration   2: 26253721.011 ops/s
+[info] # Warmup Iteration   3: 28214403.915 ops/s
+[info] # Warmup Iteration   4: 27416839.969 ops/s
+[info] # Warmup Iteration   5: 28409107.593 ops/s
+[info] Iteration   1: 27470539.038 ops/s
+[info] Iteration   2: 29280552.190 ops/s
+[info] Iteration   3: 28618484.778 ops/s
+[info] Iteration   4: 29476472.915 ops/s
+[info] Iteration   5: 27710129.523 ops/s
+[info] Iteration   6: 27482230.671 ops/s
+[info] Iteration   7: 28647784.001 ops/s
+[info] Iteration   8: 27833678.755 ops/s
+[info] Iteration   9: 28007982.022 ops/s
+[info] Iteration  10: 30718689.827 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineMax":
+[info]   29073718.559 ±(99.9%) 972970.849 ops/s [Average]
+[info]   (min, avg, max) = (27470539.038, 29073718.559, 30857335.856), stdev = 1120474.676
+[info]   CI (99.9%): [28100747.711, 30046689.408] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineSameFringe
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 3.70% complete, ETA 10:52:27
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 19886999.217 ops/s
+[info] # Warmup Iteration   2: 20277911.284 ops/s
+[info] # Warmup Iteration   3: 20242665.901 ops/s
+[info] # Warmup Iteration   4: 20330217.764 ops/s
+[info] # Warmup Iteration   5: 20297185.540 ops/s
+[info] Iteration   1: 20393011.497 ops/s
+[info] Iteration   2: 20233674.775 ops/s
+[info] Iteration   3: 20266870.717 ops/s
+[info] Iteration   4: 20163847.419 ops/s
+[info] Iteration   5: 20105530.824 ops/s
+[info] Iteration   6: 20113096.736 ops/s
+[info] Iteration   7: 20207688.964 ops/s
+[info] Iteration   8: 20075270.978 ops/s
+[info] Iteration   9: 20079325.734 ops/s
+[info] Iteration  10: 20142459.436 ops/s
+[info] # Run progress: 4.07% complete, ETA 10:49:57
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 19750815.630 ops/s
+[info] # Warmup Iteration   2: 20203802.267 ops/s
+[info] # Warmup Iteration   3: 20306459.056 ops/s
+[info] # Warmup Iteration   4: 19961252.471 ops/s
+[info] # Warmup Iteration   5: 19433041.940 ops/s
+[info] Iteration   1: 19837727.451 ops/s
+[info] Iteration   2: 19390763.437 ops/s
+[info] Iteration   3: 18812782.249 ops/s
+[info] Iteration   4: 19352990.605 ops/s
+[info] Iteration   5: 19031397.323 ops/s
+[info] Iteration   6: 19881544.228 ops/s
+[info] Iteration   7: 18269196.873 ops/s
+[info] Iteration   8: 19456048.206 ops/s
+[info] Iteration   9: 18620667.694 ops/s
+[info] Iteration  10: 19470141.537 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineSameFringe":
+[info]   19695201.834 ±(99.9%) 534589.735 ops/s [Average]
+[info]   (min, avg, max) = (18269196.873, 19695201.834, 20393011.497), stdev = 615634.334
+[info]   CI (99.9%): [19160612.099, 20229791.569] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineSameFringe
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 4.44% complete, ETA 10:47:26
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 18281252.221 ops/s
+[info] # Warmup Iteration   2: 18517750.493 ops/s
+[info] # Warmup Iteration   3: 17876766.819 ops/s
+[info] # Warmup Iteration   4: 19913269.959 ops/s
+[info] # Warmup Iteration   5: 20070109.954 ops/s
+[info] Iteration   1: 17291462.605 ops/s
+[info] Iteration   2: 18018098.732 ops/s
+[info] Iteration   3: 18519416.198 ops/s
+[info] Iteration   4: 18879868.699 ops/s
+[info] Iteration   5: 19556572.678 ops/s
+[info] Iteration   6: 19417410.354 ops/s
+[info] Iteration   7: 19241611.242 ops/s
+[info] Iteration   8: 16621979.819 ops/s
+[info] Iteration   9: 17713145.473 ops/s
+[info] Iteration  10: 17690981.320 ops/s
+[info] # Run progress: 4.81% complete, ETA 10:44:56
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 17194904.817 ops/s
+[info] # Warmup Iteration   2: 18402379.425 ops/s
+[info] # Warmup Iteration   3: 18820045.908 ops/s
+[info] # Warmup Iteration   4: 18840365.891 ops/s
+[info] # Warmup Iteration   5: 17996754.862 ops/s
+[info] Iteration   1: 17666506.328 ops/s
+[info] Iteration   2: 18639399.984 ops/s
+[info] Iteration   3: 18673234.806 ops/s
+[info] Iteration   4: 18616886.010 ops/s
+[info] Iteration   5: 18094920.449 ops/s
+[info] Iteration   6: 18978182.244 ops/s
+[info] Iteration   7: 18456179.130 ops/s
+[info] Iteration   8: 18445710.162 ops/s
+[info] Iteration   9: 19336889.300 ops/s
+[info] Iteration  10: 18153455.400 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineSameFringe":
+[info]   18400595.547 ±(99.9%) 658443.566 ops/s [Average]
+[info]   (min, avg, max) = (16621979.819, 18400595.547, 19556572.678), stdev = 758264.590
+[info]   CI (99.9%): [17742151.981, 19059039.113] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineSameFringe
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 5.19% complete, ETA 10:42:26
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 17860261.732 ops/s
+[info] # Warmup Iteration   2: 18408474.132 ops/s
+[info] # Warmup Iteration   3: 17025259.234 ops/s
+[info] # Warmup Iteration   4: 19690400.753 ops/s
+[info] # Warmup Iteration   5: 19766810.630 ops/s
+[info] Iteration   1: 19850175.718 ops/s
+[info] Iteration   2: 17368928.508 ops/s
+[info] Iteration   3: 18465788.130 ops/s
+[info] Iteration   4: 18563795.781 ops/s
+[info] Iteration   5: 17320473.090 ops/s
+[info] Iteration   6: 17168038.737 ops/s
+[info] Iteration   7: 18344743.417 ops/s
+[info] Iteration   8: 17868981.170 ops/s
+[info] Iteration   9: 19042295.120 ops/s
+[info] Iteration  10: 19108065.686 ops/s
+[info] # Run progress: 5.56% complete, ETA 10:39:56
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 19113059.689 ops/s
+[info] # Warmup Iteration   2: 18969646.501 ops/s
+[info] # Warmup Iteration   3: 18087120.174 ops/s
+[info] # Warmup Iteration   4: 20164539.945 ops/s
+[info] # Warmup Iteration   5: 20189547.949 ops/s
+[info] Iteration   1: 18044655.476 ops/s
+[info] Iteration   2: 19157741.931 ops/s
+[info] Iteration   3: 18890352.279 ops/s
+[info] Iteration   4: 18555829.371 ops/s
+[info] Iteration   5: 16824664.957 ops/s
+[info] Iteration   6: 15200954.914 ops/s
+[info] Iteration   7: 18862112.649 ops/s
+[info] Iteration   8: 21108472.878 ops/s
+[info] Iteration   9: 19536510.050 ops/s
+[info] Iteration  10: 18202573.408 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineSameFringe":
+[info]   18374257.663 ±(99.9%) 1084334.872 ops/s [Average]
+[info]   (min, avg, max) = (15200954.914, 18374257.663, 21108472.878), stdev = 1248721.651
+[info]   CI (99.9%): [17289922.791, 19458592.536] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineSameFringe
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 5.93% complete, ETA 10:37:27
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 19434878.299 ops/s
+[info] # Warmup Iteration   2: 17841418.855 ops/s
+[info] # Warmup Iteration   3: 16892900.352 ops/s
+[info] # Warmup Iteration   4: 20675574.793 ops/s
+[info] # Warmup Iteration   5: 20955145.060 ops/s
+[info] Iteration   1: 21188059.199 ops/s
+[info] Iteration   2: 21121134.723 ops/s
+[info] Iteration   3: 21165656.428 ops/s
+[info] Iteration   4: 20912329.978 ops/s
+[info] Iteration   5: 19499381.619 ops/s
+[info] Iteration   6: 19539204.190 ops/s
+[info] Iteration   7: 20894883.556 ops/s
+[info] Iteration   8: 20930548.547 ops/s
+[info] Iteration   9: 20874977.929 ops/s
+[info] Iteration  10: 20973245.767 ops/s
+[info] # Run progress: 6.30% complete, ETA 10:34:55
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 19260980.360 ops/s
+[info] # Warmup Iteration   2: 19695163.125 ops/s
+[info] # Warmup Iteration   3: 21099601.572 ops/s
+[info] # Warmup Iteration   4: 20760706.774 ops/s
+[info] # Warmup Iteration   5: 18703450.697 ops/s
+[info] Iteration   1: 18383776.471 ops/s
+[info] Iteration   2: 20394237.010 ops/s
+[info] Iteration   3: 16642524.340 ops/s
+[info] Iteration   4: 18515398.091 ops/s
+[info] Iteration   5: 21043211.091 ops/s
+[info] Iteration   6: 19253394.871 ops/s
+[info] Iteration   7: 21021029.812 ops/s
+[info] Iteration   8: 20362823.373 ops/s
+[info] Iteration   9: 18525339.479 ops/s
+[info] Iteration  10: 17809834.814 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineSameFringe":
+[info]   19952549.564 ±(99.9%) 1173381.378 ops/s [Average]
+[info]   (min, avg, max) = (16642524.340, 19952549.564, 21188059.199), stdev = 1351267.740
+[info]   CI (99.9%): [18779168.187, 21125930.942] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineSameFringe
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 6.67% complete, ETA 10:32:24
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 17559777.724 ops/s
+[info] # Warmup Iteration   2: 15830088.968 ops/s
+[info] # Warmup Iteration   3: 19169242.554 ops/s
+[info] # Warmup Iteration   4: 18710606.485 ops/s
+[info] # Warmup Iteration   5: 19591221.447 ops/s
+[info] Iteration   1: 17123402.557 ops/s
+[info] Iteration   2: 20896114.344 ops/s
+[info] Iteration   3: 16646564.422 ops/s
+[info] Iteration   4: 11210353.901 ops/s
+[info] Iteration   5: 17966237.528 ops/s
+[info] Iteration   6: 20902522.220 ops/s
+[info] Iteration   7: 21005187.272 ops/s
+[info] Iteration   8: 20989870.382 ops/s
+[info] Iteration   9: 20358451.699 ops/s
+[info] Iteration  10: 18593536.687 ops/s
+[info] # Run progress: 7.04% complete, ETA 10:29:53
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 18979137.191 ops/s
+[info] # Warmup Iteration   2: 20884184.942 ops/s
+[info] # Warmup Iteration   3: 18025961.754 ops/s
+[info] # Warmup Iteration   4: 18310059.703 ops/s
+[info] # Warmup Iteration   5: 20520720.763 ops/s
+[info] Iteration   1: 20515374.881 ops/s
+[info] Iteration   2: 20215512.726 ops/s
+[info] Iteration   3: 16887249.393 ops/s
+[info] Iteration   4: 11314640.679 ops/s
+[info] Iteration   5: 16753926.860 ops/s
+[info] Iteration   6: 18990701.561 ops/s
+[info] Iteration   7: 19258328.466 ops/s
+[info] Iteration   8: 19600752.479 ops/s
+[info] Iteration   9: 18873706.154 ops/s
+[info] Iteration  10: 18710914.280 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineSameFringe":
+[info]   18340667.425 ±(99.9%) 2457642.951 ops/s [Average]
+[info]   (min, avg, max) = (11210353.901, 18340667.425, 21005187.272), stdev = 2830225.278
+[info]   CI (99.9%): [15883024.473, 20798310.376] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineToArray
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 7.41% complete, ETA 10:27:23
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 4844495.843 ops/s
+[info] # Warmup Iteration   2: 5409017.521 ops/s
+[info] # Warmup Iteration   3: 5429533.219 ops/s
+[info] # Warmup Iteration   4: 5410126.934 ops/s
+[info] # Warmup Iteration   5: 4071013.944 ops/s
+[info] Iteration   1: 5380237.087 ops/s
+[info] Iteration   2: 5195210.026 ops/s
+[info] Iteration   3: 5046613.791 ops/s
+[info] Iteration   4: 5231250.286 ops/s
+[info] Iteration   5: 5321386.750 ops/s
+[info] Iteration   6: 5365918.841 ops/s
+[info] Iteration   7: 5178589.209 ops/s
+[info] Iteration   8: 5457527.794 ops/s
+[info] Iteration   9: 5559675.889 ops/s
+[info] Iteration  10: 4277265.620 ops/s
+[info] # Run progress: 7.78% complete, ETA 10:24:52
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5096956.488 ops/s
+[info] # Warmup Iteration   2: 5285374.048 ops/s
+[info] # Warmup Iteration   3: 5243160.317 ops/s
+[info] # Warmup Iteration   4: 4100031.125 ops/s
+[info] # Warmup Iteration   5: 4520849.824 ops/s
+[info] Iteration   1: 4714845.730 ops/s
+[info] Iteration   2: 5534161.092 ops/s
+[info] Iteration   3: 5534251.692 ops/s
+[info] Iteration   4: 5526426.134 ops/s
+[info] Iteration   5: 5293588.006 ops/s
+[info] Iteration   6: 4446982.176 ops/s
+[info] Iteration   7: 4362177.755 ops/s
+[info] Iteration   8: 4785393.045 ops/s
+[info] Iteration   9: 4846415.507 ops/s
+[info] Iteration  10: 4483456.339 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineToArray":
+[info]   5077068.638 ±(99.9%) 372591.389 ops/s [Average]
+[info]   (min, avg, max) = (4277265.620, 5077068.638, 5559675.889), stdev = 429076.798
+[info]   CI (99.9%): [4704477.250, 5449660.027] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineToArray
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 8.15% complete, ETA 10:22:22
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5154124.496 ops/s
+[info] # Warmup Iteration   2: 5025599.260 ops/s
+[info] # Warmup Iteration   3: 5167729.703 ops/s
+[info] # Warmup Iteration   4: 4631693.423 ops/s
+[info] # Warmup Iteration   5: 4523767.546 ops/s
+[info] Iteration   1: 4931024.240 ops/s
+[info] Iteration   2: 5306814.874 ops/s
+[info] Iteration   3: 5306470.826 ops/s
+[info] Iteration   4: 5140661.869 ops/s
+[info] Iteration   5: 4216970.397 ops/s
+[info] Iteration   6: 4989680.104 ops/s
+[info] Iteration   7: 5010414.853 ops/s
+[info] Iteration   8: 4761070.527 ops/s
+[info] Iteration   9: 5314572.402 ops/s
+[info] Iteration  10: 5165960.928 ops/s
+[info] # Run progress: 8.52% complete, ETA 10:19:57
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5302676.464 ops/s
+[info] # Warmup Iteration   2: 5595820.223 ops/s
+[info] # Warmup Iteration   3: 5600452.785 ops/s
+[info] # Warmup Iteration   4: 5606915.057 ops/s
+[info] # Warmup Iteration   5: 5604054.075 ops/s
+[info] Iteration   1: 5603869.886 ops/s
+[info] Iteration   2: 5495885.536 ops/s
+[info] Iteration   3: 5341785.085 ops/s
+[info] Iteration   4: 4511462.116 ops/s
+[info] Iteration   5: 4007379.361 ops/s
+[info] Iteration   6: 4959744.193 ops/s
+[info] Iteration   7: 5511186.363 ops/s
+[info] Iteration   8: 5550929.619 ops/s
+[info] Iteration   9: 5537930.815 ops/s
+[info] Iteration  10: 5484194.433 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineToArray":
+[info]   5107400.421 ±(99.9%) 389384.392 ops/s [Average]
+[info]   (min, avg, max) = (4007379.361, 5107400.421, 5603869.886), stdev = 448415.645
+[info]   CI (99.9%): [4718016.029, 5496784.813] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineToArray
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 8.89% complete, ETA 10:17:26
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5033000.963 ops/s
+[info] # Warmup Iteration   2: 4943877.182 ops/s
+[info] # Warmup Iteration   3: 5102350.221 ops/s
+[info] # Warmup Iteration   4: 5231021.721 ops/s
+[info] # Warmup Iteration   5: 5165076.906 ops/s
+[info] Iteration   1: 4960924.391 ops/s
+[info] Iteration   2: 5342521.965 ops/s
+[info] Iteration   3: 5268140.979 ops/s
+[info] Iteration   4: 4996378.218 ops/s
+[info] Iteration   5: 5058283.162 ops/s
+[info] Iteration   6: 5174364.068 ops/s
+[info] Iteration   7: 5359327.531 ops/s
+[info] Iteration   8: 5507803.895 ops/s
+[info] Iteration   9: 5480432.824 ops/s
+[info] Iteration  10: 5494195.780 ops/s
+[info] # Run progress: 9.26% complete, ETA 10:14:54
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5015224.310 ops/s
+[info] # Warmup Iteration   2: 5285932.612 ops/s
+[info] # Warmup Iteration   3: 5433559.629 ops/s
+[info] # Warmup Iteration   4: 5546975.721 ops/s
+[info] # Warmup Iteration   5: 5610189.540 ops/s
+[info] Iteration   1: 5613888.054 ops/s
+[info] Iteration   2: 5481464.339 ops/s
+[info] Iteration   3: 4608334.992 ops/s
+[info] Iteration   4: 4184556.501 ops/s
+[info] Iteration   5: 5061616.641 ops/s
+[info] Iteration   6: 5101951.673 ops/s
+[info] Iteration   7: 5310962.786 ops/s
+[info] Iteration   8: 5034116.092 ops/s
+[info] Iteration   9: 5254694.138 ops/s
+[info] Iteration  10: 4377696.732 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineToArray":
+[info]   5133582.738 ±(99.9%) 328607.286 ops/s [Average]
+[info]   (min, avg, max) = (4184556.501, 5133582.738, 5613888.054), stdev = 378424.639
+[info]   CI (99.9%): [4804975.452, 5462190.024] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineToArray
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 9.63% complete, ETA 10:12:23
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5294091.306 ops/s
+[info] # Warmup Iteration   2: 5282441.039 ops/s
+[info] # Warmup Iteration   3: 4679852.159 ops/s
+[info] # Warmup Iteration   4: 5280936.355 ops/s
+[info] # Warmup Iteration   5: 5416618.960 ops/s
+[info] Iteration   1: 4893750.348 ops/s
+[info] Iteration   2: 4958072.482 ops/s
+[info] Iteration   3: 5215997.085 ops/s
+[info] Iteration   4: 5179548.188 ops/s
+[info] Iteration   5: 5448134.412 ops/s
+[info] Iteration   6: 5519307.147 ops/s
+[info] Iteration   7: 4963582.487 ops/s
+[info] Iteration   8: 5212303.781 ops/s
+[info] Iteration   9: 4903427.672 ops/s
+[info] Iteration  10: 5133642.627 ops/s
+[info] # Run progress: 10.00% complete, ETA 10:09:52
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 4284066.730 ops/s
+[info] # Warmup Iteration   2: 5476630.416 ops/s
+[info] # Warmup Iteration   3: 5481931.329 ops/s
+[info] # Warmup Iteration   4: 4937621.079 ops/s
+[info] # Warmup Iteration   5: 5346822.323 ops/s
+[info] Iteration   1: 5339384.783 ops/s
+[info] Iteration   2: 5381954.847 ops/s
+[info] Iteration   3: 5274220.165 ops/s
+[info] Iteration   4: 5083900.111 ops/s
+[info] Iteration   5: 5143390.958 ops/s
+[info] Iteration   6: 5237500.961 ops/s
+[info] Iteration   7: 5244128.894 ops/s
+[info] Iteration   8: 5164575.080 ops/s
+[info] Iteration   9: 4844433.124 ops/s
+[info] Iteration  10: 5002550.795 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineToArray":
+[info]   5157190.297 ±(99.9%) 163431.204 ops/s [Average]
+[info]   (min, avg, max) = (4844433.124, 5157190.297, 5519307.147), stdev = 188207.617
+[info]   CI (99.9%): [4993759.093, 5320621.501] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.coroutineToArray
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 10.37% complete, ETA 10:07:21
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 4651767.379 ops/s
+[info] # Warmup Iteration   2: 4613503.254 ops/s
+[info] # Warmup Iteration   3: 4752378.067 ops/s
+[info] # Warmup Iteration   4: 5378638.881 ops/s
+[info] # Warmup Iteration   5: 4871231.145 ops/s
+[info] Iteration   1: 5258605.034 ops/s
+[info] Iteration   2: 4970584.226 ops/s
+[info] Iteration   3: 5182789.507 ops/s
+[info] Iteration   4: 4475991.970 ops/s
+[info] Iteration   5: 5340508.103 ops/s
+[info] Iteration   6: 5402485.607 ops/s
+[info] Iteration   7: 5500445.666 ops/s
+[info] Iteration   8: 5209485.714 ops/s
+[info] Iteration   9: 5271472.531 ops/s
+[info] Iteration  10: 5263331.493 ops/s
+[info] # Run progress: 10.74% complete, ETA 10:04:51
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 4825237.494 ops/s
+[info] # Warmup Iteration   2: 5271996.549 ops/s
+[info] # Warmup Iteration   3: 5381868.988 ops/s
+[info] # Warmup Iteration   4: 5384714.687 ops/s
+[info] # Warmup Iteration   5: 5429496.326 ops/s
+[info] Iteration   1: 5466204.319 ops/s
+[info] Iteration   2: 5306561.306 ops/s
+[info] Iteration   3: 5399134.540 ops/s
+[info] Iteration   4: 4696008.953 ops/s
+[info] Iteration   5: 5206851.355 ops/s
+[info] Iteration   6: 4395470.932 ops/s
+[info] Iteration   7: 5443019.941 ops/s
+[info] Iteration   8: 5326835.423 ops/s
+[info] Iteration   9: 5076186.018 ops/s
+[info] Iteration  10: 4533954.020 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.coroutineToArray":
+[info]   5136296.333 ±(99.9%) 296615.309 ops/s [Average]
+[info]   (min, avg, max) = (4395470.932, 5136296.333, 5500445.666), stdev = 341582.631
+[info]   CI (99.9%): [4839681.024, 5432911.642] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorMax
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 11.11% complete, ETA 10:02:20
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 32064529.321 ops/s
+[info] # Warmup Iteration   2: 30225925.640 ops/s
+[info] # Warmup Iteration   3: 36525868.793 ops/s
+[info] # Warmup Iteration   4: 33129662.818 ops/s
+[info] # Warmup Iteration   5: 34284404.040 ops/s
+[info] Iteration   1: 35865430.745 ops/s
+[info] Iteration   2: 28609501.259 ops/s
+[info] Iteration   3: 18946538.990 ops/s
+[info] Iteration   4: 16507377.013 ops/s
+[info] Iteration   5: 27437091.523 ops/s
+[info] Iteration   6: 27206995.984 ops/s
+[info] Iteration   7: 32081743.522 ops/s
+[info] Iteration   8: 30647121.986 ops/s
+[info] Iteration   9: 28473661.342 ops/s
+[info] Iteration  10: 31850376.380 ops/s
+[info] # Run progress: 11.48% complete, ETA 09:59:50
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 32528426.899 ops/s
+[info] # Warmup Iteration   2: 37497972.734 ops/s
+[info] # Warmup Iteration   3: 34188557.104 ops/s
+[info] # Warmup Iteration   4: 33948082.425 ops/s
+[info] # Warmup Iteration   5: 35619732.915 ops/s
+[info] Iteration   1: 33652426.454 ops/s
+[info] Iteration   2: 31596301.309 ops/s
+[info] Iteration   3: 35462244.457 ops/s
+[info] Iteration   4: 36203836.914 ops/s
+[info] Iteration   5: 35838461.282 ops/s
+[info] Iteration   6: 34283481.498 ops/s
+[info] Iteration   7: 35342918.990 ops/s
+[info] Iteration   8: 37501353.756 ops/s
+[info] Iteration   9: 36407006.425 ops/s
+[info] Iteration  10: 36833500.650 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorMax":
+[info]   31537368.524 ±(99.9%) 4989850.436 ops/s [Average]
+[info]   (min, avg, max) = (16507377.013, 31537368.524, 37501353.756), stdev = 5746319.182
+[info]   CI (99.9%): [26547518.088, 36527218.960] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorMax
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 11.85% complete, ETA 09:57:19
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 37478993.595 ops/s
+[info] # Warmup Iteration   2: 37738488.917 ops/s
+[info] # Warmup Iteration   3: 36230466.049 ops/s
+[info] # Warmup Iteration   4: 35629842.829 ops/s
+[info] # Warmup Iteration   5: 34197319.876 ops/s
+[info] Iteration   1: 25895343.255 ops/s
+[info] Iteration   2: 35073848.758 ops/s
+[info] Iteration   3: 34044143.953 ops/s
+[info] Iteration   4: 35457242.401 ops/s
+[info] Iteration   5: 34046770.071 ops/s
+[info] Iteration   6: 35846296.560 ops/s
+[info] Iteration   7: 34713491.694 ops/s
+[info] Iteration   8: 33746237.997 ops/s
+[info] Iteration   9: 35754837.477 ops/s
+[info] Iteration  10: 35502199.620 ops/s
+[info] # Run progress: 12.22% complete, ETA 09:54:48
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 27510158.395 ops/s
+[info] # Warmup Iteration   2: 29247911.905 ops/s
+[info] # Warmup Iteration   3: 27259395.035 ops/s
+[info] # Warmup Iteration   4: 33284855.735 ops/s
+[info] # Warmup Iteration   5: 29928128.933 ops/s
+[info] Iteration   1: 35879131.924 ops/s
+[info] Iteration   2: 31689678.619 ops/s
+[info] Iteration   3: 31136953.162 ops/s
+[info] Iteration   4: 29974590.020 ops/s
+[info] Iteration   5: 30849572.136 ops/s
+[info] Iteration   6: 30051902.863 ops/s
+[info] Iteration   7: 34764158.275 ops/s
+[info] Iteration   8: 30849648.784 ops/s
+[info] Iteration   9: 32816196.761 ops/s
+[info] Iteration  10: 30746887.664 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorMax":
+[info]   32941956.600 ±(99.9%) 2333197.950 ops/s [Average]
+[info]   (min, avg, max) = (25895343.255, 32941956.600, 35879131.924), stdev = 2686914.229
+[info]   CI (99.9%): [30608758.649, 35275154.550] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorMax
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 12.59% complete, ETA 09:52:18
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 33213967.520 ops/s
+[info] # Warmup Iteration   2: 34946679.537 ops/s
+[info] # Warmup Iteration   3: 32001457.900 ops/s
+[info] # Warmup Iteration   4: 31226405.954 ops/s
+[info] # Warmup Iteration   5: 31782109.673 ops/s
+[info] Iteration   1: 31476267.398 ops/s
+[info] Iteration   2: 32928335.655 ops/s
+[info] Iteration   3: 29767257.260 ops/s
+[info] Iteration   4: 31093924.669 ops/s
+[info] Iteration   5: 29727835.147 ops/s
+[info] Iteration   6: 31976977.525 ops/s
+[info] Iteration   7: 28437009.736 ops/s
+[info] Iteration   8: 30272372.016 ops/s
+[info] Iteration   9: 29478873.890 ops/s
+[info] Iteration  10: 34358189.016 ops/s
+[info] # Run progress: 12.96% complete, ETA 09:49:47
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 28640822.722 ops/s
+[info] # Warmup Iteration   2: 29905211.847 ops/s
+[info] # Warmup Iteration   3: 35308242.428 ops/s
+[info] # Warmup Iteration   4: 35866457.737 ops/s
+[info] # Warmup Iteration   5: 34888724.178 ops/s
+[info] Iteration   1: 34534472.610 ops/s
+[info] Iteration   2: 36002762.625 ops/s
+[info] Iteration   3: 33486616.639 ops/s
+[info] Iteration   4: 32171705.468 ops/s
+[info] Iteration   5: 30197392.392 ops/s
+[info] Iteration   6: 33909452.711 ops/s
+[info] Iteration   7: 35851283.474 ops/s
+[info] Iteration   8: 35827801.446 ops/s
+[info] Iteration   9: 35811191.579 ops/s
+[info] Iteration  10: 35529531.917 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorMax":
+[info]   32641962.659 ±(99.9%) 2177804.577 ops/s [Average]
+[info]   (min, avg, max) = (28437009.736, 32641962.659, 36002762.625), stdev = 2507962.990
+[info]   CI (99.9%): [30464158.081, 34819767.236] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorMax
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 13.33% complete, ETA 09:47:17
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 26531620.700 ops/s
+[info] # Warmup Iteration   2: 36335107.718 ops/s
+[info] # Warmup Iteration   3: 32047557.147 ops/s
+[info] # Warmup Iteration   4: 32385756.230 ops/s
+[info] # Warmup Iteration   5: 32701858.430 ops/s
+[info] Iteration   1: 31291173.718 ops/s
+[info] Iteration   2: 35432235.367 ops/s
+[info] Iteration   3: 33369368.823 ops/s
+[info] Iteration   4: 35730553.964 ops/s
+[info] Iteration   5: 32542392.649 ops/s
+[info] Iteration   6: 35343212.544 ops/s
+[info] Iteration   7: 31277527.023 ops/s
+[info] Iteration   8: 33867297.372 ops/s
+[info] Iteration   9: 34145849.919 ops/s
+[info] Iteration  10: 32684623.190 ops/s
+[info] # Run progress: 13.70% complete, ETA 09:44:46
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 34392458.459 ops/s
+[info] # Warmup Iteration   2: 32061616.945 ops/s
+[info] # Warmup Iteration   3: 31619964.035 ops/s
+[info] # Warmup Iteration   4: 32105823.360 ops/s
+[info] # Warmup Iteration   5: 34161328.028 ops/s
+[info] Iteration   1: 30992293.566 ops/s
+[info] Iteration   2: 34773511.030 ops/s
+[info] Iteration   3: 37494815.763 ops/s
+[info] Iteration   4: 36990922.467 ops/s
+[info] Iteration   5: 35080189.114 ops/s
+[info] Iteration   6: 35542824.881 ops/s
+[info] Iteration   7: 35360009.125 ops/s
+[info] Iteration   8: 30704304.471 ops/s
+[info] Iteration   9: 28071711.513 ops/s
+[info] Iteration  10: 23969645.550 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorMax":
+[info]   33233223.103 ±(99.9%) 2795735.310 ops/s [Average]
+[info]   (min, avg, max) = (23969645.550, 33233223.103, 37494815.763), stdev = 3219572.941
+[info]   CI (99.9%): [30437487.792, 36028958.413] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorMax
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 14.07% complete, ETA 09:42:15
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 36500536.840 ops/s
+[info] # Warmup Iteration   2: 37037333.471 ops/s
+[info] # Warmup Iteration   3: 35408253.251 ops/s
+[info] # Warmup Iteration   4: 27722593.288 ops/s
+[info] # Warmup Iteration   5: 37014401.204 ops/s
+[info] Iteration   1: 31788010.566 ops/s
+[info] Iteration   2: 30819761.731 ops/s
+[info] Iteration   3: 33242175.123 ops/s
+[info] Iteration   4: 33577947.349 ops/s
+[info] Iteration   5: 36651949.919 ops/s
+[info] Iteration   6: 33337291.619 ops/s
+[info] Iteration   7: 31783962.590 ops/s
+[info] Iteration   8: 29269056.513 ops/s
+[info] Iteration   9: 34482506.387 ops/s
+[info] Iteration  10: 35857908.731 ops/s
+[info] # Run progress: 14.44% complete, ETA 09:39:45
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 36351091.092 ops/s
+[info] # Warmup Iteration   2: 36981837.360 ops/s
+[info] # Warmup Iteration   3: 29651451.993 ops/s
+[info] # Warmup Iteration   4: 35634282.773 ops/s
+[info] # Warmup Iteration   5: 35629024.799 ops/s
+[info] Iteration   1: 35196691.681 ops/s
+[info] Iteration   2: 32917318.284 ops/s
+[info] Iteration   3: 25507634.411 ops/s
+[info] Iteration   4: 26302261.974 ops/s
+[info] Iteration   5: 23235623.545 ops/s
+[info] Iteration   6: 27024327.172 ops/s
+[info] Iteration   7: 19947000.620 ops/s
+[info] Iteration   8: 15990451.833 ops/s
+[info] Iteration   9: 31489446.796 ops/s
+[info] Iteration  10: 19412383.717 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorMax":
+[info]   29391685.528 ±(99.9%) 5152385.572 ops/s [Average]
+[info]   (min, avg, max) = (15990451.833, 29391685.528, 36651949.919), stdev = 5933494.887
+[info]   CI (99.9%): [24239299.956, 34544071.100] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorSameFringe
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 14.81% complete, ETA 09:37:14
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 11271651.502 ops/s
+[info] # Warmup Iteration   2: 9554386.797 ops/s
+[info] # Warmup Iteration   3: 9674623.331 ops/s
+[info] # Warmup Iteration   4: 10236733.266 ops/s
+[info] # Warmup Iteration   5: 13360281.859 ops/s
+[info] Iteration   1: 18558688.980 ops/s
+[info] Iteration   2: 15321762.523 ops/s
+[info] Iteration   3: 17068763.635 ops/s
+[info] Iteration   4: 16517075.663 ops/s
+[info] Iteration   5: 15621319.751 ops/s
+[info] Iteration   6: 16239125.540 ops/s
+[info] Iteration   7: 17478723.638 ops/s
+[info] Iteration   8: 16722507.515 ops/s
+[info] Iteration   9: 17432201.344 ops/s
+[info] Iteration  10: 17620655.585 ops/s
+[info] # Run progress: 15.18% complete, ETA 09:34:47
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 17136009.134 ops/s
+[info] # Warmup Iteration   2: 17280065.333 ops/s
+[info] # Warmup Iteration   3: 15017117.645 ops/s
+[info] # Warmup Iteration   4: 15434435.876 ops/s
+[info] # Warmup Iteration   5: 15947968.061 ops/s
+[info] Iteration   1: 12106175.112 ops/s
+[info] Iteration   2: 12905837.554 ops/s
+[info] Iteration   3: 17175246.175 ops/s
+[info] Iteration   4: 18864183.000 ops/s
+[info] Iteration   5: 18627127.796 ops/s
+[info] Iteration   6: 15181742.188 ops/s
+[info] Iteration   7: 11737125.224 ops/s
+[info] Iteration   8: 14157119.021 ops/s
+[info] Iteration   9: 17834343.129 ops/s
+[info] Iteration  10: 15039708.394 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorSameFringe":
+[info]   16110471.588 ±(99.9%) 1820459.692 ops/s [Average]
+[info]   (min, avg, max) = (11737125.224, 16110471.588, 18864183.000), stdev = 2096444.089
+[info]   CI (99.9%): [14290011.896, 17930931.281] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorSameFringe
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 15.56% complete, ETA 09:32:16
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 18148624.184 ops/s
+[info] # Warmup Iteration   2: 18599425.419 ops/s
+[info] # Warmup Iteration   3: 18629280.001 ops/s
+[info] # Warmup Iteration   4: 18700900.273 ops/s
+[info] # Warmup Iteration   5: 18599071.736 ops/s
+[info] Iteration   1: 15945118.367 ops/s
+[info] Iteration   2: 17502029.783 ops/s
+[info] Iteration   3: 17057723.480 ops/s
+[info] Iteration   4: 16743829.202 ops/s
+[info] Iteration   5: 18545775.849 ops/s
+[info] Iteration   6: 18541318.421 ops/s
+[info] Iteration   7: 18628180.578 ops/s
+[info] Iteration   8: 18132649.482 ops/s
+[info] Iteration   9: 17048156.732 ops/s
+[info] Iteration  10: 14241052.775 ops/s
+[info] # Run progress: 15.93% complete, ETA 09:29:45
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 15444864.720 ops/s
+[info] # Warmup Iteration   2: 17139987.895 ops/s
+[info] # Warmup Iteration   3: 17782102.876 ops/s
+[info] # Warmup Iteration   4: 17844112.438 ops/s
+[info] # Warmup Iteration   5: 17833811.703 ops/s
+[info] Iteration   1: 17880139.283 ops/s
+[info] Iteration   2: 17877305.334 ops/s
+[info] Iteration   3: 17461752.293 ops/s
+[info] Iteration   4: 17881896.367 ops/s
+[info] Iteration   5: 17871052.163 ops/s
+[info] Iteration   6: 17775581.844 ops/s
+[info] Iteration   7: 17830044.574 ops/s
+[info] Iteration   8: 17273645.009 ops/s
+[info] Iteration   9: 17634341.630 ops/s
+[info] Iteration  10: 17568831.404 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorSameFringe":
+[info]   17472021.228 ±(99.9%) 860922.177 ops/s [Average]
+[info]   (min, avg, max) = (14241052.775, 17472021.228, 18628180.578), stdev = 991439.260
+[info]   CI (99.9%): [16611099.051, 18332943.406] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorSameFringe
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 16.30% complete, ETA 09:27:22
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 17396479.446 ops/s
+[info] # Warmup Iteration   2: 17729286.346 ops/s
+[info] # Warmup Iteration   3: 17521598.908 ops/s
+[info] # Warmup Iteration   4: 17794408.276 ops/s
+[info] # Warmup Iteration   5: 17677669.779 ops/s
+[info] Iteration   1: 17765970.837 ops/s
+[info] Iteration   2: 17717360.717 ops/s
+[info] Iteration   3: 17775585.079 ops/s
+[info] Iteration   4: 17780384.238 ops/s
+[info] Iteration   5: 17900665.712 ops/s
+[info] Iteration   6: 17838132.264 ops/s
+[info] Iteration   7: 17838862.000 ops/s
+[info] Iteration   8: 17846623.032 ops/s
+[info] Iteration   9: 17754528.348 ops/s
+[info] Iteration  10: 17844358.228 ops/s
+[info] # Run progress: 16.67% complete, ETA 09:24:51
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 17588717.686 ops/s
+[info] # Warmup Iteration   2: 17688654.131 ops/s
+[info] # Warmup Iteration   3: 17995764.489 ops/s
+[info] # Warmup Iteration   4: 18015205.529 ops/s
+[info] # Warmup Iteration   5: 17991494.805 ops/s
+[info] Iteration   1: 17634396.327 ops/s
+[info] Iteration   2: 16445261.329 ops/s
+[info] Iteration   3: 18208592.621 ops/s
+[info] Iteration   4: 18689315.902 ops/s
+[info] Iteration   5: 16087834.230 ops/s
+[info] Iteration   6: 17484475.019 ops/s
+[info] Iteration   7: 18334958.922 ops/s
+[info] Iteration   8: 18381701.068 ops/s
+[info] Iteration   9: 14620312.043 ops/s
+[info] Iteration  10: 12752859.449 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorSameFringe":
+[info]   17335108.868 ±(99.9%) 1224254.493 ops/s [Average]
+[info]   (min, avg, max) = (12752859.449, 17335108.868, 18689315.902), stdev = 1409853.295
+[info]   CI (99.9%): [16110854.375, 18559363.362] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorSameFringe
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 17.04% complete, ETA 09:22:20
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 14999048.623 ops/s
+[info] # Warmup Iteration   2: 13303725.590 ops/s
+[info] # Warmup Iteration   3: 12476568.262 ops/s
+[info] # Warmup Iteration   4: 16320317.305 ops/s
+[info] # Warmup Iteration   5: 16231004.713 ops/s
+[info] Iteration   1: 16900529.168 ops/s
+[info] Iteration   2: 16356476.819 ops/s
+[info] Iteration   3: 15399486.274 ops/s
+[info] Iteration   4: 16212611.029 ops/s
+[info] Iteration   5: 15422269.570 ops/s
+[info] Iteration   6: 16208132.973 ops/s
+[info] Iteration   7: 17468167.860 ops/s
+[info] Iteration   8: 15713115.725 ops/s
+[info] Iteration   9: 14518264.456 ops/s
+[info] Iteration  10: 15968372.842 ops/s
+[info] # Run progress: 17.41% complete, ETA 09:19:49
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 13505831.952 ops/s
+[info] # Warmup Iteration   2: 15924456.379 ops/s
+[info] # Warmup Iteration   3: 15021967.453 ops/s
+[info] # Warmup Iteration   4: 15175578.076 ops/s
+[info] # Warmup Iteration   5: 15973495.120 ops/s
+[info] Iteration   1: 16105067.593 ops/s
+[info] Iteration   2: 16632923.923 ops/s
+[info] Iteration   3: 15903962.304 ops/s
+[info] Iteration   4: 15767837.314 ops/s
+[info] Iteration   5: 15596315.623 ops/s
+[info] Iteration   6: 16366480.200 ops/s
+[info] Iteration   7: 15469698.372 ops/s
+[info] Iteration   8: 16272338.517 ops/s
+[info] Iteration   9: 15195021.821 ops/s
+[info] Iteration  10: 16834300.232 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorSameFringe":
+[info]   16015568.631 ±(99.9%) 584955.397 ops/s [Average]
+[info]   (min, avg, max) = (14518264.456, 16015568.631, 17468167.860), stdev = 673635.505
+[info]   CI (99.9%): [15430613.234, 16600524.028] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorSameFringe
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 17.78% complete, ETA 09:17:19
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 12597046.052 ops/s
+[info] # Warmup Iteration   2: 15514370.571 ops/s
+[info] # Warmup Iteration   3: 18539988.737 ops/s
+[info] # Warmup Iteration   4: 18323180.432 ops/s
+[info] # Warmup Iteration   5: 15277351.465 ops/s
+[info] Iteration   1: 12058890.181 ops/s
+[info] Iteration   2: 16626272.279 ops/s
+[info] Iteration   3: 16231921.815 ops/s
+[info] Iteration   4: 16941757.479 ops/s
+[info] Iteration   5: 15598032.477 ops/s
+[info] Iteration   6: 15759743.158 ops/s
+[info] Iteration   7: 16566318.600 ops/s
+[info] Iteration   8: 17435618.774 ops/s
+[info] Iteration   9: 16288809.167 ops/s
+[info] Iteration  10: 16006509.814 ops/s
+[info] # Run progress: 18.15% complete, ETA 09:14:48
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 15988889.703 ops/s
+[info] # Warmup Iteration   2: 15116157.084 ops/s
+[info] # Warmup Iteration   3: 14408628.480 ops/s
+[info] # Warmup Iteration   4: 14094310.945 ops/s
+[info] # Warmup Iteration   5: 12915873.148 ops/s
+[info] Iteration   1: 13212613.527 ops/s
+[info] Iteration   2: 15426790.297 ops/s
+[info] Iteration   3: 13953877.959 ops/s
+[info] Iteration   4: 15187691.801 ops/s
+[info] Iteration   5: 17545519.701 ops/s
+[info] Iteration   6: 15513705.777 ops/s
+[info] Iteration   7: 16522385.899 ops/s
+[info] Iteration   8: 14689280.939 ops/s
+[info] Iteration   9: 15202673.105 ops/s
+[info] Iteration  10: 15039416.244 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorSameFringe":
+[info]   15590391.450 ±(99.9%) 1183829.418 ops/s [Average]
+[info]   (min, avg, max) = (12058890.181, 15590391.450, 17545519.701), stdev = 1363299.718
+[info]   CI (99.9%): [14406562.032, 16774220.867] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorToArray
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 18.52% complete, ETA 09:12:17
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5075723.156 ops/s
+[info] # Warmup Iteration   2: 4970939.225 ops/s
+[info] # Warmup Iteration   3: 4958615.897 ops/s
+[info] # Warmup Iteration   4: 4593497.754 ops/s
+[info] # Warmup Iteration   5: 4916255.740 ops/s
+[info] Iteration   1: 4826956.295 ops/s
+[info] Iteration   2: 5000469.206 ops/s
+[info] Iteration   3: 5016896.671 ops/s
+[info] Iteration   4: 5128596.962 ops/s
+[info] Iteration   5: 5126340.938 ops/s
+[info] Iteration   6: 5209226.357 ops/s
+[info] Iteration   7: 5139219.002 ops/s
+[info] Iteration   8: 4647115.333 ops/s
+[info] Iteration   9: 5088493.945 ops/s
+[info] Iteration  10: 5061464.966 ops/s
+[info] # Run progress: 18.89% complete, ETA 09:09:47
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5108668.275 ops/s
+[info] # Warmup Iteration   2: 5255202.372 ops/s
+[info] # Warmup Iteration   3: 4476287.736 ops/s
+[info] # Warmup Iteration   4: 4879656.992 ops/s
+[info] # Warmup Iteration   5: 5233688.159 ops/s
+[info] Iteration   1: 4586333.088 ops/s
+[info] Iteration   2: 4514615.066 ops/s
+[info] Iteration   3: 4083160.555 ops/s
+[info] Iteration   4: 5241126.258 ops/s
+[info] Iteration   5: 5358248.649 ops/s
+[info] Iteration   6: 4962500.338 ops/s
+[info] Iteration   7: 5224282.758 ops/s
+[info] Iteration   8: 5146545.117 ops/s
+[info] Iteration   9: 4499888.394 ops/s
+[info] Iteration  10: 4434824.949 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorToArray":
+[info]   4914815.242 ±(99.9%) 295040.048 ops/s [Average]
+[info]   (min, avg, max) = (4083160.555, 4914815.242, 5358248.649), stdev = 339768.558
+[info]   CI (99.9%): [4619775.194, 5209855.291] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorToArray
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 19.26% complete, ETA 09:07:16
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 4953633.537 ops/s
+[info] # Warmup Iteration   2: 5008838.869 ops/s
+[info] # Warmup Iteration   3: 5208797.960 ops/s
+[info] # Warmup Iteration   4: 5205986.422 ops/s
+[info] # Warmup Iteration   5: 5549073.659 ops/s
+[info] Iteration   1: 4548884.318 ops/s
+[info] Iteration   2: 5103926.221 ops/s
+[info] Iteration   3: 5152379.277 ops/s
+[info] Iteration   4: 5485655.707 ops/s
+[info] Iteration   5: 5508487.219 ops/s
+[info] Iteration   6: 4398058.351 ops/s
+[info] Iteration   7: 5287658.033 ops/s
+[info] Iteration   8: 5728014.927 ops/s
+[info] Iteration   9: 5328838.714 ops/s
+[info] Iteration  10: 5191035.288 ops/s
+[info] # Run progress: 19.63% complete, ETA 09:04:46
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 4908590.339 ops/s
+[info] # Warmup Iteration   2: 5176290.698 ops/s
+[info] # Warmup Iteration   3: 4491089.820 ops/s
+[info] # Warmup Iteration   4: 4621057.353 ops/s
+[info] # Warmup Iteration   5: 5342265.317 ops/s
+[info] Iteration   1: 5349993.913 ops/s
+[info] Iteration   2: 5680089.992 ops/s
+[info] Iteration   3: 4719976.311 ops/s
+[info] Iteration   4: 5475596.148 ops/s
+[info] Iteration   5: 4799788.151 ops/s
+[info] Iteration   6: 5081008.530 ops/s
+[info] Iteration   7: 5173406.777 ops/s
+[info] Iteration   8: 4445445.075 ops/s
+[info] Iteration   9: 4190114.386 ops/s
+[info] Iteration  10: 4403535.530 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorToArray":
+[info]   5052594.643 ±(99.9%) 402486.996 ops/s [Average]
+[info]   (min, avg, max) = (4190114.386, 5052594.643, 5728014.927), stdev = 463504.623
+[info]   CI (99.9%): [4650107.648, 5455081.639] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorToArray
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 20.00% complete, ETA 09:02:15
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5532952.191 ops/s
+[info] # Warmup Iteration   2: 4666847.220 ops/s
+[info] # Warmup Iteration   3: 4300685.628 ops/s
+[info] # Warmup Iteration   4: 5739376.519 ops/s
+[info] # Warmup Iteration   5: 5808446.111 ops/s
+[info] Iteration   1: 5814664.214 ops/s
+[info] Iteration   2: 5821953.490 ops/s
+[info] Iteration   3: 5845177.764 ops/s
+[info] Iteration   4: 5753843.910 ops/s
+[info] Iteration   5: 5827193.865 ops/s
+[info] Iteration   6: 5816849.219 ops/s
+[info] Iteration   7: 5788417.841 ops/s
+[info] Iteration   8: 5766435.124 ops/s
+[info] Iteration   9: 5785515.311 ops/s
+[info] Iteration  10: 5768624.646 ops/s
+[info] # Run progress: 20.37% complete, ETA 08:59:45
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5574766.561 ops/s
+[info] # Warmup Iteration   2: 5786094.068 ops/s
+[info] # Warmup Iteration   3: 5831484.607 ops/s
+[info] # Warmup Iteration   4: 5821793.977 ops/s
+[info] # Warmup Iteration   5: 5820908.772 ops/s
+[info] Iteration   1: 5786040.984 ops/s
+[info] Iteration   2: 5798601.392 ops/s
+[info] Iteration   3: 5177119.982 ops/s
+[info] Iteration   4: 4652965.530 ops/s
+[info] Iteration   5: 4756474.531 ops/s
+[info] Iteration   6: 4973920.804 ops/s
+[info] Iteration   7: 4898826.072 ops/s
+[info] Iteration   8: 4606014.516 ops/s
+[info] Iteration   9: 5040177.355 ops/s
+[info] Iteration  10: 5052442.567 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorToArray":
+[info]   5436562.956 ±(99.9%) 409031.701 ops/s [Average]
+[info]   (min, avg, max) = (4606014.516, 5436562.956, 5845177.764), stdev = 471041.515
+[info]   CI (99.9%): [5027531.255, 5845594.657] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorToArray
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 20.74% complete, ETA 08:57:14
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 5532078.873 ops/s
+[info] # Warmup Iteration   2: 5569621.666 ops/s
+[info] # Warmup Iteration   3: 5194963.922 ops/s
+[info] # Warmup Iteration   4: 5126447.694 ops/s
+[info] # Warmup Iteration   5: 5349387.525 ops/s
+[info] Iteration   1: 5352821.281 ops/s
+[info] Iteration   2: 5059750.741 ops/s
+[info] Iteration   3: 5056426.923 ops/s
+[info] Iteration   4: 5319560.524 ops/s
+[info] Iteration   5: 5374825.621 ops/s
+[info] Iteration   6: 5277378.540 ops/s
+[info] Iteration   7: 5248164.525 ops/s
+[info] Iteration   8: 5647703.171 ops/s
+[info] Iteration   9: 3865296.501 ops/s
+[info] Iteration  10: 4791863.193 ops/s
+[info] # Run progress: 21.11% complete, ETA 08:54:44
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 5350958.295 ops/s
+[info] # Warmup Iteration   2: 5337982.695 ops/s
+[info] # Warmup Iteration   3: 5382044.963 ops/s
+[info] # Warmup Iteration   4: 5801255.055 ops/s
+[info] # Warmup Iteration   5: 4987624.224 ops/s
+[info] Iteration   1: 5172169.836 ops/s
+[info] Iteration   2: 5176324.743 ops/s
+[info] Iteration   3: 5365233.024 ops/s
+[info] Iteration   4: 5203187.748 ops/s
+[info] Iteration   5: 5420939.741 ops/s
+[info] Iteration   6: 5066703.290 ops/s
+[info] Iteration   7: 5432029.332 ops/s
+[info] Iteration   8: 5651966.526 ops/s
+[info] Iteration   9: 5045314.265 ops/s
+[info] Iteration  10: 5167091.163 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorToArray":
+[info]   5184737.535 ±(99.9%) 323620.491 ops/s [Average]
+[info]   (min, avg, max) = (3865296.501, 5184737.535, 5651966.526), stdev = 372681.839
+[info]   CI (99.9%): [4861117.043, 5508358.026] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.iteratorToArray
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 21.48% complete, ETA 08:52:13
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 4830336.267 ops/s
+[info] # Warmup Iteration   2: 4863188.394 ops/s
+[info] # Warmup Iteration   3: 5234768.702 ops/s
+[info] # Warmup Iteration   4: 5409097.370 ops/s
+[info] # Warmup Iteration   5: 5611062.556 ops/s
+[info] Iteration   1: 5624506.388 ops/s
+[info] Iteration   2: 5084041.843 ops/s
+[info] Iteration   3: 5168774.805 ops/s
+[info] Iteration   4: 5071004.502 ops/s
+[info] Iteration   5: 4842043.580 ops/s
+[info] Iteration   6: 5038039.761 ops/s
+[info] Iteration   7: 3494497.145 ops/s
+[info] Iteration   8: 3257061.686 ops/s
+[info] Iteration   9: 3471359.083 ops/s
+[info] Iteration  10: 3420824.431 ops/s
+[info] # Run progress: 21.85% complete, ETA 08:49:43
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 4064544.981 ops/s
+[info] # Warmup Iteration   2: 5506667.764 ops/s
+[info] # Warmup Iteration   3: 4819470.508 ops/s
+[info] # Warmup Iteration   4: 4940633.349 ops/s
+[info] # Warmup Iteration   5: 4712697.317 ops/s
+[info] Iteration   1: 4191942.620 ops/s
+[info] Iteration   2: 5718266.444 ops/s
+[info] Iteration   3: 5765180.090 ops/s
+[info] Iteration   4: 5727516.615 ops/s
+[info] Iteration   5: 4636055.473 ops/s
+[info] Iteration   6: 5467919.958 ops/s
+[info] Iteration   7: 4787346.277 ops/s
+[info] Iteration   8: 4756221.674 ops/s
+[info] Iteration   9: 5118235.290 ops/s
+[info] Iteration  10: 4726116.332 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.iteratorToArray":
+[info]   4768347.700 ±(99.9%) 700015.579 ops/s [Average]
+[info]   (min, avg, max) = (3257061.686, 4768347.700, 5765180.090), stdev = 806138.982
+[info]   CI (99.9%): [4068332.121, 5468363.279] (assumes normal distribution)

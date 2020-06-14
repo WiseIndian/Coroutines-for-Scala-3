@@ -167,7 +167,7 @@ class CheckerTests {
   }
 
   @Test def tryCatch2(): Unit = {
-    val error: Boolean = !typeChecks("""coroutine[Int] {
+    val noError: Boolean = typeChecks("""coroutine[Int] {
       try {
         yieldval(0)
         1 + 1
@@ -176,7 +176,60 @@ class CheckerTests {
       }
     }""")
 
+    assert(noError)
+  }
+
+  @Test def yieldvalInCatchCrashes(): Unit = {
+    val error: Boolean = !typeChecks("""coroutine[Int] {
+      try {
+        1 + 1
+      } catch {
+        case e: Exception => yieldval(2)
+      }
+    }""")
+
     assert(error)
+  }
+
+  @Test def yieldvalInGuardCrashes(): Unit = {
+    val error: Boolean = !typeChecks("""coroutine[Int] {
+      try {
+        1 + 1
+      } catch {
+        case e: Exception if ({yieldval(2); true}) => 1
+      }
+    }""")
+
+    assert(error)
+  }
+
+  @Test def yieldvalCatchCrashes(): Unit = {
+    assert {
+      !typeChecks("""coroutine[Int] {
+        try {
+          1 + 1
+        } catch {
+          case e: Exception => {
+            1 + 1
+            yieldval(1)
+          }
+        }
+      }""")
+    }
+  }
+
+  @Test def yieldvalInFinallyCrashes(): Unit = {
+    assert {
+      !typeChecks("""coroutine[Int] {
+        try {
+          1 + 1
+        } catch {
+          case e: Exception => 1
+        } finally {
+          yieldval(1)
+        }
+      }""")
+    }
   }
 
   @Test def ifIf(): Unit = {

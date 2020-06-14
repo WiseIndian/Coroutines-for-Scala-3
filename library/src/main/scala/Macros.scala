@@ -55,6 +55,44 @@ object Macros {
           }
         }
 
+ 
+
+
+      case  Try(tryBody: Term, catchCases: List[CaseDef], finalizer: Option[Term]) => 
+        val tryCoExpr: Expr[Coroutine[T]] = coroutineImpl(tryBody.seal)
+
+        '{
+          lazy val tryCoroutine = ${tryCoExpr}
+          
+          def f(): Option[T] = {
+
+            var tryRet: Option[T] = None
+            
+            ${
+              val newTryBody: Term = '{ tryRet =  tryCoroutine.continue() }.unseal
+              Try(newTryBody, catchCases, finalizer).seal
+            } 
+
+            if (tryRet.isDefined) { 
+              ${ 
+                val yieldvalExpr = '{ yieldval(tryRet.get) }.unseal
+                
+                transformTree(
+                  yieldvalExpr, 
+                  () => '{ f() } 
+                )
+              }
+            }  else {
+              ${ 
+                nextContext()
+              }
+            }
+
+          }
+          f()
+        }
+
+      
 
       /*〚if (e₁) Z₁* else Z₂*〛(c)  becomes 
         '{
@@ -211,7 +249,18 @@ object Macros {
             
             checkNoYieldval(argument, tree)
           
-          
+        
+          case Try(tryBody, catchCases , finallyBodyOpt) => 
+            traverseTree(tryBody)
+
+            catchCases.foreach { case cdef @ CaseDef(pattern, optGuard, rhs) =>
+              checkNoYieldval(pattern, tree)
+              optGuard.foreach(guard => checkNoYieldval(guard, tree))
+              checkNoYieldval(rhs, tree)
+            }
+
+            finallyBodyOpt.foreach(checkNoYieldval(_, tree))
+
           case If(cond, thenp, elsep) => 
             checkNoYieldval(cond, tree)
             traverseTree(thenp)

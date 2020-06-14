@@ -22,3 +22,5 @@ the JMH benchmark
 jmh:run *BenchMarkClassName*
 ```
 where you have to replace BenchMarkClassName by your choice.
+
+take a look at library/runBenchmarks.bash

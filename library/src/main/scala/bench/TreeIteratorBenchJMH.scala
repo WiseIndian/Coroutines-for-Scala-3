@@ -58,14 +58,15 @@ class TreeIterator(val tree: Tree) {
   }
 }
  
-@State(Scope.Benchmark) //All threads running the benchmark share the same state object.
+@State(Scope.Thread) //All threads running the benchmark share the same state object.
 @Warmup(iterations = 5)    // translation of     exec.minWarmupRuns -> 40, exec.maxWarmupRuns -> 80,
 @BenchmarkMode(Array(Mode.All))
 @Measurement(iterations = 10) //"exec.benchRuns 
 @Fork(value = 2) //"exec.independentSamples"
 class TreeIteratorBench {
 
-  @Param(Array("50000", "100000", "150000", "200000", "250000"))
+  // @Param(Array("50000", "100000", "150000", "200000", "250000"))
+  @Param(Array("50000", "150000", "250000"))
   var size: Int = _
 
   def genTree(sz: Int): Tree = {

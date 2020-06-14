@@ -13,14 +13,15 @@ import scala.language.implicitConversions
 
 
 
-@State(Scope.Benchmark) //All threads running the benchmark share the same state object.
+@State(Scope.Thread) //All threads running the benchmark share the same state object.
 @Warmup(iterations = 5)    // translation of "exec.minWarmupRuns", 50 ; "exec.maxWarmupRuns", 100 
 @BenchmarkMode(Array(Mode.All))
 @Measurement(iterations = 10) //"exec.benchRuns"
 @Fork(value = 2) //"exec.independentSamples"
 class FibonacciBenchJMH  {
 
-  @Param(Array("5000", "10000", "15000", "20000", "25000"))
+  // @Param(Array("5000", "10000", "15000", "20000", "25000"))
+  @Param(Array("5000", "15000", "25000"))
   var fibSize: Int = _
  
   @Benchmark

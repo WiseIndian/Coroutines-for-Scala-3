@@ -2458,3 +2458,605 @@
 [info]   4768347.700 ±(99.9%) 700015.579 ops/s [Average]
 [info]   (min, avg, max) = (3257061.686, 4768347.700, 5765180.090), stdev = 806138.982
 [info]   CI (99.9%): [4068332.121, 5468363.279] (assumes normal distribution)
+
+
+
+[info] Loading global plugins from /home/snif/.sbt/1.0/plugins
+[info] Loading settings for project library-build from plugins.sbt ...
+[info] Loading project definition from /home/snif/hackerspace/semester/library/project
+[info] Loading settings for project root from build.sbt ...
+[info] Set current project to dotty-coroutines (in build file:/home/snif/hackerspace/semester/library/)
+[info] Compiling 1 Scala source to /home/snif/hackerspace/semester/library/target/scala-0.22/classes ...
+Resulting transformation  
+{
+  val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+    self._isDone = true
+    self.next = (() => scala.None)
+    scala.None
+  })
+  t match {
+    case n: org.coroutines.Node =>
+      {
+        val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+          self.next = (() => {
+            val next: scala.Function0[scala.Option[scala.Int]] = (() => next.apply())
+            if (n.right.!=(org.coroutines.Empty)) {
+              lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.right)
+              self.next = (() => {
+                val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+                if (subResult.isDefined) subResult else {
+                  self.next = (() => next.apply())
+                  self.next.apply()
+                }
+              })
+              self.next.apply()
+            } else next.apply()
+          })
+          scala.Some.apply[scala.Int](n.x)
+        })
+        if (n.left.!=(org.coroutines.Empty)) {
+          lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.left)
+          self.next = (() => {
+            val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+            if (subResult.isDefined) subResult else {
+              self.next = (() => next.apply())
+              self.next.apply()
+            }
+          })
+          self.next.apply()
+        } else next.apply()
+      }
+    case org.coroutines.Empty =>
+      ()
+      next.apply()
+  }
+}
+Resulting transformation  
+{
+  val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+    self._isDone = true
+    self.next = (() => scala.None)
+    scala.None
+  })
+  t match {
+    case n: org.coroutines.Node =>
+      {
+        val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+          self.next = (() => {
+            val next: scala.Function0[scala.Option[scala.Int]] = (() => next.apply())
+            if (n.right.!=(org.coroutines.Empty)) {
+              lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.right)
+              self.next = (() => {
+                val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+                if (subResult.isDefined) subResult else {
+                  self.next = (() => next.apply())
+                  self.next.apply()
+                }
+              })
+              self.next.apply()
+            } else next.apply()
+          })
+          scala.Some.apply[scala.Int](n.x)
+        })
+        if (n.left.!=(org.coroutines.Empty)) {
+          lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.left)
+          self.next = (() => {
+            val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+            if (subResult.isDefined) subResult else {
+              self.next = (() => next.apply())
+              self.next.apply()
+            }
+          })
+          self.next.apply()
+        } else next.apply()
+      }
+    case org.coroutines.Empty =>
+      ()
+      next.apply()
+  }
+}
+Resulting transformation  
+{
+  val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+    self._isDone = true
+    self.next = (() => scala.None)
+    scala.None
+  })
+  t match {
+    case n: org.coroutines.Node =>
+      {
+        val next: scala.Function0[scala.Option[scala.Int]] = (() => {
+          self.next = (() => {
+            val next: scala.Function0[scala.Option[scala.Int]] = (() => next.apply())
+            if (n.right.!=(org.coroutines.Empty)) {
+              lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.right)
+              self.next = (() => {
+                val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+                if (subResult.isDefined) subResult else {
+                  self.next = (() => next.apply())
+                  self.next.apply()
+                }
+              })
+              self.next.apply()
+            } else next.apply()
+          })
+          scala.Some.apply[scala.Int](n.x)
+        })
+        if (n.left.!=(org.coroutines.Empty)) {
+          lazy val subcoroutine: coroutines.Coroutine[_ >: scala.Nothing <: scala.Int] = treeEnumerator(n.left)
+          self.next = (() => {
+            val subResult: scala.Option[scala.Int] = subcoroutine.next.apply()
+            if (subResult.isDefined) subResult else {
+              self.next = (() => next.apply())
+              self.next.apply()
+            }
+          })
+          self.next.apply()
+        } else next.apply()
+      }
+    case org.coroutines.Empty =>
+      ()
+      next.apply()
+  }
+}
+[warn] -- Feature Warning: /home/snif/hackerspace/semester/library/src/main/scala/bench/TreeIteratorBenchJMH.scala:246:74 
+[warn] 246 |      case Node(x, left, right) => treeStream(left) #::: (x #:: treeStream(right))
+[warn]     |                                                                ^^^^^^^^^^^^^^^^^
+[warn]     |Use of implicit conversion method toDeferrer in object LazyList should be enabled
+[warn]     |by adding the import clause 'import scala.language.implicitConversions'
+[warn]     |or by setting the compiler option -language:implicitConversions.
+[warn]     |See the Scala docs for value scala.language.implicitConversions for a discussion
+[warn]     |why the feature should be explicitly enabled.
+[warn] one warning found
+[info] Done compiling.
+Processing 64 classes from /home/snif/hackerspace/semester/library/target/scala-0.22/classes with "reflection" generator
+Writing out Java source to /home/snif/hackerspace/semester/library/target/scala-0.22/src_managed/jmh and resources to /home/snif/hackerspace/semester/library/target/scala-0.22/resource_managed/jmh
+[info] Compiling 25 Java sources to /home/snif/hackerspace/semester/library/target/scala-0.22/classes ...
+[info] Done compiling.
+[info] running (fork) org.openjdk.jmh.Main TreeIteratorBench.recursiveToList TreeIteratorBench.streamSameFringe TreeIteratorBench.recursiveMax
+[error] WARNING: An illegal reflective access operation has occurred
+[error] WARNING: Illegal reflective access by org.openjdk.jmh.util.Utils (file:/tmp/sbt_8b9e763b/target/7f7691f4/c82dacdf/jmh-core-1.21.jar) to field java.io.PrintStream.charOut
+[error] WARNING: Please consider reporting this to the maintainers of org.openjdk.jmh.util.Utils
+[error] WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+[error] WARNING: All illegal access operations will be denied in a future release
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveMax
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 0.00% complete, ETA 03:45:00
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 228630383.471 ops/s
+[info] # Warmup Iteration   2: 213059311.694 ops/s
+[info] # Warmup Iteration   3: 227531805.151 ops/s
+[info] # Warmup Iteration   4: 238991634.576 ops/s
+[info] # Warmup Iteration   5: 243475808.511 ops/s
+[info] Iteration   1: 227545954.176 ops/s
+[info] Iteration   2: 240064181.091 ops/s
+[info] Iteration   3: 236398297.975 ops/s
+[info] Iteration   4: 246306192.063 ops/s
+[info] Iteration   5: 226138844.455 ops/s
+[info] Iteration   6: 230526524.449 ops/s
+[info] Iteration   7: 246671670.147 ops/s
+[info] Iteration   8: 247583126.757 ops/s
+[info] Iteration   9: 256756531.583 ops/s
+[info] Iteration  10: 247034143.440 ops/s
+[info] # Run progress: 1.11% complete, ETA 03:43:37
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 210055741.610 ops/s
+[info] # Warmup Iteration   2: 219889176.122 ops/s
+[info] # Warmup Iteration   3: 246056322.998 ops/s
+[info] # Warmup Iteration   4: 239879377.143 ops/s
+[info] # Warmup Iteration   5: 235027084.993 ops/s
+[info] Iteration   1: 236589792.729 ops/s
+[info] Iteration   2: 227007713.273 ops/s
+[info] Iteration   3: 190726688.718 ops/s
+[info] Iteration   4: 239753403.467 ops/s
+[info] Iteration   5: 247495767.587 ops/s
+[info] Iteration   6: 213431617.045 ops/s
+[info] Iteration   7: 248090851.476 ops/s
+[info] Iteration   8: 275570397.198 ops/s
+[info] Iteration   9: 274231775.206 ops/s
+[info] Iteration  10: 277308460.689 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveMax":
+[info]   241761596.676 ±(99.9%) 17956735.504 ops/s [Average]
+[info]   (min, avg, max) = (190726688.718, 241761596.676, 277308460.689), stdev = 20679003.310
+[info]   CI (99.9%): [223804861.172, 259718332.180] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveMax
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 2.22% complete, ETA 03:41:22
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 250098974.371 ops/s
+[info] # Warmup Iteration   2: 253594586.656 ops/s
+[info] # Warmup Iteration   3: 274494874.907 ops/s
+[info] # Warmup Iteration   4: 274363433.181 ops/s
+[info] # Warmup Iteration   5: 255325465.855 ops/s
+[info] Iteration   1: 243842564.505 ops/s
+[info] Iteration   2: 246290918.426 ops/s
+[info] Iteration   3: 245280723.572 ops/s
+[info] Iteration   4: 261868314.566 ops/s
+[info] Iteration   5: 274964140.912 ops/s
+[info] Iteration   6: 275374360.362 ops/s
+[info] Iteration   7: 274752548.824 ops/s
+[info] Iteration   8: 274414121.677 ops/s
+[info] Iteration   9: 274938600.303 ops/s
+[info] Iteration  10: 274144808.604 ops/s
+[info] # Run progress: 3.33% complete, ETA 03:38:38
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 248962073.568 ops/s
+[info] # Warmup Iteration   2: 251268032.717 ops/s
+[info] # Warmup Iteration   3: 273470692.176 ops/s
+[info] # Warmup Iteration   4: 273829899.798 ops/s
+[info] # Warmup Iteration   5: 273979400.261 ops/s
+[info] Iteration   1: 273981381.201 ops/s
+[info] Iteration   2: 273627989.210 ops/s
+[info] Iteration   3: 274177784.230 ops/s
+[info] Iteration   4: 261555719.923 ops/s
+[info] Iteration   5: 253433072.291 ops/s
+[info] Iteration   6: 264426462.049 ops/s
+[info] Iteration   7: 258050054.352 ops/s
+[info] Iteration   8: 276090834.937 ops/s
+[info] Iteration   9: 277224415.520 ops/s
+[info] Iteration  10: 270166161.449 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveMax":
+[info]   266430248.846 ±(99.9%) 9883175.386 ops/s [Average]
+[info]   (min, avg, max) = (243842564.505, 266430248.846, 277224415.520), stdev = 11381479.472
+[info]   CI (99.9%): [256547073.460, 276313424.231] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveMax
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 4.44% complete, ETA 03:35:59
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 222360139.765 ops/s
+[info] # Warmup Iteration   2: 236005894.927 ops/s
+[info] # Warmup Iteration   3: 273701593.622 ops/s
+[info] # Warmup Iteration   4: 258638528.331 ops/s
+[info] # Warmup Iteration   5: 170454767.517 ops/s
+[info] Iteration   1: 253599084.582 ops/s
+[info] Iteration   2: 252994261.191 ops/s
+[info] Iteration   3: 182802790.664 ops/s
+[info] Iteration   4: 201555919.855 ops/s
+[info] Iteration   5: 214709484.752 ops/s
+[info] Iteration   6: 274162218.092 ops/s
+[info] Iteration   7: 244832704.601 ops/s
+[info] Iteration   8: 229887588.819 ops/s
+[info] Iteration   9: 223402433.292 ops/s
+[info] Iteration  10: 226854521.107 ops/s
+[info] # Run progress: 5.56% complete, ETA 03:33:25
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 225450849.500 ops/s
+[info] # Warmup Iteration   2: 221138843.208 ops/s
+[info] # Warmup Iteration   3: 245979026.277 ops/s
+[info] # Warmup Iteration   4: 262285231.863 ops/s
+[info] # Warmup Iteration   5: 243405778.621 ops/s
+[info] Iteration   1: 268254868.214 ops/s
+[info] Iteration   2: 269731275.306 ops/s
+[info] Iteration   3: 257386033.602 ops/s
+[info] Iteration   4: 260014101.467 ops/s
+[info] Iteration   5: 263647370.302 ops/s
+[info] Iteration   6: 257774837.119 ops/s
+[info] Iteration   7: 247066350.732 ops/s
+[info] Iteration   8: 259120691.878 ops/s
+[info] Iteration   9: 221185081.945 ops/s
+[info] Iteration  10: 276619352.185 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveMax":
+[info]   244280048.485 ±(99.9%) 22262365.915 ops/s [Average]
+[info]   (min, avg, max) = (182802790.664, 244280048.485, 276619352.185), stdev = 25637373.694
+[info]   CI (99.9%): [222017682.571, 266542414.400] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveMax
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 6.67% complete, ETA 03:30:52
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 235198359.923 ops/s
+[info] # Warmup Iteration   2: 195762620.561 ops/s
+[info] # Warmup Iteration   3: 106960405.537 ops/s
+[info] # Warmup Iteration   4: 268192831.969 ops/s
+[info] # Warmup Iteration   5: 256385798.728 ops/s
+[info] Iteration   1: 246091336.994 ops/s
+[info] Iteration   2: 245735496.146 ops/s
+[info] Iteration   3: 256513768.447 ops/s
+[info] Iteration   4: 210539411.599 ops/s
+[info] Iteration   5: 273449938.115 ops/s
+[info] Iteration   6: 270103804.992 ops/s
+[info] Iteration   7: 273630717.423 ops/s
+[info] Iteration   8: 231865923.307 ops/s
+[info] Iteration   9: 251012063.549 ops/s
+[info] Iteration  10: 199222264.918 ops/s
+[info] # Run progress: 7.78% complete, ETA 03:28:19
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 170905790.432 ops/s
+[info] # Warmup Iteration   2: 141274285.125 ops/s
+[info] # Warmup Iteration   3: 118704818.529 ops/s
+[info] # Warmup Iteration   4: 138857422.941 ops/s
+[info] # Warmup Iteration   5: 270904792.449 ops/s
+[info] Iteration   1: 276915284.753 ops/s
+[info] Iteration   2: 215006996.246 ops/s
+[info] Iteration   3: 170366072.876 ops/s
+[info] Iteration   4: 243817863.728 ops/s
+[info] Iteration   5: 267426789.568 ops/s
+[info] Iteration   6: 273459931.275 ops/s
+[info] Iteration   7: 257986192.683 ops/s
+[info] Iteration   8: 247520526.832 ops/s
+[info] Iteration   9: 273678991.238 ops/s
+[info] Iteration  10: 273320379.952 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveMax":
+[info]   247883187.732 ±(99.9%) 25450682.503 ops/s [Average]
+[info]   (min, avg, max) = (170366072.876, 247883187.732, 276915284.753), stdev = 29309043.819
+[info]   CI (99.9%): [222432505.229, 273333870.235] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveMax
+[info] # Parameters: (size = 250000)
+[info] # Run progress: 8.89% complete, ETA 03:25:47
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 248831961.995 ops/s
+[info] # Warmup Iteration   2: 252421673.595 ops/s
+[info] # Warmup Iteration   3: 194339327.684 ops/s
+[info] # Warmup Iteration   4: 145707295.573 ops/s
+[info] # Warmup Iteration   5: 241598154.846 ops/s
+[info] Iteration   1: 256017075.921 ops/s
+[info] Iteration   2: 245827203.281 ops/s
+[info] Iteration   3: 262527141.054 ops/s
+[info] Iteration   4: 263105729.291 ops/s
+[info] Iteration   5: 267660067.428 ops/s
+[info] Iteration   6: 253379787.864 ops/s
+[info] Iteration   7: 256965362.266 ops/s
+[info] Iteration   8: 264355258.565 ops/s
+[info] Iteration   9: 253044208.933 ops/s
+[info] Iteration  10: 247910886.258 ops/s
+[info] # Run progress: 10.00% complete, ETA 03:23:16
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 237708203.023 ops/s
+[info] # Warmup Iteration   2: 160957767.351 ops/s
+[info] # Warmup Iteration   3: 208232055.510 ops/s
+[info] # Warmup Iteration   4: 250342062.012 ops/s
+[info] # Warmup Iteration   5: 267388531.340 ops/s
+[info] Iteration   1: 276076126.578 ops/s
+[info] Iteration   2: 268093570.160 ops/s
+[info] Iteration   3: 261892058.197 ops/s
+[info] Iteration   4: 272933774.125 ops/s
+[info] Iteration   5: 275355689.600 ops/s
+[info] Iteration   6: 264048803.081 ops/s
+[info] Iteration   7: 275699810.170 ops/s
+[info] Iteration   8: 278204573.134 ops/s
+[info] Iteration   9: 273804799.854 ops/s
+[info] Iteration  10: 254319183.607 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveMax":
+[info]   263561055.468 ±(99.9%) 8573372.577 ops/s [Average]
+[info]   (min, avg, max) = (245827203.281, 263561055.468, 278204573.134), stdev = 9873108.610
+[info]   CI (99.9%): [254987682.891, 272134428.046] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveToList
+[info] # Parameters: (size = 50000)
+[info] # Run progress: 11.11% complete, ETA 03:20:45
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 88680946.725 ops/s
+[info] # Warmup Iteration   2: 86601493.374 ops/s
+[info] # Warmup Iteration   3: 91069695.656 ops/s
+[info] # Warmup Iteration   4: 82238202.543 ops/s
+[info] # Warmup Iteration   5: 81455146.627 ops/s
+[info] Iteration   1: 90144614.201 ops/s
+[info] Iteration   2: 90914063.093 ops/s
+[info] Iteration   3: 91075941.606 ops/s
+[info] Iteration   4: 77177741.542 ops/s
+[info] Iteration   5: 91200047.376 ops/s
+[info] Iteration   6: 91395386.983 ops/s
+[info] Iteration   7: 92231883.642 ops/s
+[info] Iteration   8: 91557157.804 ops/s
+[info] Iteration   9: 92517797.768 ops/s
+[info] Iteration  10: 71553653.883 ops/s
+[info] # Run progress: 12.22% complete, ETA 03:18:24
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 77500363.151 ops/s
+[info] # Warmup Iteration   2: 89593409.264 ops/s
+[info] # Warmup Iteration   3: 80057530.325 ops/s
+[info] # Warmup Iteration   4: 89865435.019 ops/s
+[info] # Warmup Iteration   5: 92503713.486 ops/s
+[info] Iteration   1: 89564547.676 ops/s
+[info] Iteration   2: 71597871.936 ops/s
+[info] Iteration   3: 59098227.324 ops/s
+[info] Iteration   4: 69388844.757 ops/s
+[info] Iteration   5: 69177308.364 ops/s
+[info] Iteration   6: 70204677.088 ops/s
+[info] Iteration   7: 67183299.680 ops/s
+[info] Iteration   8: 67782561.461 ops/s
+[info] Iteration   9: 66182348.340 ops/s
+[info] Iteration  10: 60500064.729 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveToList":
+[info]   78522401.963 ±(99.9%) 10700006.452 ops/s [Average]
+[info]   (min, avg, max) = (59098227.324, 78522401.963, 92517797.768), stdev = 12322143.342
+[info]   CI (99.9%): [67822395.511, 89222408.415] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveToList
+[info] # Parameters: (size = 100000)
+[info] # Run progress: 13.33% complete, ETA 03:16:05
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 80885864.946 ops/s
+[info] # Warmup Iteration   2: 81907635.712 ops/s
+[info] # Warmup Iteration   3: 68611965.882 ops/s
+[info] # Warmup Iteration   4: 78830423.629 ops/s
+[info] # Warmup Iteration   5: 78063080.677 ops/s
+[info] Iteration   1: 74356944.572 ops/s
+[info] Iteration   2: 83110968.641 ops/s
+[info] Iteration   3: 83392811.093 ops/s
+[info] Iteration   4: 66010107.386 ops/s
+[info] Iteration   5: 85950023.170 ops/s
+[info] Iteration   6: 80100540.144 ops/s
+[info] Iteration   7: 83497952.095 ops/s
+[info] Iteration   8: 79346648.240 ops/s
+[info] Iteration   9: 90802173.833 ops/s
+[info] Iteration  10: 87116283.565 ops/s
+[info] # Run progress: 14.44% complete, ETA 03:13:35
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 96200520.932 ops/s
+[info] # Warmup Iteration   2: 98321572.771 ops/s
+[info] # Warmup Iteration   3: 92036845.425 ops/s
+[info] # Warmup Iteration   4: 85416156.870 ops/s
+[info] # Warmup Iteration   5: 89157136.899 ops/s
+[info] Iteration   1: 90462180.615 ops/s
+[info] Iteration   2: 87964792.638 ops/s
+[info] Iteration   3: 87998820.927 ops/s
+[info] Iteration   4: 89672830.207 ops/s
+[info] Iteration   5: 91979494.393 ops/s
+[info] Iteration   6: 91518358.293 ops/s
+[info] Iteration   7: 90741253.280 ops/s
+[info] Iteration   8: 92026653.108 ops/s
+[info] Iteration   9: 87309196.504 ops/s
+[info] Iteration  10: 86705443.513 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveToList":
+[info]   85503173.811 ±(99.9%) 5716723.999 ops/s [Average]
+[info]   (min, avg, max) = (66010107.386, 85503173.811, 92026653.108), stdev = 6583387.858
+[info]   CI (99.9%): [79786449.812, 91219897.809] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveToList
+[info] # Parameters: (size = 150000)
+[info] # Run progress: 15.56% complete, ETA 03:11:03
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 95175623.323 ops/s
+[info] # Warmup Iteration   2: 96026844.167 ops/s
+[info] # Warmup Iteration   3: 90486786.756 ops/s
+[info] # Warmup Iteration   4: 92164235.700 ops/s
+[info] # Warmup Iteration   5: 91806928.730 ops/s
+[info] Iteration   1: 89416754.500 ops/s
+[info] Iteration   2: 89957900.927 ops/s
+[info] Iteration   3: 91982034.031 ops/s
+[info] Iteration   4: 86823738.190 ops/s
+[info] Iteration   5: 91399551.546 ops/s
+[info] Iteration   6: 91956237.079 ops/s
+[info] Iteration   7: 90345994.129 ops/s
+[info] Iteration   8: 91373648.051 ops/s
+[info] Iteration   9: 91239892.014 ops/s
+[info] Iteration  10: 88283829.624 ops/s
+[info] # Run progress: 16.67% complete, ETA 03:08:31
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 95567351.501 ops/s
+[info] # Warmup Iteration   2: 97309619.166 ops/s
+[info] # Warmup Iteration   3: 90465208.436 ops/s
+[info] # Warmup Iteration   4: 86501113.527 ops/s
+[info] # Warmup Iteration   5: 87212771.457 ops/s
+[info] Iteration   1: 89047403.913 ops/s
+[info] Iteration   2: 86447582.045 ops/s
+[info] Iteration   3: 85040291.655 ops/s
+[info] Iteration   4: 90901530.514 ops/s
+[info] Iteration   5: 89503619.519 ops/s
+[info] Iteration   6: 89709203.623 ops/s
+[info] Iteration   7: 89062842.180 ops/s
+[info] Iteration   8: 89164426.636 ops/s
+[info] Iteration   9: 90497704.956 ops/s
+[info] Iteration  10: 89028263.908 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveToList":
+[info]   89559122.452 ±(99.9%) 1603452.253 ops/s [Average]
+[info]   (min, avg, max) = (85040291.655, 89559122.452, 91982034.031), stdev = 1846537.999
+[info]   CI (99.9%): [87955670.199, 91162574.705] (assumes normal distribution)
+[info] # JMH version: 1.21
+[info] # VM version: JDK 11.0.7, OpenJDK 64-Bit Server VM, 11.0.7+10-post-Ubuntu-2ubuntu218.04
+[info] # VM invoker: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+[info] # VM options: -Xms1G -Xmx1G
+[info] # Warmup: 5 iterations, 10 s each
+[info] # Measurement: 10 iterations, 10 s each
+[info] # Timeout: 10 min per iteration
+[info] # Threads: 1 thread, will synchronize iterations
+[info] # Benchmark mode: Throughput, ops/time
+[info] # Benchmark: org.coroutines.TreeIteratorBench.recursiveToList
+[info] # Parameters: (size = 200000)
+[info] # Run progress: 17.78% complete, ETA 03:05:59
+[info] # Fork: 1 of 2
+[info] # Warmup Iteration   1: 85077023.882 ops/s
+[info] # Warmup Iteration   2: 93215684.816 ops/s
+[info] # Warmup Iteration   3: 89594537.991 ops/s
+[info] # Warmup Iteration   4: 84886844.541 ops/s
+[info] # Warmup Iteration   5: 79839939.233 ops/s
+[info] Iteration   1: 89907560.464 ops/s
+[info] Iteration   2: 91064921.307 ops/s
+[info] Iteration   3: 85430080.565 ops/s
+[info] Iteration   4: 88295926.605 ops/s
+[info] Iteration   5: 88498117.085 ops/s
+[info] Iteration   6: 89070157.220 ops/s
+[info] Iteration   7: 91247903.857 ops/s
+[info] Iteration   8: 88924569.320 ops/s
+[info] Iteration   9: 91429607.299 ops/s
+[info] Iteration  10: 89326696.885 ops/s
+[info] # Run progress: 18.89% complete, ETA 03:03:27
+[info] # Fork: 2 of 2
+[info] # Warmup Iteration   1: 94990948.058 ops/s
+[info] # Warmup Iteration   2: 98921294.966 ops/s
+[info] # Warmup Iteration   3: 91771267.727 ops/s
+[info] # Warmup Iteration   4: 91909920.718 ops/s
+[info] # Warmup Iteration   5: 91741811.770 ops/s
+[info] Iteration   1: 87885353.778 ops/s
+[info] Iteration   2: 88764012.737 ops/s
+[info] Iteration   3: 77904321.263 ops/s
+[info] Iteration   4: 89610345.786 ops/s
+[info] Iteration   5: 82284715.070 ops/s
+[info] Iteration   6: 78741997.232 ops/s
+[info] Iteration   7: 87148103.745 ops/s
+[info] Iteration   8: 84213815.384 ops/s
+[info] Iteration   9: 84925865.251 ops/s
+[info] Iteration  10: 67576277.641 ops/s
+[info] Result "org.coroutines.TreeIteratorBench.recursiveToList":
+[info]   86112517.425 ±(99.9%) 5039456.887 ops/s [Average]
+[info]   (min, avg, max) = (67576277.641, 86112517.425, 91429607.299), stdev = 5803446.045
+[info]   CI (99.9%): [81073060.538, 91151974.312] (assumes normal distribution)

@@ -24,59 +24,46 @@ abstract class LazyCollection[A]{ self =>
     def next(): A
     def hasNext: Boolean 
 
-    //this would need to be implemented as a macro to work I think
-    // def generate[A](body: => Any): Coroutine[A] = {
-    //     val co = coroutine[A] { body }
-    //     new CoroutineLazyCollection[A](co)
-    // }
-
-    def filter(p: A => Boolean): LazyCollection[A] = {
-        val co = coroutine[A] {
-            while (self.hasNext) {
-                val a = self.next()
-                if (p(a)) yieldval(a)
-            }
-        }
+    private inline def generate[A](inline body: Any): LazyCollection[A] = {
+        val co = coroutine[A] { body }
         new CoroutineLazyCollection[A](co)
     }
 
-    def map[B](f: A => B): LazyCollection[B] = {
-        val co = coroutine[B] {
-            while (self.hasNext) {
-                val a = self.next()
-                yieldval(f(a))
-            }
+    def filter(p: A => Boolean): LazyCollection[A] = generate[A] {
+        while (self.hasNext) {
+            val a = self.next()
+            if (p(a)) yieldval(a)
         }
-        new CoroutineLazyCollection[B](co)
+    } 
+    
+
+    def map[B](f: A => B): LazyCollection[B] = generate[B] {
+        while (self.hasNext) {
+            val a = self.next()
+            yieldval(f(a))
+        }
     }
 
-    def flatMap[B](f: A => IterableOnce[B]): LazyCollection[B] = {
-        val co = coroutine[B] {
-            while (self.hasNext) {
-                val it = f(self.next()).iterator
+    def flatMap[B](f: A => IterableOnce[B]): LazyCollection[B] = generate[B] {
+        while (self.hasNext) {
+            val it = f(self.next()).iterator
 
-                while (it.hasNext) yieldval(it.next())
-            }
+            while (it.hasNext) yieldval(it.next())
         }
-        new CoroutineLazyCollection[B](co)
     }
 
-    def dropWhile(p: A => Boolean): LazyCollection[A] = {
-
-        val co = coroutine[A] {
-            var done = false
-            while(self.hasNext && !done) {
-                val next = self.next()
-                if (!p(next)) {
-                    yieldval(next)
-                    while(self.hasNext) {
-                        yieldval(self.next())
-                    }
-                    done = true
+    def dropWhile(p: A => Boolean): LazyCollection[A] = generate[A] {
+        var done = false
+        while(self.hasNext && !done) {
+            val next = self.next()
+            if (!p(next)) {
+                yieldval(next)
+                while(self.hasNext) {
+                    yieldval(self.next())
                 }
+                done = true
             }
         }
-        new CoroutineLazyCollection[A](co)
     }
 
 }

@@ -64,7 +64,7 @@ object Macros {
         '{
           lazy val tryCoroutine = ${tryCoExpr}
           
-          def f(): Option[T] = {
+          def tryLoop(): Option[T] = {
 
             var tryRet: Option[T] = None
             
@@ -79,7 +79,7 @@ object Macros {
                 
                 transformTree(
                   yieldvalExpr, 
-                  () => '{ f() } 
+                  () => '{ tryLoop() } 
                 )
               }
             }  else {
@@ -89,7 +89,7 @@ object Macros {
             }
 
           }
-          f()
+          tryLoop()
         }
 
       
@@ -143,19 +143,21 @@ object Macros {
           }
           ${self}.next()
         }
+
+
       
 
       case While(condTerm, bodyTerm) => 
         // inline def body = 
         val cond = condTerm.seal.cast[Boolean]
         '{
-          def f(): Option[T] = if (${cond}) ${
-            transformTree(bodyTerm, () => '{ f() })
+          def whileLoop(): Option[T] = if (${cond}) ${
+            transformTree(bodyTerm, () => '{ whileLoop() })
           } else ${ 
             nextContext() 
           }
-           
-          f()
+
+          whileLoop()
         }
       //〚Z〛(c) = '{ Z; ${c()} }, otherwise
       case _ => 

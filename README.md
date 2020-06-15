@@ -26,9 +26,11 @@ where you have to replace BenchMarkClassName by your choice.
 take a look at library/runBenchmarks.bash to have a more precise example.
 
 Comparative benchmarks results between storm en-route implementation can be seen:
-(Here for a benchmark on binary trees)[https://jmh.morethan.io/?source=https://github.com/LeDevDuDimanche/Coroutines-for-Scala-3/library/mergedTree.json]
-(Here for a benchmark of fibonacci)[https://jmh.morethan.io/?source=https://github.com/LeDevDuDimanche/Coroutines-for-Scala-3/library/mergedFibo.json].
-(Here for a benchmark of taylor series)[https://jmh.morethan.io/?source=https://github.com/LeDevDuDimanche/Coroutines-for-Scala-3/library/mergedTaylor.json]
+
+
+[Here for a benchmark on binary trees](https://raw.githubusercontent.com/LeDevDuDimanche/Coroutines-for-Scala-3/master/library/mergedTree.json)
+[Here for a benchmark of fibonacci](https://raw.githubusercontent.com/LeDevDuDimanche/Coroutines-for-Scala-3/master/library/mergedFibo.json)
+[Here for a benchmark of taylor series](https://raw.githubusercontent.com/LeDevDuDimanche/Coroutines-for-Scala-3/master/library/mergedTaylor.json)
 
 
 

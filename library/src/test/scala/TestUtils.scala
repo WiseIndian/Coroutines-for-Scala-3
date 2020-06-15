@@ -3,10 +3,13 @@ import coroutines._
 import scala.language.implicitConversions
 import scala.collection._
 
-def assertYieldvals[T](expectedVals: List[T], co: Coroutine[T]): Unit = {
+def assertYieldvals[T](expectedVals: List[T], co: Coroutine[T], debug: Boolean = false): Unit = {
   expectedVals.foreach { expected => 
     assert(!co.isDone())
-    assertEquals(Some(expected), co.continue())
+    val yielded = co.continue()
+    if (debug)
+      println(s"assert yieldval: expected ${expected} yielded ${yielded}")
+    assertEquals(Some(expected), yielded)
   }
 
   assert(!co.isDone())

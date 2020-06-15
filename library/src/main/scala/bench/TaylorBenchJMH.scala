@@ -13,7 +13,7 @@ import scala.language.implicitConversions
 
 @State(Scope.Thread) //All threads running the benchmark share the same state object.
 @Warmup(iterations = 5)    // translation of "exec.minWarmupRuns", 50 ; "exec.maxWarmupRuns", 100 
-@BenchmarkMode(Array(Mode.All))
+@BenchmarkMode(Array(Mode.Throughput))
 @Measurement(iterations = 10) //"exec.benchRuns"
 @Fork(value = 2) //"exec.independentSamples"
 class TaylorBenchJMH  {

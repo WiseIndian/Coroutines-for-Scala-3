@@ -31,7 +31,7 @@ abstract class LazyCollection[A] extends AbstractIterator[A] { self =>
         new CoroutineLazyCollection[A](co)
     }
 
-    override def filter(p: A => Boolean): LazyCollection[A] = generate[A] {
+    override def filter(p: A => Boolean): Iterator[A] = generate[A] {
         while (self.hasNext) {
             val a = self.next()
             if (p(a)) yieldval(a)
@@ -39,14 +39,14 @@ abstract class LazyCollection[A] extends AbstractIterator[A] { self =>
     } 
     
 
-    override def map[B](f: A => B): LazyCollection[B] = generate[B] {
+    override def map[B](f: A => B): Iterator[B] = generate[B] {
         while (self.hasNext) {
             val a = self.next()
             yieldval(f(a))
         }
     }
 
-    override def flatMap[B](f: A => IterableOnce[B]): LazyCollection[B] = generate[B] {
+    override def flatMap[B](f: A => IterableOnce[B]): Iterator[B] = generate[B] {
         while (self.hasNext) {
             val it = f(self.next()).iterator
 
@@ -54,7 +54,7 @@ abstract class LazyCollection[A] extends AbstractIterator[A] { self =>
         }
     }
 
-    override def dropWhile(p: A => Boolean): LazyCollection[A] = generate[A] {
+    override def dropWhile(p: A => Boolean): Iterator[A] = generate[A] {
         var done = false
         while(self.hasNext && !done) {
             val next = self.next()

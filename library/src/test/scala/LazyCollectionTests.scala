@@ -6,7 +6,7 @@ class LazyCollectionTests {
     val inpt = Seq(1,2,3,4,5)
     val getIt = () => new LazyFromIterator(inpt.iterator)
 
-    def isExpected[A](lazyCol: LazyCollection[A], expected: Seq[A]): Unit = {
+    def isExpected[A](lazyCol: Iterator[A], expected: Seq[A]): Unit = {
         expected.foreach { x => 
             assertEquals(x, lazyCol.next())
         }

@@ -3,6 +3,8 @@ package coroutines.examples
 import coroutines._
 import coroutines.Macros._
 
+import scala.collection.AbstractIterator
+
 //idea taken from https://contributors.scala-lang.org/t/generators-via-continuations-suspendable-functions/3933
 
 class CoroutineLazyCollection[A](co: Coroutine[A]) extends LazyCollection[A] {
@@ -20,7 +22,7 @@ class CoroutineLazyCollection[A](co: Coroutine[A]) extends LazyCollection[A] {
     def hasNext: Boolean = _next.isDefined
 }
 
-abstract class LazyCollection[A]{ self =>
+abstract class LazyCollection[A] extends AbstractIterator[A] { self =>
     def next(): A
     def hasNext: Boolean 
 
@@ -29,7 +31,7 @@ abstract class LazyCollection[A]{ self =>
         new CoroutineLazyCollection[A](co)
     }
 
-    def filter(p: A => Boolean): LazyCollection[A] = generate[A] {
+    override def filter(p: A => Boolean): LazyCollection[A] = generate[A] {
         while (self.hasNext) {
             val a = self.next()
             if (p(a)) yieldval(a)
@@ -37,14 +39,14 @@ abstract class LazyCollection[A]{ self =>
     } 
     
 
-    def map[B](f: A => B): LazyCollection[B] = generate[B] {
+    override def map[B](f: A => B): LazyCollection[B] = generate[B] {
         while (self.hasNext) {
             val a = self.next()
             yieldval(f(a))
         }
     }
 
-    def flatMap[B](f: A => IterableOnce[B]): LazyCollection[B] = generate[B] {
+    override def flatMap[B](f: A => IterableOnce[B]): LazyCollection[B] = generate[B] {
         while (self.hasNext) {
             val it = f(self.next()).iterator
 
@@ -52,7 +54,7 @@ abstract class LazyCollection[A]{ self =>
         }
     }
 
-    def dropWhile(p: A => Boolean): LazyCollection[A] = generate[A] {
+    override def dropWhile(p: A => Boolean): LazyCollection[A] = generate[A] {
         var done = false
         while(self.hasNext && !done) {
             val next = self.next()
